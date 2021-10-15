@@ -1,0 +1,25 @@
+body {
+    padding: 10px;
+    font-family: sans-serif;
+}
+
+.fontTitle {
+    font-family: Khmer os Freehand;
+}
+
+.fontHeadline .fontSubTitle {
+    font-family: Khmer os Muollight;
+}
+
+/*===============================Opacity on Click==================*/
+#base-navigation-drawer .v-list-group__header.v-list-item--active:not(:hover):not(:focus):before {
+    opacity: 0.36 !important;
+}
+
+.v-list-item .v-list-item__subtitle, .v-list-item .v-list-item__title {
+    line-height: 1.9 !important;
+}
+
+.v-select__selections {
+    line-height: 31px !important;
+}

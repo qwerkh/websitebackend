@@ -1,0 +1,231 @@
+.v-text-field input {
+    line-height: 30px !important;
+}
+
+.v-input .v-label {
+    height: 30px !important;
+    line-height: 30px !important;
+}
+
+.v-toolbar__title {
+    line-height: 1.7 !important;
+}
+
+.v-card__actions {
+    padding-bottom: 25px !important;
+}
+
+.v-btn--fab.v-size--default.v-btn--absolute.v-btn--bottom {
+    bottom: 28px !important;
+}
+
+.v-text-field--outlined.v-input--dense .v-label--active {
+    transform: translateY(-22px) scale(0.75) !important;
+}
+
+.v-list--dense .v-list-item .v-list-item__subtitle, .v-list--dense .v-list-item .v-list-item__title, .v-list-item--dense .v-list-item__subtitle, .v-list-item--dense .v-list-item__title {
+    line-height: 1.9rem !important;
+    font-size: .99rem !important;
+}
+
+.v-data-table th {
+    text-align: center !important;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.v-progress-circular {
+    position: absolute !important;
+    z-index: 1200 !important;
+}
+
+.v-progress-linear {
+    position: absolute !important;
+}
+
+.v-input input {
+    max-height: 40px !important;
+}
+
+item__title {
+    line-height: 1.6 !important;
+}
+
+.el-popup-parent--hidden {
+    padding-right: 10px !important;
+}
+
+.v-banner__text {
+    line-height: 30px !important;
+}
+
+.table-bordered thead td, .table-bordered thead th {
+    border-bottom-width: 2px;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-bordered td, .table-bordered th {
+    border: 1px solid #dee2e6;
+}
+
+.table td, .table th {
+    padding: .75rem;
+
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.label-danger {
+    background-color: #d9534f !important;
+}
+
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+.label-table {
+    font-size: 15px !important;
+    font-weight: bold;
+    line-height: 0;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+.label-warning {
+    background-color: purple !important;
+}
+
+table {
+    background-color: transparent !important;
+}
+
+.bg-primary {
+    background-color: #337ab7 !important;
+}
+
+.table-report > tbody > tr > td, .table-report > tbody > tr > th {
+    padding: 7px;
+    line-height: 1.42857143;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-report > tbody > tr:hover {
+    background-color: yellow !important;
+}
+
+.table-reportWinLose > tbody > tr > td, .table-reportWinLose > tbody > tr > th {
+    padding: 4px;
+    line-height: 1.42857143;
+    vertical-align: middle;
+}
+
+.table-reportWinLoseMain > tbody > tr > td, .table-reportWinLoseMain > tbody > tr > th {
+    padding: 1px;
+    line-height: 1.42857143;
+}
+
+.table-report > tbody > tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.sumFooter {
+    background-color: lavender
+}
+
+.sumFooterYellow {
+    background-color: lightyellow;
+}
+
+.updateColor {
+    background-color: lightcyan;
+}
+
+.v-application--is-ltr .v-list-item__action:first-child, .v-application--is-ltr .v-list-item__icon:first-child {
+    margin-right: 10px !important;
+}
+
+.v-application--is-ltr .v-list--dense.v-list--nav .v-list-group--no-action > .v-list-group__items > .v-list-item {
+    padding-left: 40px !important;
+}
+
+.ma-2px {
+    margin: 0px 8px 1px 20px;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+        white-space: nowrap;
+    }
+
+    .v-main {
+        padding: 0px !important;
+    }
+
+    #section-to-print, #section-to-print * {
+        visibility: visible;
+    }
+
+    #section-to-print {
+        position: absolute;
+        float: left;
+        left: 0;
+        top: 0;
+        min-width: 100% !important;
+    }
+
+    #section-to-print-page-break, #section-to-print-page-break * {
+        visibility: visible;
+    }
+
+    #section-to-print-page-break {
+        position: relative;
+        float: left;
+        min-width: 100% !important;
+    }
+
+    footer {
+        page-break-after: always;
+        height: 10px;
+    }
+
+    /*div.applicant-break {
+        page-break-after: always;
+        overflow: hidden;
+    }*/
+    .no-print {
+        display: none !important;
+    }
+
+}
+
+.table-report > tbody > tr > td, .table-report > tbody > tr > th {
+    padding: 1px !important;
+}
+
