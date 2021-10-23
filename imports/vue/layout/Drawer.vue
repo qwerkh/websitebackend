@@ -109,39 +109,6 @@
     <v-divider class="ma-1"></v-divider>
 
     <v-list dense nav shaped>
-
-      <!--<v-list-group
-          v-for="item in items"
-          :key="item.title"
-          v-model="item.active"
-          :prepend-icon="item.action"
-          no-action
-          class="navigateDrawer"
-          v-if="item.hasRole()"
-      >
-        <template slot="activator">
-          <v-list-item-content>
-            <v-list-item-title v-text="$t(item.title)"></v-list-item-title>
-          </v-list-item-content>
-        </template>
-        &lt;!&ndash;<v-list-item
-                v-for="subItem in item.items"
-                :key="subItem.title"
-                @click=""
-                tag="a"
-                :to="subItem.to"
-                :class="sideBarMode"
-                v-if="subItem.hasRole()"
-        >
-            <v-list-item-icon v-text="subItem.action"></v-list-item-icon>
-
-            <v-list-item-content link>
-                <v-list-item-title v-text="$t(subItem.title)"></v-list-item-title>
-            </v-list-item-content>
-        </v-list-item>&ndash;&gt;
-      </v-list-group>-->
-
-
       <v-list-item
           v-for="subItem in items"
           :key="subItem.title"
@@ -159,40 +126,6 @@
       </v-list-item>
     </v-list>
 
-
-    <v-list dense nav shaped>
-
-      <v-list-group
-          v-for="item in report"
-          :key="item.title"
-          v-model="item.active"
-          :prepend-icon="item.action"
-          no-action
-          class="navigateDrawer"
-          v-if="item.hasRole()"
-      >
-        <template slot="activator">
-          <v-list-item-content>
-            <v-list-item-title v-text="$t(item.title)"></v-list-item-title>
-          </v-list-item-content>
-        </template>
-        <v-list-item
-            v-for="subItem in item.items"
-            :key="subItem.title"
-            @click=""
-            tag="a"
-            :to="subItem.to"
-            :class="sideBarMode"
-            v-if="subItem.hasRole()"
-        >
-          <v-list-item-icon v-text="subItem.action"></v-list-item-icon>
-
-          <v-list-item-content link>
-            <v-list-item-title v-text="$t(subItem.title)"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-group>
-    </v-list>
 
     <v-list dense nav shaped>
       <v-list-group
@@ -270,98 +203,63 @@ export default {
       items: [
 
         {
-          title: 'agent',
-          action: "AG",
-          to: "/agent",
+          title: 'homePage',
+          action: "HO",
+          to: "/",
           hasRole: () => this.checkRole(Constants.data)
         },
         {
-          title: 'result',
-          action: "RE",
-          to: "/result",
+          title: 'productPage',
+          action: "PR",
+          to: "/product",
           hasRole: () => this.checkRole(Constants.data)
         },
         {
-          title: 'endPerDay',
-          action: "ED",
-          to: "/endPerDay",
+          title: 'clientPage',
+          action: "CL",
+          to: "/client",
           hasRole: () => this.checkRole(Constants.data)
-        }
-
-
-      ],
-      report: [
+        },
         {
-          action: 'file_copy',
-          title: 'report',
-          hasRole: () => this.checkRole(Constants.report),
-          items: [
-            {
-              title: 'bet',
-              action: "BE",
-              to: "/betReport",
-              hasRole: () => this.checkRole(Constants.report)
-            },
-            {
-              title: 'betNumberReview',
-              action: "BR",
-              to: "/betNumberReviewReport",
-              hasRole: () => this.checkRole(Constants.report)
-            },
-            {
-              title: 'quickWinLoss',
-              action: "QW",
-              to: "/quickWinLossReport",
-              hasRole: () => this.checkRole(Constants.report)
-            },{
-              title: 'winNumberReport',
-              action: "WN",
-              to: "/winNumberReport",
-              hasRole: () => this.checkRole(Constants.report)
-            },
-            {
-              title: 'dailyByDay',
-              action: "DD",
-              to: "/dailyByDayReport",
-              hasRole: () => this.checkRole(Constants.report)
-            },
-            {
-              title: 'winLoss',
-              action: "WL",
-              to: "/winLossReport",
-              hasRole: () => this.checkRole(Constants.report)
-            }
-          ],
+          title: 'newsAndEventsPage',
+          action: "NE",
+          to: "/newsAndEvents",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
+          title: 'organizationPage',
+          action: "OR",
+          to: "/organization",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
+          title: 'productionLinePage',
+          action: "PL",
+          to: "/productionLine",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
+          title: 'aboutPage',
+          action: "AB",
+          to: "/about",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
+          title: 'contactPage',
+          action: "CO",
+          to: "/contact",
+          hasRole: () => this.checkRole(Constants.data)
         },
 
       ],
+
       setting: [
         {
           action: 'perm_data_setting',
           title: 'setting',
           hasRole: () => this.checkRole(Constants.setting),
           items: [
-            {
-              title: 'location',
-              action: "LO",
-              to: "/location",
-              hasRole: () => this.checkRole(Constants.setting)
-            }, {
-              title: 'rank',
-              action: "RA",
-              to: "/rank",
-              hasRole: () => this.checkRole(Constants.setting)
-            }, {
-              title: 'mapAgent',
-              action: "MA",
-              to: "/mapAgent",
-              hasRole: () => this.checkRole(Constants.setting)
-            }, {
-              title: 'exchange',
-              action: "EX",
-              to: "/exchange",
-              hasRole: () => this.checkRole(Constants.setting)
-            }, {
+             {
               title: 'branch',
               action: "BR",
               to: "/branch",

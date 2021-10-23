@@ -81,15 +81,6 @@
 
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="4" md="4">
-            <v-switch v-model="dataObj.sum23" :dense="dense" :label="$t('sum23')"></v-switch>
-          </v-col>
-          <v-col cols="12" sm="4" md="4">
-            <v-switch v-model="dataObj.isPostTitle" :dense="dense" :label="$t('isPostTitle')"></v-switch>
-          </v-col>
-          <v-col cols="12" sm="4" md="4">
-            <v-switch v-model="dataObj.isPostTop" :dense="dense" :label="$t('isPostTop')"></v-switch>
-          </v-col>
         </v-row>
 
         <v-card-actions>
@@ -132,10 +123,7 @@ export default {
         _id: "",
         name: "",
         latinName: "",
-        isPostTitle: false,
-        isPostTop: false,
         shortName: "",
-        sum23: false,
         parentName: "",
         latinParentName: "",
         directorName: "",

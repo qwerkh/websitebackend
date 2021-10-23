@@ -12,21 +12,6 @@ Company.schema = new SimpleSchema({
     shortName: {
         type: String
     },
-    isPostTitle: {
-        type: Boolean,
-        defaultValue: false,
-        optional: true
-    },
-    isPostTop: {
-        type: Boolean,
-        defaultValue: false,
-        optional: true
-    },
-    sum23: {
-        type: Boolean,
-        optional: true,
-        defaultValue: false
-    },
     parentName: {
         type: String,
         optional: true

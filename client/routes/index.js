@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 import GlobalFn from "../../imports/libs/globalFn";
 
-import Home from "../../imports/vue/ui/home";
+//import Home from "../../imports/vue/ui/home";
 import Login from "../../imports/vue/ui/user/login";
 import UnApproved from "../../imports/vue/ui/user/unApproved";
 import Register from "../../imports/vue/ui/user/register";
@@ -17,21 +17,6 @@ import {Constants} from "../../imports/libs/constant"
 
 const routes = [
     // {path: '', redirect: '/login'},
-    {
-        path: "/SHome",
-        name: "home",
-        component: Home,
-        meta: {
-            permissions: [
-                {
-                    access: (user, to) => user.id === to.params.id,
-                    redirect: ""
-                }
-
-            ],
-            roles: "No Role",
-        },
-    },
     {
         path: "/login",
         name: "login",

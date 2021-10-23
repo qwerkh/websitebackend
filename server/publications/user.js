@@ -20,8 +20,7 @@ if (Meteor.isServer) {
                     profile: 1,
                     username: 1,
                     roles: 1,
-                    module: 1,
-                    agentId: 1
+                    module: 1
                 }
             });
         }

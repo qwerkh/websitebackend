@@ -226,20 +226,7 @@
 
                   ></v-checkbox>
                 </v-col>
-                <v-col cols="12" md="4" sm="4" xs="4">
-                  <v-autocomplete v-model="user.agentId"
-                                  :items="agentOptionList"
-                                  outlined
-                                  dense
-                                  item-text="label"
-                                  item-value="value"
-                                  :label="$t('agent')"
-                                  search-input
-                                  :search-input.sync="searchAgent"
-                                  cache-items
-                  >
-                  </v-autocomplete>
-                </v-col>
+
                 <v-col cols="12" md="4">
                   <v-text-field :label="$t('userLoginMax')" type="number" required
                                 v-model="user.profile.maxUserLogin"
@@ -584,7 +571,6 @@ export default {
         branch: [],
         defaultBranch: "",
         module: [],
-        agentId: ""
 
       },
       isUpdateFormWithSuper: false,
@@ -617,7 +603,6 @@ export default {
       rolesOptionList: Constants.rolesOption,
       branchOptionList: [],
       defaultBranchOptionList: [],
-      searchAgent:"",
       headers: [
         {
           text: 'userName',
@@ -665,7 +650,6 @@ export default {
       menuWorkTimeMorningEnd: false,
       menuWorkTimeAfternoonStart: false,
       menuWorkTimeAfternoonEnd: false,
-      agentOptionList:[]
 
     }
   },
@@ -691,19 +675,7 @@ export default {
       }
 
     },
-    queryAgentOption(q) {
-      let vm = this;
-      return new Promise((resolve, reject) => {
-        Meteor.call("lt_fetchAgentOption", q, Constants.secret, vm.$store.state.branchId, (err, result) => {
-          if (result) {
-            vm.agentOptionList = result;
-            resolve(result);
-          } else {
-            reject(err.message);
-          }
-        })
-      })
-    },
+
     fetchBranchOptionList(q) {
       let vm = this;
       return new Promise((resolve, reject) => {
@@ -817,7 +789,6 @@ export default {
       vm.user = {
         _id: doc._id,
         username: doc.username,
-        agentId: doc.agentId,
         profile: {
           fullName: doc.profile.fullName,
           url: doc.profile.url,
@@ -912,9 +883,6 @@ export default {
           vm.defaultBranchOptionList.push(d);
         }
       })
-    },
-    searchAgent(val) {
-      this.queryAgentOption(val);
     }
 
   },

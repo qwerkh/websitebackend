@@ -2,7 +2,6 @@ import {Meteor} from 'meteor/meteor';
 import {Accounts} from "meteor/accounts-base"
 import momentTz from 'moment-timezone';
 import "./methods/_index";
-import "./methods/report/_index";
 import "./api/index";
 import "./publications/_index";
 

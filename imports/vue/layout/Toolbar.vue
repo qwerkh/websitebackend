@@ -186,7 +186,7 @@
         // props: [],
         name: "Toolbar",
         data: () => ({
-            title: "home",
+            title: "homePage",
             closeOnContentClick: false,
             imgBackground: "",
             sideColorFilter: "",

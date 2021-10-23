@@ -1,4 +1,5 @@
-import "./api_user"
+import "./api_user";
+import "./api_website";
 
 //var jwt = require('jsonwebtoken');
 const sendResult = JsonRoutes.sendResult;
