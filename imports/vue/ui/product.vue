@@ -141,101 +141,99 @@
 
           </v-card-title>
           <v-card-text>
-              <v-row>
-                <v-col cols="12" md="12" sm="12">
+            <v-row>
+              <v-col cols="12" md="12" sm="12">
 
-                  {{ $t('title') }} (English , Khmer ,Chinese)
-                </v-col>
-                <v-col cols="12" sm="4" md="4">
-                  <vue-editor
-                      v-model="dataObj.title.en"
+                {{ $t('title') }} (English , Khmer ,Chinese)
+              </v-col>
+              <v-col cols="12" sm="4" md="4">
+                <vue-editor
+                    v-model="dataObj.title.en"
 
-                  >
-                  </vue-editor>
-                </v-col>
+                >
+                </vue-editor>
+              </v-col>
 
-                <v-col cols="12" sm="4" md="4">
-                  <vue-editor
-                      v-model="dataObj.title.km"
+              <v-col cols="12" sm="4" md="4">
+                <vue-editor
+                    v-model="dataObj.title.km"
 
-                  >
-                  </vue-editor>
-                </v-col>
+                >
+                </vue-editor>
+              </v-col>
 
-                <v-col cols="12" sm="4" md="4">
-                  <vue-editor
-                      v-model="dataObj.title.cn"
-                  >
-                  </vue-editor>
-                </v-col>
-
-
+              <v-col cols="12" sm="4" md="4">
+                <vue-editor
+                    v-model="dataObj.title.cn"
+                >
+                </vue-editor>
+              </v-col>
 
 
-                <v-col cols="12" md="12" sm="12">
+              <v-col cols="12" md="12" sm="12">
 
-                  {{ $t('body') }} (English , Khmer ,Chinese)
-                </v-col>
-                <v-col cols="12" sm="4" md="4">
-                  <vue-editor
-                      v-model="dataObj.body.en"
+                {{ $t('body') }} (English , Khmer ,Chinese)
+              </v-col>
+              <v-col cols="12" sm="4" md="4">
+                <vue-editor
+                    v-model="dataObj.body.en"
 
-                  >
-                  </vue-editor>
-                </v-col>
+                >
+                </vue-editor>
+              </v-col>
 
-                <v-col cols="12" sm="4" md="4">
-                  <vue-editor
-                      v-model="dataObj.body.km"
+              <v-col cols="12" sm="4" md="4">
+                <vue-editor
+                    v-model="dataObj.body.km"
 
-                  >
-                  </vue-editor>
-                </v-col>
+                >
+                </vue-editor>
+              </v-col>
 
-                <v-col cols="12" sm="4" md="4">
-                  <vue-editor
-                      v-model="dataObj.body.cn"
-                  >
-                  </vue-editor>
-                </v-col>
+              <v-col cols="12" sm="4" md="4">
+                <vue-editor
+                    v-model="dataObj.body.cn"
+                >
+                </vue-editor>
+              </v-col>
 
-                <v-col cols="12" sm="4" md="4">
-                  <v-text-field
-                      type="number"
-                      v-model="dataObj.order"
-                      :label="$t('order')"
-                      persistent-hint
-                      :dense="dense"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="4" sm="4" md="4">
-                  <v-img
-                      :src="newUrl"
-                      style="height: 275px; width: auto;"
-                      aspect-ratio="1"
-                      required
-                      lazy-src="/images/avatar.png"
-                      class="grey lighten-2"
-                      @click="$refs.fileInput.click()"
-                  >
-                    <template v-slot:placeholder>
-                      <v-row
-                          class="fill-height ma-0"
-                          align="center"
-                          justify="center"
-                          v-show="isLoading"
-                      >
-                        <v-progress-circular indeterminate
-                                             color="grey lighten-5"></v-progress-circular>
-                      </v-row>
-                    </template>
-                  </v-img>
-                  <input style="display: none !important;" type="file" @change="onFileSelected"
-                         ref="fileInput"></input>
-                </v-col>
+              <v-col cols="12" sm="4" md="4">
+                <v-text-field
+                    type="number"
+                    v-model="dataObj.order"
+                    :label="$t('order')"
+                    persistent-hint
+                    :dense="dense"
+                    outlined
+                ></v-text-field>
+              </v-col>
+              <v-col cols="4" sm="4" md="4">
+                <v-img
+                    :src="newUrl"
+                    style="height: 275px; width: auto;"
+                    aspect-ratio="1"
+                    required
+                    lazy-src="/images/avatar.png"
+                    class="grey lighten-2"
+                    @click="$refs.fileInput.click()"
+                >
+                  <template v-slot:placeholder>
+                    <v-row
+                        class="fill-height ma-0"
+                        align="center"
+                        justify="center"
+                        v-show="isLoading"
+                    >
+                      <v-progress-circular indeterminate
+                                           color="grey lighten-5"></v-progress-circular>
+                    </v-row>
+                  </template>
+                </v-img>
+                <input style="display: none !important;" type="file" @change="onFileSelected"
+                       ref="fileInput"></input>
+              </v-col>
 
-              </v-row>
+            </v-row>
           </v-card-text>
           <v-card-actions>
 
@@ -311,9 +309,9 @@ export default {
       pageList: [10, 20, 50, 100, 200],
       fileName: "",
       dataObj: {
-        _id:"",
-        branchId:"",
-        order:1,
+        _id: "",
+        branchId: "",
+        order: 1,
         title: {
           en: "",
           km: "",
@@ -347,7 +345,7 @@ export default {
           align: 'left',
           sortable: true,
           value: 'order',
-        },{
+        }, {
           text: 'title',
           align: 'left',
           sortable: true,
@@ -646,9 +644,25 @@ export default {
       let vm = this;
       if (val === false) {
         this.$refs.formData.reset();
-        vm.dataObj._id = "";
         vm.newUrl = "";
+        vm.dataObj = {
+          _id: "",
+          branchId: "",
+          order: 1,
+          title: {
+            en: "",
+            km: "",
+            cn: "",
+          },
+          body: {
+            en: "",
+            km: "",
+            cn: "",
+          },
+          url: "",
+        }
         vm.dataObj.url = "";
+        vm.dataObj._id = "";
 
 
       }

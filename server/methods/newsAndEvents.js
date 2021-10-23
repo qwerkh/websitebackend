@@ -66,7 +66,6 @@ Meteor.methods({
     web_insertNewsAndEvents(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                console.log(doc);
                 let id = Web_NewsAndEvents.insert(doc);
                 if (id) {
                     GlobalFn.collectionReact(Web_NewsAndEventsReact, id);

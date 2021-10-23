@@ -66,7 +66,6 @@ Meteor.methods({
     web_insertProduct(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                console.log(doc);
                 let id = Web_Product.insert(doc);
                 if (id) {
                     GlobalFn.collectionReact(Web_ProductReact, id);

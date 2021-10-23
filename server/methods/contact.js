@@ -66,7 +66,6 @@ Meteor.methods({
     web_insertContact(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                console.log(doc);
                 let id = Web_Contact.insert(doc);
                 if (id) {
                     GlobalFn.collectionReact(Web_ContactReact, id);

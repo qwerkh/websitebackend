@@ -1,6 +1,10 @@
 import {Meteor} from 'meteor/meteor';
 import GlobalFn from "../../imports/libs/globalFn"
-import {Web_ProductionLine, Web_ProductionLineReact, Web_ProductionLineAudit} from "../../imports/collections/productionLine"
+import {
+    Web_ProductionLine,
+    Web_ProductionLineReact,
+    Web_ProductionLineAudit
+} from "../../imports/collections/productionLine"
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
@@ -66,7 +70,6 @@ Meteor.methods({
     web_insertProductionLine(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                console.log(doc);
                 let id = Web_ProductionLine.insert(doc);
                 if (id) {
                     GlobalFn.collectionReact(Web_ProductionLineReact, id);
@@ -110,9 +113,8 @@ Meteor.methods({
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let selector = {};
-
                 selector.branchId = branchId;
-                return Web_ProductionLine.find(selector, {sort: {createdAt: -1},limit: 100}).fetch();
+                return Web_ProductionLine.find(selector, {sort: {order: 1, createdAt: -1}, limit: 100}).fetch();
 
             } catch (e) {
                 throw new Meteor.Error(e.message);

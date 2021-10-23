@@ -66,7 +66,6 @@ Meteor.methods({
     web_insertClient(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                console.log(doc);
                 let id = Web_Client.insert(doc);
                 if (id) {
                     GlobalFn.collectionReact(Web_ClientReact, id);

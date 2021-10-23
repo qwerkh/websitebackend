@@ -121,7 +121,6 @@ API.add('post', GlobalFn.Namespace1('/users/fetch'), (req, res, next) => {
         }, (err, result) => {
             if (!err) {
                 resolve(result);
-                console.log(result);
             } else {
                 reject(err.message);
             }
@@ -152,7 +151,6 @@ API.add('post', GlobalFn.Namespace1('/users/login'), (req, res, next) => {
     res.charset = 'utf-8';
     const {token} = req.headers;
     const ip = req.connection.remoteAddress;
-    console.log(token);
     let isVerify = GlobalFn.verifyToken(token, secret); // if token failed we decline all process
     if (!isVerify) {
         sendResult(res, {

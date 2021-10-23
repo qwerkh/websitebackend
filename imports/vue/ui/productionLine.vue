@@ -595,6 +595,18 @@ export default {
       let vm = this;
       if (val === false) {
         this.$refs.formData.reset();
+
+        vm.dataObj = {
+          _id: "",
+          branchId: "",
+          order: 1,
+          body: {
+            en: "",
+            km: "",
+            cn: "",
+          },
+          url: [],
+        };
         vm.dataObj._id = "";
         vm.newUrl = "";
         vm.dataObj.url = "";
