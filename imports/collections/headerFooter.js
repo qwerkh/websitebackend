@@ -1,63 +1,52 @@
 import {Mongo} from "meteor/mongo";
 
-export const Web_Home = new Mongo.Collection("web_home");
-Web_Home.schema = new SimpleSchema({
-    intro: {
+export const Web_HeaderFooter = new Mongo.Collection("web_headerFooter");
+Web_HeaderFooter.schema = new SimpleSchema({
+    aboutThisSite: {
         type: Object,
         optional: true,
         blackbox: true
     },
-    messageFromChairman: {
+    addressFooter: {
         type: Object,
         optional: true,
         blackbox: true
     },
-    url: {
+    phoneNumberHeader: {
         type: String,
-        optional: true
+        optional:true
     },
-    preface1: {
-        type: Object,
-        optional: true,
-        blackbox: true
+    emailHeader: {
+        type: String,
+        optional:true
     },
-    preface1ImgList: {
-        type: [String],
-        optional: true,
-        defaultValue: []
+    phoneNumberFooter: {
+        type: String,
+        optional:true
     },
-    preface2: {
-        type: Object,
-        optional: true,
-        blackbox: true
+    emailFooter: {
+        type: String,
+        optional:true
     },
-
-    preface2ImgList: {
-        type: [String],
-        optional: true,
-        defaultValue: []
+    facebookUrl:{
+        type: String,
+        optional:true
     },
-    preface3: {
-        type: Object,
-        optional: true,
-        blackbox: true
+    telegramUrl:{
+        type: String,
+        optional:true
     },
-
-    preface3ImgList: {
-        type: [String],
-        optional: true,
-        defaultValue: []
+    linkInUrl:{
+        type: String,
+        optional:true
     },
-    preface4: {
-        type: Object,
-        optional: true,
-        blackbox: true
+    instagramUrl:{
+        type: String,
+        optional:true
     },
-
-    preface4ImgList: {
-        type: [String],
-        optional: true,
-        defaultValue: []
+    twitterUrl:{
+        type: String,
+        optional:true
     },
     branchId: {
         type: String
@@ -102,11 +91,11 @@ Web_Home.schema = new SimpleSchema({
         }
     }
 });
-Web_Home.attachSchema(Web_Home.schema);
+Web_HeaderFooter.attachSchema(Web_HeaderFooter.schema);
 
 
-export const Web_HomeReact = new Mongo.Collection('web_homeReact');
-Web_HomeReact.schema = new SimpleSchema({
+export const Web_HeaderFooterReact = new Mongo.Collection('web_headerFooterReact');
+Web_HeaderFooterReact.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -151,10 +140,10 @@ Web_HomeReact.schema = new SimpleSchema({
     }
 });
 
-Web_HomeReact.attachSchema(Web_HomeReact.schema);
+Web_HeaderFooterReact.attachSchema(Web_HeaderFooterReact.schema);
 
-export const Web_HomeAudit = new Mongo.Collection('web_homeAudit');
-Web_HomeAudit.schema = new SimpleSchema({
+export const Web_HeaderFooterAudit = new Mongo.Collection('web_headerFooterAudit');
+Web_HeaderFooterAudit.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -206,4 +195,4 @@ Web_HomeAudit.schema = new SimpleSchema({
     }
 });
 
-Web_HomeAudit.attachSchema(Web_HomeAudit.schema);
+Web_HeaderFooterAudit.attachSchema(Web_HeaderFooterAudit.schema);

@@ -250,6 +250,12 @@ export default {
           to: "/contact",
           hasRole: () => this.checkRole(Constants.data)
         },
+        {
+          title: 'headerFooterPage',
+          action: "HF",
+          to: "/headerFooter",
+          hasRole: () => this.checkRole(Constants.data)
+        },
 
       ],
 

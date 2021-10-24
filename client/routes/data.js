@@ -11,6 +11,7 @@ import NewsAndEvents from "../../imports/vue/ui/newsAndEvents";
 import Client from "../../imports/vue/ui/client";
 import Organization from "../../imports/vue/ui/organization";
 import ProductionLine from "../../imports/vue/ui/productionLine";
+import HeaderFooter from "../../imports/vue/ui/headerFooter";
 
 
 export const data = [
@@ -104,6 +105,19 @@ export const data = [
         path: "/productionLine",
         name: "productionLinePage",
         component: ProductionLine,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },
+    {
+        path: "/headerFooter",
+        name: "headerFooterPage",
+        component: HeaderFooter,
         meta: {
             permissions: [
                 {

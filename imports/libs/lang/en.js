@@ -149,7 +149,26 @@ export const en = {
     updateProductionLine:"Update Production Line",
     productionLinePage:"Production Line Page",
     photo:"Photo",
-    uploadPhoto:"Upload Photo"
+    uploadPhoto:"Upload Photo",
+    pictureOfChairman:"Picture Of Chairman",
+    uploadPhotoPreface1:"Upload Photo Preface 1",
+    uploadPhotoPreface2:"Upload Photo Preface 2",
+    uploadPhotoPreface3:"Upload Photo Preface 3",
+    uploadPhotoPreface4:"Upload Photo Preface 4",
+    remove:"Remove",
+    headerFooterPage:"Header Footer Page",
+    headerFooter:"Header Footer",
+    aboutThisSite:"About This Site",
+    addressFooter:"Address Footer",
+    phoneNumberFooter:"Phone Number Footer",
+    emailFooter:"Email Footer",
+    phoneNumberHeader:"Phone Number Header",
+    emailHeader:"Email Header",
+    facebookUrl:"Facebook Url",
+    telegramUrl:"Telegram Url",
+    linkInUrl:"LinkIn Url",
+    instagramUrl:"Instagram Url",
+    twitterUrl:"Twitter Url"
 
 
 

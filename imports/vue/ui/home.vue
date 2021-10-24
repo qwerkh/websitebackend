@@ -5,26 +5,27 @@
     <!--        v-model="data.intro.en"-->
     <!--    ></v-textarea>-->
     <v-row>
+
       <v-col cols="12" md="12" sm="12">
 
         {{ $t('info') }} (English , Khmer ,Chinese)
       </v-col>
       <v-col cols="12" md="4" sm="4">
-<!--        <div id="infoEn"></div>-->
+        <!--        <div id="infoEn"></div>-->
         <vue-editor
             v-model="dataObj.intro.en"
         >
         </vue-editor>
       </v-col>
       <v-col cols="12" md="4" sm="4">
-<!--        <div id="infoKm"></div>-->
+        <!--        <div id="infoKm"></div>-->
         <vue-editor
             v-model="dataObj.intro.km"
         >
         </vue-editor>
       </v-col>
       <v-col cols="12" md="4" sm="4">
-<!--        <div id="infoCn"></div>-->
+        <!--        <div id="infoCn"></div>-->
         <vue-editor
             v-model="dataObj.intro.cn"
         >
@@ -33,32 +34,59 @@
     </v-row>
     <br><br>
     <v-row>
-
+      <v-overlay :value="isLoading">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
       <v-col cols="12" md="12" sm="12">
         {{ $t('messageFromChairman') }} (English , Khmer ,Chinese)
       </v-col>
       <v-col cols="12" md="4" sm="4">
-<!--        <div id="messageFromChairmanEn"></div>-->
+        <!--        <div id="messageFromChairmanEn"></div>-->
         <vue-editor
             v-model="dataObj.messageFromChairman.en"
         >
         </vue-editor>
       </v-col>
       <v-col cols="12" md="4" sm="4">
-<!--        <div id="messageFromChairmanKm"></div>-->
+        <!--        <div id="messageFromChairmanKm"></div>-->
         <vue-editor
             v-model="dataObj.messageFromChairman.km"
         >
         </vue-editor>
       </v-col>
       <v-col cols="12" md="4" sm="4">
-<!--        <div id="messageFromChairmanCn"></div>-->
+        <!--        <div id="messageFromChairmanCn"></div>-->
         <vue-editor
             v-model="dataObj.messageFromChairman.cn"
         >
         </vue-editor>
       </v-col>
-
+      <v-col cols="4" sm="4" md="4">
+        {{ $t('pictureOfChairman') }}
+        <v-img
+            :src="newUrl"
+            style="height: 275px; width: auto;"
+            aspect-ratio="1"
+            required
+            lazy-src="/images/avatar.png"
+            class="grey lighten-2"
+            @click="$refs.fileInput.click()"
+        >
+          <template v-slot:placeholder>
+            <v-row
+                class="fill-height ma-0"
+                align="center"
+                justify="center"
+                v-show="isLoading"
+            >
+              <v-progress-circular indeterminate
+                                   color="grey lighten-5"></v-progress-circular>
+            </v-row>
+          </template>
+        </v-img>
+        <input style="display: none !important;" type="file" @change="onFileSelected"
+               ref="fileInput"></input>
+      </v-col>
 
       <v-col cols="12" md="12" sm="12">
         {{ $t('preface1') }} (English , Khmer ,Chinese)
@@ -80,6 +108,61 @@
             v-model="dataObj.preface1.cn"
         >
         </vue-editor>
+      </v-col>
+
+      <v-col cols="12" sm="12" md="12">
+        <v-text-field
+            v-model="newUrl1List"
+            @click="$refs.fileInput1.click()"
+            :label="$t('uploadPhotoPreface1')"
+            outlined
+            rounded
+            :suffix="dataObj.preface1ImgList && dataObj.preface1ImgList.length+' ' + $t('photo')"
+            hide-details
+        >
+
+        </v-text-field>
+
+        <input style="display: none !important;" type="file"
+               @change="onFileSelectedList($event,1)"
+               multiple
+               ref="fileInput1"/>
+
+      </v-col>
+      <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
+        <v-row>
+          <v-col
+              v-for="(imgUrl,i) in dataObj.preface1ImgList"
+              :key="imgUrl"
+              class="d-flex child-flex"
+              cols="3"
+          >
+            <v-img
+                :src="imgUrl"
+                lazy-src="/images/no-image-icon.png"
+                aspect-ratio="1"
+                class="grey lighten-2"
+            >
+              <remove-button @removeImg="removeImg(dataObj,imgUrl,1)" valid="false"
+                             style="float: right;z-index: 9999"></remove-button>
+
+              <template v-slot:placeholder>
+                <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                >
+                  <v-progress-circular
+                      indeterminate
+                      color="grey lighten-5"
+                  ></v-progress-circular>
+                </v-row>
+              </template>
+
+            </v-img>
+
+          </v-col>
+        </v-row>
       </v-col>
 
 
@@ -104,6 +187,60 @@
         >
         </vue-editor>
       </v-col>
+      <v-col cols="12" sm="12" md="12">
+        <v-text-field
+            v-model="newUrl2List"
+            @click="$refs.fileInput2.click()"
+            :label="$t('uploadPhotoPreface2')"
+            outlined
+            rounded
+            :suffix="dataObj.preface2ImgList && dataObj.preface2ImgList.length+' ' + $t('photo')"
+            hide-details
+        >
+
+        </v-text-field>
+
+        <input style="display: none !important;" type="file"
+               @change="onFileSelectedList($event,2)"
+               multiple
+               ref="fileInput2"/>
+
+      </v-col>
+      <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
+        <v-row>
+          <v-col
+              v-for="(imgUrl,i) in dataObj.preface2ImgList"
+              :key="imgUrl"
+              class="d-flex child-flex"
+              cols="3"
+          >
+            <v-img
+                :src="imgUrl"
+                lazy-src="/images/no-image-icon.png"
+                aspect-ratio="1"
+                class="grey lighten-2"
+            >
+              <remove-button @removeImg="removeImg(dataObj,imgUrl,2)" valid="false"
+                             style="float: right;z-index: 9999"></remove-button>
+
+              <template v-slot:placeholder>
+                <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                >
+                  <v-progress-circular
+                      indeterminate
+                      color="grey lighten-5"
+                  ></v-progress-circular>
+                </v-row>
+              </template>
+
+            </v-img>
+
+          </v-col>
+        </v-row>
+      </v-col>
 
 
       <v-col cols="12" md="12" sm="12">
@@ -127,7 +264,60 @@
         >
         </vue-editor>
       </v-col>
+      <v-col cols="12" sm="12" md="12">
+        <v-text-field
+            v-model="newUrl3List"
+            @click="$refs.fileInput3.click()"
+            :label="$t('uploadPhotoPreface3')"
+            outlined
+            rounded
+            :suffix="dataObj.preface3ImgList && dataObj.preface3ImgList.length+' ' + $t('photo')"
+            hide-details
+        >
 
+        </v-text-field>
+
+        <input style="display: none !important;" type="file"
+               @change="onFileSelectedList($event,3)"
+               multiple
+               ref="fileInput3"/>
+
+      </v-col>
+      <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
+        <v-row>
+          <v-col
+              v-for="(imgUrl,i) in dataObj.preface3ImgList"
+              :key="imgUrl"
+              class="d-flex child-flex"
+              cols="3"
+          >
+            <v-img
+                :src="imgUrl"
+                lazy-src="/images/no-image-icon.png"
+                aspect-ratio="1"
+                class="grey lighten-2"
+            >
+              <remove-button @removeImg="removeImg(dataObj,imgUrl,3)" valid="false"
+                             style="float: right;z-index: 9999"></remove-button>
+
+              <template v-slot:placeholder>
+                <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                >
+                  <v-progress-circular
+                      indeterminate
+                      color="grey lighten-5"
+                  ></v-progress-circular>
+                </v-row>
+              </template>
+
+            </v-img>
+
+          </v-col>
+        </v-row>
+      </v-col>
 
       <v-col cols="12" md="12" sm="12">
         {{ $t('preface4') }} (English , Khmer ,Chinese)
@@ -150,6 +340,61 @@
         >
         </vue-editor>
       </v-col>
+
+      <v-col cols="12" sm="12" md="12">
+        <v-text-field
+            v-model="newUrl4List"
+            @click="$refs.fileInput4.click()"
+            :label="$t('uploadPhotoPreface4')"
+            outlined
+            rounded
+            :suffix="dataObj.preface4ImgList && dataObj.preface4ImgList.length+' ' + $t('photo')"
+            hide-details
+        >
+
+        </v-text-field>
+
+        <input style="display: none !important;" type="file"
+               @change="onFileSelectedList($event,4)"
+               multiple
+               ref="fileInput4"/>
+
+      </v-col>
+      <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
+        <v-row>
+          <v-col
+              v-for="(imgUrl,i) in dataObj.preface4ImgList"
+              :key="imgUrl"
+              class="d-flex child-flex"
+              cols="3"
+          >
+            <v-img
+                :src="imgUrl"
+                lazy-src="/images/no-image-icon.png"
+                aspect-ratio="1"
+                class="grey lighten-2"
+            >
+              <remove-button @removeImg="removeImg(dataObj,imgUrl,4)" valid="false"
+                             style="float: right;z-index: 9999"></remove-button>
+
+              <template v-slot:placeholder>
+                <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                >
+                  <v-progress-circular
+                      indeterminate
+                      color="grey lighten-5"
+                  ></v-progress-circular>
+                </v-row>
+              </template>
+
+            </v-img>
+
+          </v-col>
+        </v-row>
+      </v-col>
     </v-row>
     <br><br>
     <save-button :valid="valid" @saveForm="handleSubmit"></save-button>
@@ -161,10 +406,15 @@
 import SaveButton from "../components/saveButton";
 import {Constants} from "../../libs/constant";
 import {VueEditor} from "vue2-editor";
+import firebase from "firebase/compat";
+import "/imports/firebase/config";
+import {Meteor} from "meteor/meteor";
+import RemoveButton from "../components/removeButton"
 
+const Compress = require('compress.js').default
 export default {
   name: "Home",
-  components: {SaveButton, VueEditor},
+  components: {SaveButton, VueEditor, RemoveButton},
   mounted() {
     this.$jQuery('body').off();
     // this.$nextTick(() => {
@@ -203,6 +453,7 @@ export default {
   data() {
     return {
       valid: true,
+      isLoading: false,
       dense: this.$store.state.isDense,
       // quillInfo: {
       //   en: "",
@@ -222,6 +473,7 @@ export default {
           km: "",
           cn: ""
         },
+        url: "",
         messageFromChairman: {
           en: "",
           km: "",
@@ -233,27 +485,42 @@ export default {
           km: "",
           cn: "",
         },
+        preface1ImgList: [],
         preface2: {
           en: "",
           km: "",
           cn: "",
         },
+        preface2ImgList: [],
+
         preface3: {
           en: "",
           km: "",
           cn: "",
         },
+        preface3ImgList: [],
+
         preface4: {
           en: "",
           km: "",
           cn: "",
-        }
+        },
+        preface4ImgList: [],
+
       },
       customToolbar: [
         ["bold", "italic", "underline"],
-        [{ list: "ordered" }, { list: "bullet" }],
+        [{list: "ordered"}, {list: "bullet"}],
         ["image", "code-block"]
-      ]
+      ],
+      newUrl: "",
+      imgUrl: "",
+      fileName: "",
+      newUrl1List: [],
+      newUrl2List: [],
+      newUrl3List: [],
+      newUrl4List: [],
+
     }
   },
   methods: {
@@ -266,11 +533,25 @@ export default {
           // vm.quillInfo.cn.root.innerHTML = r.intro.cn;
 
           vm.dataObj.intro = r.intro || vm.dataObj.intro;
+          vm.dataObj.url = r.url || vm.dataObj.url;
+          vm.newUrl = r.url || vm.dataObj.url;
           vm.dataObj.messageFromChairman = r.messageFromChairman || vm.dataObj.messageFromChairman;
           vm.dataObj.preface1 = r.preface1 || vm.dataObj.preface1;
+          vm.dataObj.preface1ImgList = r.preface1ImgList || vm.dataObj.preface1ImgList;
+          vm.newUrl1List = r.preface1ImgList || vm.dataObj.preface1ImgList;
+
           vm.dataObj.preface2 = r.preface2 || vm.dataObj.preface2;
+          vm.newUrl2List = r.preface2ImgList || vm.dataObj.preface2ImgList;
+          vm.dataObj.preface2ImgList = r.preface2ImgList || vm.dataObj.preface2ImgList;
+
           vm.dataObj.preface3 = r.preface3 || vm.dataObj.preface3;
+          vm.newUrl3List = r.preface3ImgList || vm.dataObj.preface3ImgList;
+          vm.dataObj.preface3ImgList = r.preface3ImgList || vm.dataObj.preface3ImgList;
+
           vm.dataObj.preface4 = r.preface4 || vm.dataObj.preface4;
+          vm.newUrl4List = r.preface4ImgList || vm.dataObj.preface4ImgList;
+          vm.dataObj.preface4ImgList = r.preface4ImgList || vm.dataObj.preface4ImgList;
+
 
           // vm.quillMessageFromChairman.en.root.innerHTML = r.messageFromChairman.en;
           // vm.quillMessageFromChairman.km.root.innerHTML = r.messageFromChairman.km;
@@ -279,6 +560,144 @@ export default {
 
         }
       })
+    },
+    onFileSelected(e, num) {
+      let vm = this;
+      this.imgUrl = window.URL.createObjectURL(e.target.files[0]);
+      vm.fileName = e.target.files[0].name;
+
+      let tmpFile = [...e.target.files];
+      const compress = new Compress();
+      compress.compress(tmpFile, {
+        size: 4, // the max size in MB, defaults to 2MB
+        quality: 0.6, // the quality of the image, max is 1,
+        maxWidth: 1920, // the max width of the output image, defaults to 1920px
+        maxHeight: 1920, // the max height of the output image, defaults to 1920px
+        resize: true // defaults to true, set false if you do not want to resize the image width and height
+      }).then((data) => {
+        data.forEach((obj) => {
+          let img1 = obj;
+          let base64str = img1.data;
+          let imgExt = img1.ext;
+          this.selectedFile = Compress.convertBase64ToFile(base64str, imgExt), obj.alt.split(".")[0];
+        })
+      })
+
+      Meteor.setTimeout(function () {
+        vm.newUrl = "a";
+        vm.isLoading = true;
+
+        vm.onUpload();
+      }, 500);
+    },
+    onUpload() {
+      let vm = this;
+      const storageRef = firebase.storage().ref("newsAndEvents/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
+      storageRef.on(`state_changed`, snapshot => {
+            this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          }, error => {
+            console.log(error.message)
+          },
+          () => {
+            this.uploadValue = 100;
+            storageRef.snapshot.ref.getDownloadURL().then((url) => {
+              if (url) {
+                vm.dataObj.url = url || "";
+                vm.newUrl = url;
+                vm.isLoading = false;
+              }
+            });
+          }
+      );
+    },
+    onFileSelectedList(e, num) {
+      let vm = this;
+      vm.isLoadingImg = true;
+      vm.isLoading = true;
+      vm.fileName = e.target.files[0] && e.target.files[0].name || "";
+      if (vm.fileName !== "") {
+        const files = [...e.target.files];
+        vm.rawFileImageList = files;
+        const compress = new Compress();
+        compress.compress(files, {
+          size: 4, // the max size in MB, defaults to 2MB
+          quality: 0.6, // the quality of the image, max is 1,
+          maxWidth: 1920, // the max width of the output image, defaults to 1920px
+          maxHeight: 1920, // the max height of the output image, defaults to 1920px
+          resize: true // defaults to true, set false if you do not want to resize the image width and height
+        }).then((data) => {
+          vm.newUrlList = [];
+          data.forEach((obj) => {
+            let img1 = obj;
+            let base64str = img1.data;
+            let imgExt = img1.ext;
+            vm.onUploadList(Compress.convertBase64ToFile(base64str, imgExt), obj.alt.split(".")[0], num);
+          })
+        })
+      }
+    },
+    onUploadList(selectedFile, fileName, num) {
+      let vm = this;
+      const storageRef = firebase.storage().ref("preface/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      storageRef.on(`state_changed`, snapshot => {
+            this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          }, error => {
+            console.log(error.message)
+          },
+          () => {
+            this.uploadValue = 100;
+            storageRef.snapshot.ref.getDownloadURL().then((url) => {
+              if (url) {
+                if (num === 1) {
+                  vm.dataObj.preface1ImgList = vm.dataObj.preface1ImgList || [];
+                  vm.dataObj.preface1ImgList.unshift(url);
+                  vm.newUrl1List = [];
+                } else if (num === 2) {
+                  vm.dataObj.preface2ImgList = vm.dataObj.preface2ImgList || [];
+                  vm.dataObj.preface2ImgList.unshift(url);
+                  vm.newUrl2List = [];
+                } else if (num === 3) {
+                  vm.dataObj.preface3ImgList = vm.dataObj.preface3ImgList || [];
+                  vm.dataObj.preface3ImgList.unshift(url);
+                  vm.newUrl3List = [];
+                } else if (num === 4) {
+                  vm.dataObj.preface4ImgList = vm.dataObj.preface4ImgList || [];
+                  vm.dataObj.preface4ImgList.unshift(url);
+                  vm.newUrl4List = [];
+                }
+                vm.isLoading = false;
+                vm.isLoadingImg = false;
+
+              }
+            });
+          }
+      );
+    },
+    removeImg(row, url, num) {
+      let vm = this;
+      vm.$confirm(this.$t('messageWarning'), this.$t('warning'), {
+        confirmButtonText: this.$t('ok'),
+        cancelButtonText: this.$t('cancel'),
+        type: 'warning'
+      }).then(() => {
+        if (num === 1) {
+          vm.dataObj.preface1ImgList = vm.dataObj.preface1ImgList.filter(v => v !== url);
+        } else if (num === 2) {
+          vm.dataObj.preface2ImgList = vm.dataObj.preface2ImgList.filter(v => v !== url);
+
+        } else if (num === 3) {
+          vm.dataObj.preface3ImgList = vm.dataObj.preface3ImgList.filter(v => v !== url);
+
+        } else if (num === 4) {
+          vm.dataObj.preface4ImgList = vm.dataObj.preface4ImgList.filter(v => v !== url);
+
+        }
+      }).catch(() => {
+        vm.$message({
+          type: 'info',
+          message: this.$t('removeCancel')
+        });
+      });
     },
     handleSubmit() {
       let vm = this;
@@ -340,7 +759,7 @@ export default {
 
   ,
   created() {
-    this.$nextTick((()=>{
+    this.$nextTick((() => {
       this.getHomeByBranchId();
     }))
     // let module = {

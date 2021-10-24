@@ -11,4 +11,5 @@ import "./newsAndEvents";
 import "./client";
 import "./organization";
 import "./productionLine";
+import "./headerFooter";
 
