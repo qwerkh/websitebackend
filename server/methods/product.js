@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import GlobalFn from "../../imports/libs/globalFn"
 import {Web_Product, Web_ProductReact, Web_ProductAudit} from "../../imports/collections/product"
+import {Web_ProductPrice} from "../../imports/collections/productPrice";
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
@@ -63,6 +64,116 @@ Meteor.methods({
             return data;
         }
     },
+    web_productPriceReport(branchId, accessToken) {
+        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
+            try {
+                let data = {};
+                let dataHtml = "";
+                let selector = {};
+                selector.branchId = branchId;
+                selector.date = {$gte: moment(moment().add(-2, "months").toDate()).format("YYYY-MM")};
+
+                let monthList = [];
+                // let m = 8;
+                // while (m > 0) {
+                //     let newM = 6 - m;
+                //     monthList.unshift(moment(moment().add(-newM, "months").toDate()).format("YYYY-MM"));
+                //     m--;
+                // }
+
+                let dList = Web_ProductPrice.aggregate([
+                        {
+                            $match: selector
+                        },
+                        {
+                            $sort: {
+                                date: 1
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: "$date"
+                            }
+                        },
+                    ],
+                    {
+                        allowDiskUse: true
+                    });
+                dList.forEach((d) => {
+                    monthList.push(d._id);
+                })
+
+                let productList = Web_ProductPrice.aggregate([
+                        {
+                            $match: selector
+                        },
+                        {
+                            $sort: {
+                                date: 1
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: {
+                                    productId: "$productId",
+                                },
+                                data: {$addToSet: "$$ROOT"},
+                            }
+                        },
+                        {
+                            $lookup:
+                                {
+                                    from: "web_product",
+                                    localField: "_id.productId",
+                                    foreignField: "_id",
+                                    as: "productDoc"
+                                }
+                        },
+                        {
+                            $unwind: {
+                                path: "$productDoc",
+                                preserveNullAndEmptyArrays: true
+                            }
+                        },
+                        {
+                            $sort: {
+                                "productDoc.order": 1
+                            }
+                        },
+                    ],
+                    {
+                        allowDiskUse: true
+                    });
+
+                productList.forEach((obj, ind) => {
+                    dataHtml += `
+                        <tr>
+                            <td>${ind + 1}</td>
+                            <td style="text-align: left">${obj.productDoc.title.en}</td>
+                            
+                    `;
+                    monthList.forEach((mon) => {
+                        let priceDoc = obj.data.find(t => t.date === mon);
+
+                        dataHtml += `
+                            <td>${priceDoc && priceDoc.price || ""}</td>
+                        `;
+                    })
+
+                    dataHtml += `
+                        </tr>
+                    `;
+
+                })
+                data.monthList = monthList;
+                data.dataHtml = dataHtml;
+                return data;
+            } catch (e) {
+                throw new Meteor.Error(e.message);
+            }
+        }
+
+    },
     web_insertProduct(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
@@ -84,6 +195,28 @@ Meteor.methods({
                 let isUpdated = Web_Product.update({_id: id}, {$set: doc});
                 if (isUpdated) {
                     GlobalFn.collectionReact(Web_ProductReact, id, Web_ProductAudit, oldDoc, "Update");
+                }
+                return isUpdated;
+            } catch (e) {
+                throw new Meteor.Error(e.message);
+            }
+        }
+    },
+    web_updateProductPrice(id, doc, accessToken) {
+        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
+            try {
+                let rawDoc = doc;
+                let oldDoc = Web_Product.findOne({_id: id});
+                let isUpdated = Web_Product.update({_id: id}, {$set: doc});
+                if (isUpdated) {
+                    GlobalFn.collectionReact(Web_ProductReact, id, Web_ProductAudit, oldDoc, "Update");
+                    let productPriceDoc = Web_ProductPrice.findOne({productId: id, date: doc.date});
+                    if (productPriceDoc) {
+                        Web_ProductPrice.update({productId: id, date: doc.date}, {$set: {price: doc.price}});
+                    } else {
+                        rawDoc.productId = id;
+                        Web_ProductPrice.insert(rawDoc);
+                    }
                 }
                 return isUpdated;
             } catch (e) {

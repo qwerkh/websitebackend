@@ -168,7 +168,10 @@ export const en = {
     telegramUrl:"Telegram Url",
     linkInUrl:"LinkIn Url",
     instagramUrl:"Instagram Url",
-    twitterUrl:"Twitter Url"
+    twitterUrl:"Twitter Url",
+    updateProductPrice:"Update Product Price",
+    date:"Date",
+    price:"Price"
 
 
 

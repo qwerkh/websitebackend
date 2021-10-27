@@ -64,6 +64,14 @@
             {{ $t(header.text).toUpperCase() }}
 
           </template>
+          <template v-slot:header.date="{ header }">
+            {{ $t(header.text).toUpperCase() }}
+
+          </template>
+          <template v-slot:header.price="{ header }">
+            {{ $t(header.text).toUpperCase() }}
+
+          </template>
 
           <template v-slot:header.action="{ header }">
             {{ $t(header.text).toUpperCase() }}
@@ -79,6 +87,11 @@
           </template>
           //Action
           <template v-slot:item.action="{ item }">
+            <v-btn color="success" outlined class="table-action-button mr-2" text icon
+                   v-if="checkRole('Update')"
+                   @click.native="handleUpdatePrice(item)">
+              P
+            </v-btn>
             <v-btn color="primary" outlined class="table-action-button mr-2" text icon
                    v-if="checkRole('Update')"
                    @click.native="handleUpdate(item)">
@@ -245,6 +258,76 @@
         </v-card>
       </v-form>
     </v-dialog>
+    <v-dialog v-model="dialogPrice" persistent max-width="400" :fullscreen="$vuetify.breakpoint.mobile">
+      <v-form
+          :model="valid" ref="formData"
+          lazy-validation
+      >
+        <v-card>
+          <v-card-title>
+            <v-icon v-if="titleClick==='updateProductPrice'" large color="green darken-2"
+                    style="font-size: 50px !important;">autorenew
+            </v-icon>
+            <span class="headline">{{ $t(titleClick) }}</span>
+            <v-spacer></v-spacer>
+            <close-button @closeForm="dialogPrice=false" valid="false" v-shortkey="['esc']"
+                          @shortkey.native="dialogPrice=false"></close-button>
+
+          </v-card-title>
+          <v-card-text>
+            <v-row>
+
+              <v-col cols="12" sm="12" md="12">
+                <v-dialog
+                    v-model="modalDate"
+                    :return-value.sync="date"
+                    width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                        v-model="dateFormatted"
+                        :label="$t('date')"
+                        hint="DD/MM/YYYY"
+                        prepend-icon="event"
+                        @blur="productPrice.date = parseDate(dateFormatted)"
+                        readonly
+                        v-on="on"
+                        :dense="dense"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                      v-model="productPrice.date"
+                      @input="modalDate = false" scrollable
+                  ></v-date-picker>
+
+
+                </v-dialog>
+
+              </v-col>
+              <v-col cols="12" sm="12" md="12">
+                <v-text-field
+                    type="number"
+                    v-model="productPrice.price"
+                    :label="$t('price')"
+                    persistent-hint
+                    :dense="dense"
+                    outlined
+                ></v-text-field>
+              </v-col>
+
+
+            </v-row>
+          </v-card-text>
+          <v-card-actions>
+
+            <v-spacer></v-spacer>
+            <reset-button @resetForm="resetForm" valid="false"></reset-button>
+            <save-button @saveForm="handleSubmitPrice" :valid="valid"></save-button>
+
+          </v-card-actions>
+        </v-card>
+      </v-form>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -284,6 +367,7 @@ export default {
   data() {
     return {
       dense: this.$store.state.isDense,
+      modalDate: false,
       isLoading: false,
       isLoading1: false,
       isLoading2: false,
@@ -308,6 +392,7 @@ export default {
       titleClick: "",
       pageList: [10, 20, 50, 100, 200],
       fileName: "",
+      dateFormatted: moment().format("DD/MM/YYYY"),
       dataObj: {
         _id: "",
         branchId: "",
@@ -323,6 +408,12 @@ export default {
           cn: "",
         },
         url: "",
+      },
+      productPrice: {
+        productId: "",
+        date: moment().format("YYYY-MM-DD"),
+        price: "",
+        branchId: ""
       },
 
       nameRules: [
@@ -357,8 +448,22 @@ export default {
           sortable: true,
           value: 'body',
         },
+        {
+          text: 'date',
+          align: 'left',
+          sortable: true,
+          value: 'date',
+          width: "120px"
+        },
+        {
+          text: 'price',
+          align: 'left',
+          sortable: true,
+          value: 'price',
+          width: "100px"
+        },
 
-        {text: 'actions', value: 'action', sortable: false, width: "120px"},
+        {text: 'actions', value: 'action', sortable: false, width: "170px"},
       ],
       dataLists: [],
 
@@ -366,7 +471,8 @@ export default {
       selectedFile: null,
       uploadValue: 0,
       newUrl: "",
-      loanConfig: {}
+      loanConfig: {},
+      dialogPrice: false
 
     }
   },
@@ -374,7 +480,39 @@ export default {
     resetForm() {
       this.$refs.formData.reset();
     },
+    handleUpdatePrice(d) {
+      this.titleClick = 'updateProductPrice';
+      this.dialogPrice = true;
+      this.productPrice.productId = d._id;
 
+    },
+    handleSubmitPrice() {
+      let vm = this;
+      vm.productPrice.branchId = vm.$store.state.branchId;
+
+      return new Promise((resolve, reject) => {
+        Meteor.call("web_updateProductPrice", vm.productPrice.productId, vm.productPrice, Constants.secret, (err, result) => {
+          if (!err) {
+            vm.$message({
+              message: this.$t('successNotification'),
+              showClose: true,
+              type: 'success'
+            });
+            resolve(result);
+          } else {
+            console.log(err.message);
+            this.$message({
+              message: err.message,
+              showClose: true,
+              type: 'error'
+            });
+            reject(err.message);
+          }
+        })
+        vm.dialogPrice = false;
+      });
+
+    },
     onFileSelected(e, num) {
       let vm = this;
       this.imgUrl = window.URL.createObjectURL(e.target.files[0]);
@@ -546,10 +684,9 @@ export default {
         vm.dataObj.branchId = vm.$store.state.branchId;
         if (vm.dataObj._id === "") {
           return new Promise((resolve, reject) => {
-            console.log(vm.dataObj);
             Meteor.call("web_insertProduct", vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
-                this.$message({
+                vm.$message({
                   message: this.$t('successNotification'),
                   showClose: true,
                   type: 'success'
@@ -574,7 +711,7 @@ export default {
           return new Promise((resolve, reject) => {
             Meteor.call("web_updateProduct", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
-                this.$message({
+                vm.$message({
                   message: this.$t('successNotification'),
                   showClose: true,
                   type: 'success'
@@ -640,6 +777,9 @@ export default {
 
   },
   watch: {
+    "productPrice.date"(val) {
+      this.dateFormatted = this.formatDate(val);
+    },
     dialog(val) {
       let vm = this;
       if (val === false) {

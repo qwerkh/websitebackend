@@ -1,33 +1,16 @@
 import {Mongo} from "meteor/mongo";
 
-export const Web_Product = new Mongo.Collection("web_product");
-Web_Product.schema = new SimpleSchema({
-    title: {
-        type: Object,
-        optional: true,
-        blackbox: true
-    },
-    body: {
-        type: Object,
-        optional: true,
-        blackbox: true
+export const Web_ProductPrice = new Mongo.Collection("web_productPrice");
+Web_ProductPrice.schema = new SimpleSchema({
+    productId: {
+        type: String,
     },
     date: {
         type: String,
-        optional: true
     },
     price: {
         type: Number,
         decimal: true,
-        optional: true
-    },
-    order: {
-        type: Number,
-        defaultValue: 1
-    },
-    url: {
-        type: String,
-        optional: true
     },
     branchId: {
         type: String
@@ -72,11 +55,11 @@ Web_Product.schema = new SimpleSchema({
         }
     }
 });
-Web_Product.attachSchema(Web_Product.schema);
+Web_ProductPrice.attachSchema(Web_ProductPrice.schema);
 
 
-export const Web_ProductReact = new Mongo.Collection('web_productReact');
-Web_ProductReact.schema = new SimpleSchema({
+export const Web_ProductPriceReact = new Mongo.Collection('web_productPriceReact');
+Web_ProductPriceReact.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -121,10 +104,10 @@ Web_ProductReact.schema = new SimpleSchema({
     }
 });
 
-Web_ProductReact.attachSchema(Web_ProductReact.schema);
+Web_ProductPriceReact.attachSchema(Web_ProductPriceReact.schema);
 
-export const Web_ProductAudit = new Mongo.Collection('web_productAudit');
-Web_ProductAudit.schema = new SimpleSchema({
+export const Web_ProductPriceAudit = new Mongo.Collection('web_productPriceAudit');
+Web_ProductPriceAudit.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -176,4 +159,4 @@ Web_ProductAudit.schema = new SimpleSchema({
     }
 });
 
-Web_ProductAudit.attachSchema(Web_ProductAudit.schema);
+Web_ProductPriceAudit.attachSchema(Web_ProductPriceAudit.schema);

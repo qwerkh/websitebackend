@@ -167,5 +167,8 @@ export const km = {
     telegramUrl:"Telegram Url",
     linkInUrl:"LinkIn Url",
     instagramUrl:"Instagram Url",
-    twitterUrl:"Twitter Url"
+    twitterUrl:"Twitter Url",
+    updateProductPrice:"កែប្រែតម្លៃផលិតផល",
+    date:"កាលបរិច្ឆេទ",
+    price:"តម្លៃ"
 }
