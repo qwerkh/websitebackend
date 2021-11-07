@@ -38,6 +38,7 @@ Meteor.methods({
                 }
             }
 
+            selector.branchId=branchId;
 
             data.content = Web_Product.aggregate([
                     {

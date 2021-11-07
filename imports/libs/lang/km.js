@@ -170,5 +170,6 @@ export const km = {
     twitterUrl:"Twitter Url",
     updateProductPrice:"កែប្រែតម្លៃផលិតផល",
     date:"កាលបរិច្ឆេទ",
-    price:"តម្លៃ"
+    price:"តម្លៃ",
+    videoUrl:"Video Url"
 }

@@ -20,6 +20,14 @@ Web_NewsAndEvents.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    videoUrl: {
+        type: String,
+        optional: true
+    },
+    urlList: {
+        type: [String],
+        optional: true
+    },
     branchId: {
         type: String
     },

@@ -171,7 +171,8 @@ export const en = {
     twitterUrl:"Twitter Url",
     updateProductPrice:"Update Product Price",
     date:"Date",
-    price:"Price"
+    price:"Price",
+    videoUrl:"Video Url"
 
 
 

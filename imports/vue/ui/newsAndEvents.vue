@@ -126,6 +126,9 @@
           lazy-validation
       >
         <v-card>
+          <v-overlay :value="isLoadingImg">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+          </v-overlay>
           <v-card-title>
 
             <v-icon v-if="titleClick==='addNewsAndEvents'" large color="green darken-2"
@@ -207,6 +210,15 @@
                     outlined
                 ></v-text-field>
               </v-col>
+              <v-col cols="12" sm="4" md="4">
+                <v-text-field
+                    v-model="dataObj.videoUrl"
+                    :label="$t('videoUrl')"
+                    persistent-hint
+                    :dense="dense"
+                    outlined
+                ></v-text-field>
+              </v-col>
               <v-col cols="4" sm="4" md="4">
                 <v-img
                     :src="newUrl"
@@ -232,6 +244,60 @@
                 <input style="display: none !important;" type="file" @change="onFileSelected"
                        ref="fileInput"></input>
               </v-col>
+              <v-col cols="12" sm="12" md="12">
+                <v-text-field
+                    v-model="newUrlList"
+                    @click="$refs.fileInputList.click()"
+                    :label="$t('uploadPhoto')"
+                    outlined
+                    rounded
+                    :suffix="dataObj.urlList && dataObj.urlList.length+' ' + $t('photo')"
+                    hide-details
+                >
+
+                </v-text-field>
+
+                <input style="display: none !important;" type="file"
+                       @change="onFileSelectedList($event)"
+                       multiple
+                       ref="fileInputList"/>
+
+              </v-col>
+              <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
+                <v-row>
+                  <v-col
+                      v-for="(imgUrl,i) in dataObj.urlList"
+                      :key="imgUrl"
+                      class="d-flex child-flex"
+                      cols="3"
+                  >
+                    <v-img
+                        :src="imgUrl"
+                        lazy-src="/images/no-image-icon.png"
+                        aspect-ratio="1"
+                        class="grey lighten-2"
+                    >
+                      <remove-button @removeImg="removeImg(dataObj,imgUrl)" valid="false"
+                                     style="float: right;z-index: 9999"></remove-button>
+
+                      <template v-slot:placeholder>
+                        <v-row
+                            class="fill-height ma-0"
+                            align="center"
+                            justify="center"
+                        >
+                          <v-progress-circular
+                              indeterminate
+                              color="grey lighten-5"
+                          ></v-progress-circular>
+                        </v-row>
+                      </template>
+
+                    </v-img>
+
+                  </v-col>
+                </v-row>
+              </v-col>
 
             </v-row>
           </v-card-text>
@@ -254,6 +320,8 @@ import RaiseButton from "../components/raiseAddButton"
 import SaveButton from "../components/saveButton"
 import CloseButton from "../components/closeButton"
 import ResetButton from "../components/resetButton"
+import RemoveButton from "../components/removeButton"
+
 import {Constants} from "../../libs/constant"
 import GlobalFn from "../../libs/globalFn"
 import _ from 'lodash'
@@ -280,7 +348,7 @@ export default {
     this.$jQuery('body').off();
   },
   name: "NewsAndEvents",
-  components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor},
+  components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor,RemoveButton},
   data() {
     return {
       dense: this.$store.state.isDense,
@@ -290,6 +358,7 @@ export default {
       isLoading3: false,
       isLoading4: false,
       isLoading5: false,
+      isLoadingImg: false,
       fullPage: false,
       dialog: false,
       search: '',
@@ -308,6 +377,8 @@ export default {
       titleClick: "",
       pageList: [10, 20, 50, 100, 200],
       fileName: "",
+      fileNameList: "",
+      newUrlList: [],
       dataObj: {
         _id: "",
         branchId: "",
@@ -323,6 +394,8 @@ export default {
           cn: "",
         },
         url: "",
+        urlList: [],
+        videoUrl: "",
       },
 
       nameRules: [
@@ -374,7 +447,23 @@ export default {
     resetForm() {
       this.$refs.formData.reset();
     },
+    removeImg(row, url) {
+      let vm = this;
+      vm.$confirm(this.$t('messageWarning'), this.$t('warning'), {
+        confirmButtonText: this.$t('ok'),
+        cancelButtonText: this.$t('cancel'),
+        type: 'warning'
+      }).then(() => {
+        vm.dataObj.urlList = vm.dataObj.urlList.filter(v => v !== url);
+        vm.newUrlList = vm.newUrlList.filter(v => v !== url);
 
+      }).catch(() => {
+        vm.$message({
+          type: 'info',
+          message: this.$t('removeCancel')
+        });
+      });
+    },
     onFileSelected(e, num) {
       let vm = this;
       this.imgUrl = window.URL.createObjectURL(e.target.files[0]);
@@ -433,7 +522,7 @@ export default {
     },
     onUpload(num) {
       let vm = this;
-      const storageRef = firebase.storage().ref("newsAndEvents/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
+      const storageRef = firebase.storage().ref("newsAndEvents/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -478,6 +567,54 @@ export default {
 
                     break;
                 }
+              }
+            });
+          }
+      );
+    },
+    onFileSelectedList(e) {
+      let vm = this;
+      vm.isLoadingImg = true;
+      vm.fileNameList = e.target.files[0] && e.target.files[0].name || "";
+      if (vm.fileNameList !== "") {
+        const files = [...e.target.files];
+        vm.rawFileImageList = files;
+        const compress = new Compress();
+        compress.compress(files, {
+          size: 4, // the max size in MB, defaults to 2MB
+          quality: 0.6, // the quality of the image, max is 1,
+          maxWidth: 1920, // the max width of the output image, defaults to 1920px
+          maxHeight: 1920, // the max height of the output image, defaults to 1920px
+          resize: true // defaults to true, set false if you do not want to resize the image width and height
+        }).then((data) => {
+          vm.newUrlList = [];
+          data.forEach((obj) => {
+            let img1 = obj;
+            let base64str = img1.data;
+            let imgExt = img1.ext;
+            vm.onUploadList(Compress.convertBase64ToFile(base64str, imgExt), obj.alt.split(".")[0]);
+          })
+        })
+      }
+    },
+    onUploadList(selectedFile, fileName) {
+      let vm = this;
+      const storageRef = firebase.storage().ref("newsAndEvents/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      storageRef.on(`state_changed`, snapshot => {
+            this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          }, error => {
+            console.log(error.message)
+          },
+          () => {
+            this.uploadValue = 100;
+            storageRef.snapshot.ref.getDownloadURL().then((url) => {
+              if (url) {
+                vm.dataObj.urlList = vm.dataObj.urlList || [];
+                vm.dataObj.urlList.unshift(url);
+                vm.newUrlList = [];
+
+                vm.isLoadingImg = false;
+
               }
             });
           }
