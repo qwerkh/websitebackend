@@ -5,6 +5,61 @@
     <!--        v-model="data.intro.en"-->
     <!--    ></v-textarea>-->
     <v-row>
+      <v-col cols="12" sm="12" md="12">
+        <v-text-field
+            v-model="newUrl4List"
+            @click="$refs.fileInputSlide.click()"
+            :label="$t('uploadPhotoSlide')"
+            outlined
+            rounded
+            :suffix="dataObj.slideImgList && dataObj.slideImgList.length+' ' + $t('photo')"
+            hide-details
+        >
+
+        </v-text-field>
+
+        <input style="display: none !important;" type="file"
+               @change="onFileSelectedList($event,5)"
+               multiple
+               ref="fileInputSlide"/>
+
+      </v-col>
+      <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
+        <v-row>
+          <v-col
+              v-for="(imgUrl,i) in dataObj.slideImgList"
+              :key="imgUrl"
+              class="d-flex child-flex"
+              cols="3"
+          >
+            <v-img
+                :src="imgUrl"
+                lazy-src="/images/no-image-icon.png"
+                aspect-ratio="1"
+                class="grey lighten-2"
+            >
+              <remove-button @removeImg="removeImg(dataObj,imgUrl,5)" valid="false"
+                             style="float: right;z-index: 9999"></remove-button>
+
+              <template v-slot:placeholder>
+                <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                >
+                  <v-progress-circular
+                      indeterminate
+                      color="grey lighten-5"
+                  ></v-progress-circular>
+                </v-row>
+              </template>
+
+            </v-img>
+
+          </v-col>
+        </v-row>
+      </v-col>
+
 
       <v-col cols="12" md="12" sm="12">
 
@@ -480,6 +535,7 @@ export default {
           cn: "",
           url: ""
         },
+        slideImgList: [],
         preface1: {
           en: "",
           km: "",
@@ -516,6 +572,7 @@ export default {
       newUrl: "",
       imgUrl: "",
       fileName: "",
+      newSlideList: [],
       newUrl1List: [],
       newUrl2List: [],
       newUrl3List: [],
@@ -638,7 +695,7 @@ export default {
     },
     onUploadList(selectedFile, fileName, num) {
       let vm = this;
-      const storageRef = firebase.storage().ref("preface/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      const storageRef = firebase.storage().ref((num === 5? "slideList/" : "preface/") +moment().format("YYYYMMDD")+"/"+ moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -664,6 +721,10 @@ export default {
                   vm.dataObj.preface4ImgList = vm.dataObj.preface4ImgList || [];
                   vm.dataObj.preface4ImgList.unshift(url);
                   vm.newUrl4List = [];
+                } else if (num === 5) {
+                  vm.dataObj.slideImgList = vm.dataObj.slideImgList || [];
+                  vm.dataObj.slideImgList.unshift(url);
+                  vm.newSlideList = [];
                 }
                 vm.isLoading = false;
                 vm.isLoadingImg = false;
@@ -690,6 +751,9 @@ export default {
 
         } else if (num === 4) {
           vm.dataObj.preface4ImgList = vm.dataObj.preface4ImgList.filter(v => v !== url);
+
+        } else if (num === 5) {
+          vm.dataObj.slideImgList = vm.dataObj.slideImgList.filter(v => v !== url);
 
         }
       }).catch(() => {

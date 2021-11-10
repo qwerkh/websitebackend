@@ -12,4 +12,5 @@ import "./client";
 import "./organization";
 import "./productionLine";
 import "./headerFooter";
+import "./media";
 

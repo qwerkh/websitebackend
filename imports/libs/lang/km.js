@@ -171,5 +171,10 @@ export const km = {
     updateProductPrice:"កែប្រែតម្លៃផលិតផល",
     date:"កាលបរិច្ឆេទ",
     price:"តម្លៃ",
-    videoUrl:"Video Url"
+    videoUrl:"Video Url",
+    uploadPhotoSlide:"បញ្ចូលរូបភាព Slide",
+    media:"ព័តមាន",
+    mediaPage:"ទំព័រព័តមាន",
+    addMedia:"បញ្ចូលព័តមាន",
+    updateMedia:"កែប្រែព័តមាន"
 }

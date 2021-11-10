@@ -289,6 +289,53 @@ API.add('post', GlobalFn.Namespace1('/newsAndEvents/fetch'), (req, res, next) =>
             })
         })
 });
+API.add('post', GlobalFn.Namespace1('/media/fetch'), (req, res, next) => {
+    const {branchId} = req.body;
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_findMedia',
+            branchId,
+            token
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
 API.add('post', GlobalFn.Namespace1('/product/fetch'), (req, res, next) => {
     const {branchId} = req.body;
     res.charset = 'utf-8';

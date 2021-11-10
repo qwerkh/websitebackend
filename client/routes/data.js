@@ -8,6 +8,7 @@ import About from "../../imports/vue/ui/about";
 import Contact from "../../imports/vue/ui/contact";
 import Product from "../../imports/vue/ui/product";
 import NewsAndEvents from "../../imports/vue/ui/newsAndEvents";
+import Media from "../../imports/vue/ui/media";
 import Client from "../../imports/vue/ui/client";
 import Organization from "../../imports/vue/ui/organization";
 import ProductionLine from "../../imports/vue/ui/productionLine";
@@ -55,6 +56,18 @@ export const data = [
         path: "/product",
         name: "productPage",
         component: Product,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    }, {
+        path: "/media",
+        name: "mediaPage",
+        component: Media,
         meta: {
             permissions: [
                 {

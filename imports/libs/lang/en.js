@@ -172,7 +172,12 @@ export const en = {
     updateProductPrice:"Update Product Price",
     date:"Date",
     price:"Price",
-    videoUrl:"Video Url"
+    videoUrl:"Video Url",
+    uploadPhotoSlide:"Upload Photo Slide",
+    media:"Media",
+    mediaPage:"Media Page",
+    addMedia:"Add Media",
+    updateMedia:"Update Media"
 
 
 
