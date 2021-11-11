@@ -200,7 +200,7 @@
                 </vue-editor>
               </v-col>
 
-              <v-col cols="12" sm="4" md="4">
+              <v-col cols="6" sm="2" md="2">
                 <v-text-field
                     type="number"
                     v-model="dataObj.order"
@@ -209,6 +209,12 @@
                     :dense="dense"
                     outlined
                 ></v-text-field>
+              </v-col>
+              <v-col cols="6" sm="2" md="2">
+                <v-switch
+                    v-model="dataObj.addToHome"
+                    :label="$t('addToHome')"
+                ></v-switch>
               </v-col>
               <v-col cols="12" sm="4" md="4">
                 <v-text-field
@@ -383,6 +389,7 @@ export default {
         _id: "",
         branchId: "",
         order: 1,
+        addToHome: false,
         title: {
           en: "",
           km: "",

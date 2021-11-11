@@ -208,18 +208,18 @@ export default {
           to: "/",
           hasRole: () => this.checkRole(Constants.data)
         },
-        {
-          title: 'productPage',
-          action: "PR",
-          to: "/product",
-          hasRole: () => this.checkRole(Constants.data)
-        },
-        {
-          title: 'clientPage',
-          action: "CL",
-          to: "/client",
-          hasRole: () => this.checkRole(Constants.data)
-        },
+        // {
+        //   title: 'productPage',
+        //   action: "PR",
+        //   to: "/product",
+        //   hasRole: () => this.checkRole(Constants.data)
+        // },
+        // {
+        //   title: 'clientPage',
+        //   action: "CL",
+        //   to: "/client",
+        //   hasRole: () => this.checkRole(Constants.data)
+        // },
         {
           title: 'newsAndEventsPage',
           action: "NE",
@@ -232,18 +232,18 @@ export default {
           to: "/media",
           hasRole: () => this.checkRole(Constants.data)
         },
-        {
-          title: 'organizationPage',
-          action: "OR",
-          to: "/organization",
-          hasRole: () => this.checkRole(Constants.data)
-        },
-        {
-          title: 'productionLinePage',
-          action: "PL",
-          to: "/productionLine",
-          hasRole: () => this.checkRole(Constants.data)
-        },
+        // {
+        //   title: 'organizationPage',
+        //   action: "OR",
+        //   to: "/organization",
+        //   hasRole: () => this.checkRole(Constants.data)
+        // },
+        // {
+        //   title: 'productionLinePage',
+        //   action: "PL",
+        //   to: "/productionLine",
+        //   hasRole: () => this.checkRole(Constants.data)
+        // },
         {
           title: 'aboutPage',
           action: "AB",

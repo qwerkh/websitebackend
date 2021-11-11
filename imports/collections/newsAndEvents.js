@@ -28,6 +28,11 @@ Web_NewsAndEvents.schema = new SimpleSchema({
         type: [String],
         optional: true
     },
+    addToHome: {
+        type: Boolean,
+        optional: true,
+        defaultValue: false
+    },
     branchId: {
         type: String
     },

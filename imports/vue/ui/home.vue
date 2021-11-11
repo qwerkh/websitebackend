@@ -144,32 +144,13 @@
       </v-col>
 
       <v-col cols="12" md="12" sm="12">
-        {{ $t('preface1') }} (English , Khmer ,Chinese)
+        Slide
       </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface1.en"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface1.km"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface1.cn"
-        >
-        </vue-editor>
-      </v-col>
-
       <v-col cols="12" sm="12" md="12">
         <v-text-field
             v-model="newUrl1List"
             @click="$refs.fileInput1.click()"
-            :label="$t('uploadPhotoPreface1')"
+            :label="$t('uploadPhoto')"
             outlined
             rounded
             :suffix="dataObj.preface1ImgList && dataObj.preface1ImgList.length+' ' + $t('photo')"
@@ -199,237 +180,6 @@
                 class="grey lighten-2"
             >
               <remove-button @removeImg="removeImg(dataObj,imgUrl,1)" valid="false"
-                             style="float: right;z-index: 9999"></remove-button>
-
-              <template v-slot:placeholder>
-                <v-row
-                    class="fill-height ma-0"
-                    align="center"
-                    justify="center"
-                >
-                  <v-progress-circular
-                      indeterminate
-                      color="grey lighten-5"
-                  ></v-progress-circular>
-                </v-row>
-              </template>
-
-            </v-img>
-
-          </v-col>
-        </v-row>
-      </v-col>
-
-
-      <v-col cols="12" md="12" sm="12">
-        {{ $t('preface2') }} (English , Khmer ,Chinese)
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface2.en"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface2.km"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface2.cn"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" sm="12" md="12">
-        <v-text-field
-            v-model="newUrl2List"
-            @click="$refs.fileInput2.click()"
-            :label="$t('uploadPhotoPreface2')"
-            outlined
-            rounded
-            :suffix="dataObj.preface2ImgList && dataObj.preface2ImgList.length+' ' + $t('photo')"
-            hide-details
-        >
-
-        </v-text-field>
-
-        <input style="display: none !important;" type="file"
-               @change="onFileSelectedList($event,2)"
-               multiple
-               ref="fileInput2"/>
-
-      </v-col>
-      <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
-        <v-row>
-          <v-col
-              v-for="(imgUrl,i) in dataObj.preface2ImgList"
-              :key="imgUrl"
-              class="d-flex child-flex"
-              cols="3"
-          >
-            <v-img
-                :src="imgUrl"
-                lazy-src="/images/no-image-icon.png"
-                aspect-ratio="1"
-                class="grey lighten-2"
-            >
-              <remove-button @removeImg="removeImg(dataObj,imgUrl,2)" valid="false"
-                             style="float: right;z-index: 9999"></remove-button>
-
-              <template v-slot:placeholder>
-                <v-row
-                    class="fill-height ma-0"
-                    align="center"
-                    justify="center"
-                >
-                  <v-progress-circular
-                      indeterminate
-                      color="grey lighten-5"
-                  ></v-progress-circular>
-                </v-row>
-              </template>
-
-            </v-img>
-
-          </v-col>
-        </v-row>
-      </v-col>
-
-
-      <v-col cols="12" md="12" sm="12">
-        {{ $t('preface3') }} (English , Khmer ,Chinese)
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface3.en"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface3.km"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface3.cn"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" sm="12" md="12">
-        <v-text-field
-            v-model="newUrl3List"
-            @click="$refs.fileInput3.click()"
-            :label="$t('uploadPhotoPreface3')"
-            outlined
-            rounded
-            :suffix="dataObj.preface3ImgList && dataObj.preface3ImgList.length+' ' + $t('photo')"
-            hide-details
-        >
-
-        </v-text-field>
-
-        <input style="display: none !important;" type="file"
-               @change="onFileSelectedList($event,3)"
-               multiple
-               ref="fileInput3"/>
-
-      </v-col>
-      <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
-        <v-row>
-          <v-col
-              v-for="(imgUrl,i) in dataObj.preface3ImgList"
-              :key="imgUrl"
-              class="d-flex child-flex"
-              cols="3"
-          >
-            <v-img
-                :src="imgUrl"
-                lazy-src="/images/no-image-icon.png"
-                aspect-ratio="1"
-                class="grey lighten-2"
-            >
-              <remove-button @removeImg="removeImg(dataObj,imgUrl,3)" valid="false"
-                             style="float: right;z-index: 9999"></remove-button>
-
-              <template v-slot:placeholder>
-                <v-row
-                    class="fill-height ma-0"
-                    align="center"
-                    justify="center"
-                >
-                  <v-progress-circular
-                      indeterminate
-                      color="grey lighten-5"
-                  ></v-progress-circular>
-                </v-row>
-              </template>
-
-            </v-img>
-
-          </v-col>
-        </v-row>
-      </v-col>
-
-      <v-col cols="12" md="12" sm="12">
-        {{ $t('preface4') }} (English , Khmer ,Chinese)
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface4.en"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface4.km"
-        >
-        </vue-editor>
-      </v-col>
-      <v-col cols="12" md="4" sm="4">
-        <vue-editor
-            v-model="dataObj.preface4.cn"
-        >
-        </vue-editor>
-      </v-col>
-
-      <v-col cols="12" sm="12" md="12">
-        <v-text-field
-            v-model="newUrl4List"
-            @click="$refs.fileInput4.click()"
-            :label="$t('uploadPhotoPreface4')"
-            outlined
-            rounded
-            :suffix="dataObj.preface4ImgList && dataObj.preface4ImgList.length+' ' + $t('photo')"
-            hide-details
-        >
-
-        </v-text-field>
-
-        <input style="display: none !important;" type="file"
-               @change="onFileSelectedList($event,4)"
-               multiple
-               ref="fileInput4"/>
-
-      </v-col>
-      <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
-        <v-row>
-          <v-col
-              v-for="(imgUrl,i) in dataObj.preface4ImgList"
-              :key="imgUrl"
-              class="d-flex child-flex"
-              cols="3"
-          >
-            <v-img
-                :src="imgUrl"
-                lazy-src="/images/no-image-icon.png"
-                aspect-ratio="1"
-                class="grey lighten-2"
-            >
-              <remove-button @removeImg="removeImg(dataObj,imgUrl,4)" valid="false"
                              style="float: right;z-index: 9999"></remove-button>
 
               <template v-slot:placeholder>
@@ -608,6 +358,10 @@ export default {
           vm.dataObj.preface4 = r.preface4 || vm.dataObj.preface4;
           vm.newUrl4List = r.preface4ImgList || vm.dataObj.preface4ImgList;
           vm.dataObj.preface4ImgList = r.preface4ImgList || vm.dataObj.preface4ImgList;
+
+
+          vm.newSlideList = r.slideImgList || vm.dataObj.slideImgList;
+          vm.dataObj.slideImgList = r.slideImgList || vm.dataObj.slideImgList;
 
 
           // vm.quillMessageFromChairman.en.root.innerHTML = r.messageFromChairman.en;

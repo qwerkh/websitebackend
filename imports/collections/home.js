@@ -16,6 +16,11 @@ Web_Home.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    slideImgList: {
+        type: [String],
+        optional: true,
+        defaultValue: []
+    },
     preface1: {
         type: Object,
         optional: true,
@@ -26,6 +31,7 @@ Web_Home.schema = new SimpleSchema({
         optional: true,
         defaultValue: []
     },
+
     preface2: {
         type: Object,
         optional: true,

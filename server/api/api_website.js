@@ -243,7 +243,7 @@ API.add('post', GlobalFn.Namespace1('/client/fetch'), (req, res, next) => {
         })
 });
 API.add('post', GlobalFn.Namespace1('/newsAndEvents/fetch'), (req, res, next) => {
-    const {branchId} = req.body;
+    const {branchId,addToHome} = req.body;
     res.charset = 'utf-8';
     const {token} = req.headers;
     try {
@@ -261,6 +261,7 @@ API.add('post', GlobalFn.Namespace1('/newsAndEvents/fetch'), (req, res, next) =>
     return new Promise((resolve, reject) => {
         Meteor.call('web_findNewsAndEvents',
             branchId,
+            addToHome,
             token
             , (err, result) => {
                 if (!err) {

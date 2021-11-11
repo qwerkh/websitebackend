@@ -1,6 +1,10 @@
 import {Meteor} from 'meteor/meteor';
 import GlobalFn from "../../imports/libs/globalFn"
-import {Web_NewsAndEvents, Web_NewsAndEventsReact, Web_NewsAndEventsAudit} from "../../imports/collections/newsAndEvents"
+import {
+    Web_NewsAndEvents,
+    Web_NewsAndEventsReact,
+    Web_NewsAndEventsAudit
+} from "../../imports/collections/newsAndEvents"
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
@@ -37,7 +41,7 @@ Meteor.methods({
                 }
             }
 
-            selector.branchId=branchId;
+            selector.branchId = branchId;
 
             data.content = Web_NewsAndEvents.aggregate([
                     {
@@ -106,13 +110,16 @@ Meteor.methods({
             }
         }
     },
-    web_findNewsAndEvents(branchId, accessToken) {
+    web_findNewsAndEvents(branchId, addToHome, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let selector = {};
 
                 selector.branchId = branchId;
-                return Web_NewsAndEvents.find(selector, {sort: {createdAt: -1},limit: 100}).fetch();
+                if (addToHome || addToHome==="true") {
+                    selector.addToHome = true;
+                }
+                return Web_NewsAndEvents.find(selector, {sort: {createdAt: -1}, limit: 100}).fetch();
 
             } catch (e) {
                 throw new Meteor.Error(e.message);
