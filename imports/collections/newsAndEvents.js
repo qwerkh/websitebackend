@@ -20,6 +20,10 @@ Web_NewsAndEvents.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    iframeLive: {
+        type: String,
+        optional: true
+    },
     videoUrl: {
         type: String,
         optional: true

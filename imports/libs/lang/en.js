@@ -178,7 +178,8 @@ export const en = {
     mediaPage:"Media Page",
     addMedia:"Add Media",
     updateMedia:"Update Media",
-    addToHome:"Add To Home Page"
+    addToHome:"Add To Home Page",
+    iframeLive:"iframe Live"
 
 
 

@@ -177,5 +177,6 @@ export const km = {
     mediaPage:"ទំព័រព័តមាន",
     addMedia:"បញ្ចូលព័តមាន",
     updateMedia:"កែប្រែព័តមាន",
-    addToHome:"បញ្ចូលទៅកាន់ទំព័រដើម"
+    addToHome:"បញ្ចូលទៅកាន់ទំព័រដើម",
+    iframeLive:"ផ្សាយផ្ទាល់"
 }

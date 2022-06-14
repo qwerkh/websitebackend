@@ -217,6 +217,15 @@
                 ></v-switch>
               </v-col>
               <v-col cols="12" sm="4" md="4">
+                <v-textarea
+                    v-model="dataObj.iframeLive"
+                    :label="$t('iframeLive')"
+                    persistent-hint
+                    :dense="dense"
+                    outlined
+                ></v-textarea>
+              </v-col>
+              <v-col cols="12" sm="4" md="4">
                 <v-text-field
                     v-model="dataObj.videoUrl"
                     :label="$t('videoUrl')"
@@ -403,6 +412,7 @@ export default {
         url: "",
         urlList: [],
         videoUrl: "",
+        iframeLive: "",
       },
 
       nameRules: [
