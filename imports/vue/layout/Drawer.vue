@@ -221,17 +221,17 @@ export default {
         //   hasRole: () => this.checkRole(Constants.data)
         // },
         {
-          title: 'newsAndEventsPage',
-          action: "NE",
-          to: "/newsAndEvents",
+          title: 'post',
+          action: "PO",
+          to: "/post",
           hasRole: () => this.checkRole(Constants.data)
         },
-        {
+        /*{
           title: 'mediaPage',
           action: "MD",
           to: "/media",
           hasRole: () => this.checkRole(Constants.data)
-        },
+        },*/
         // {
         //   title: 'organizationPage',
         //   action: "OR",

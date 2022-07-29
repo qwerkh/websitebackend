@@ -7,6 +7,11 @@ Web_Home.schema = new SimpleSchema({
         optional: true,
         blackbox: true
     },
+    timeStudy: {
+        type: Object,
+        optional: true,
+        blackbox: true
+    },
     messageFromChairman: {
         type: Object,
         optional: true,

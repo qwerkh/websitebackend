@@ -8,7 +8,7 @@
         <v-card-title icon="mdi-index">
           <v-toolbar-title v-show="!$vuetify.breakpoint.mobile">
             <v-icon style="font-size: 70px !important;" large color="green darken-2">people</v-icon>
-            {{ $t("newsAndEvents") }}
+            {{ $t("post") }}
           </v-toolbar-title>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
           <v-text-field
@@ -19,11 +19,11 @@
               hide-details
           ></v-text-field>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
-          <add-button @add="dialog=true,titleClick='addNewsAndEvents'" v-if="checkRole('Create')"
+          <add-button @add="dialog=true,titleClick='addPost'" v-if="checkRole('Create')"
                       v-shortkey="['+']"
-                      @shortkey.native="dialog=true,titleClick='addNewsAndEvents'"
+                      @shortkey.native="dialog=true,titleClick='addPost'"
                       v-show="!$vuetify.breakpoint.mobile"></add-button>
-          <raise-button @add="dialog=true,titleClick='addNewsAndEvents'" v-if="checkRole('Create')"
+          <raise-button @add="dialog=true,titleClick='addPost'" v-if="checkRole('Create')"
                         v-show="$vuetify.breakpoint.mobile"></raise-button>
 
         </v-card-title>
@@ -58,6 +58,14 @@
             {{ $t(header.text).toUpperCase() }}
 
           </template>
+          <template v-slot:header.page="{ header }">
+            {{ $t(header.text).toUpperCase() }}
+
+          </template>
+          <template v-slot:header.createdAt="{ header }">
+            {{ $t(header.text).toUpperCase() }}
+
+          </template>
 
 
           <template v-slot:header.order="{ header }">
@@ -73,6 +81,16 @@
 
           <template v-slot:item.title="{ item }">
             {{ JSON.stringify(item.title) }}
+          </template>
+          <template v-slot:item.page="{ item }">
+            <div v-if="!!item.page">
+              <v-chip v-for="d in item.page" style="color: blue">
+                {{ d }}
+              </v-chip>
+            </div>
+          </template>
+          <template v-slot:item.createdAt="{ item }">
+            {{ item.createdAt | momentFormat }}
           </template>
           <template v-slot:item.body="{ item }">
             {{ JSON.stringify(item.body) }}
@@ -131,10 +149,10 @@
           </v-overlay>
           <v-card-title>
 
-            <v-icon v-if="titleClick==='addNewsAndEvents'" large color="green darken-2"
+            <v-icon v-if="titleClick==='addPost'" large color="green darken-2"
                     style="font-size: 50px !important;">library_add
             </v-icon>
-            <v-icon v-if="titleClick==='updateNewsAndEvents'" large color="green darken-2"
+            <v-icon v-if="titleClick==='updatePost'" large color="green darken-2"
                     style="font-size: 50px !important;">autorenew
             </v-icon>
             <span class="headline">{{ $t(titleClick) }}</span>
@@ -145,6 +163,60 @@
           </v-card-title>
           <v-card-text>
             <v-row>
+              <v-col cols="12" sm="12" md="12">
+                <v-text-field
+                    v-model="newUrlList"
+                    @click="$refs.fileInputList.click()"
+                    :label="$t('uploadPhoto')"
+                    outlined
+                    rounded
+                    :suffix="dataObj.urlList && dataObj.urlList.length+' ' + $t('photo')"
+                    hide-details
+                >
+
+                </v-text-field>
+
+                <input style="display: none !important;" type="file"
+                       @change="onFileSelectedList($event)"
+                       multiple
+                       ref="fileInputList"/>
+
+              </v-col>
+              <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
+                <v-row>
+                  <v-col
+                      v-for="(imgUrl,i) in dataObj.urlList"
+                      :key="imgUrl"
+                      class="d-flex child-flex"
+                      cols="3"
+                  >
+                    <v-img
+                        :src="imgUrl"
+                        lazy-src="/images/no-image-icon.png"
+                        aspect-ratio="1"
+                        class="grey lighten-2"
+                    >
+                      <remove-button @removeImg="removeImg(dataObj,imgUrl)" valid="false"
+                                     style="float: right;z-index: 9999"></remove-button>
+
+                      <template v-slot:placeholder>
+                        <v-row
+                            class="fill-height ma-0"
+                            align="center"
+                            justify="center"
+                        >
+                          <v-progress-circular
+                              indeterminate
+                              color="grey lighten-5"
+                          ></v-progress-circular>
+                        </v-row>
+                      </template>
+
+                    </v-img>
+
+                  </v-col>
+                </v-row>
+              </v-col>
               <v-col cols="12" md="12" sm="12">
 
                 {{ $t('title') }} (English , Khmer ,Chinese)
@@ -200,17 +272,8 @@
                 </vue-editor>
               </v-col>
 
-              <v-col cols="6" sm="2" md="2">
-                <v-text-field
-                    type="number"
-                    v-model="dataObj.order"
-                    :label="$t('order')"
-                    persistent-hint
-                    :dense="dense"
-                    outlined
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6" sm="2" md="2">
+
+              <v-col cols="12" sm="4" md="4">
                 <v-switch
                     v-model="dataObj.addToHome"
                     :label="$t('addToHome')"
@@ -234,85 +297,47 @@
                     outlined
                 ></v-text-field>
               </v-col>
-              <v-col cols="4" sm="4" md="4">
-                <v-img
-                    :src="newUrl"
-                    style="height: 275px; width: auto;"
-                    aspect-ratio="1"
-                    required
-                    lazy-src="/images/avatar.png"
-                    class="grey lighten-2"
-                    @click="$refs.fileInput.click()"
-                >
-                  <template v-slot:placeholder>
-                    <v-row
-                        class="fill-height ma-0"
-                        align="center"
-                        justify="center"
-                        v-show="isLoading"
-                    >
-                      <v-progress-circular indeterminate
-                                           color="grey lighten-5"></v-progress-circular>
-                    </v-row>
-                  </template>
-                </v-img>
-                <input style="display: none !important;" type="file" @change="onFileSelected"
-                       ref="fileInput"></input>
-              </v-col>
-              <v-col cols="12" sm="12" md="12">
-                <v-text-field
-                    v-model="newUrlList"
-                    @click="$refs.fileInputList.click()"
-                    :label="$t('uploadPhoto')"
+              <v-col
+                  cols="12"
+                  sm="12"
+              >
+                <v-select
+                    v-model="dataObj.page"
+                    :items="pagePostList"
+                    chips
+                    :label="$t('postToPage')"
+                    multiple
                     outlined
                     rounded
-                    :suffix="dataObj.urlList && dataObj.urlList.length+' ' + $t('photo')"
-                    hide-details
-                >
-
-                </v-text-field>
-
-                <input style="display: none !important;" type="file"
-                       @change="onFileSelectedList($event)"
-                       multiple
-                       ref="fileInputList"/>
-
+                    clearable
+                ></v-select>
               </v-col>
-              <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
-                <v-row>
-                  <v-col
-                      v-for="(imgUrl,i) in dataObj.urlList"
-                      :key="imgUrl"
-                      class="d-flex child-flex"
-                      cols="3"
-                  >
-                    <v-img
-                        :src="imgUrl"
-                        lazy-src="/images/no-image-icon.png"
-                        aspect-ratio="1"
-                        class="grey lighten-2"
-                    >
-                      <remove-button @removeImg="removeImg(dataObj,imgUrl)" valid="false"
-                                     style="float: right;z-index: 9999"></remove-button>
+              <!--              <v-col cols="4" sm="4" md="4">
+                              <v-img
+                                  :src="newUrl"
+                                  style="height: 275px; width: auto;"
+                                  aspect-ratio="1"
+                                  required
+                                  lazy-src="/images/avatar.png"
+                                  class="grey lighten-2"
+                                  @click="$refs.fileInput.click()"
+                              >
+                                <template v-slot:placeholder>
+                                  <v-row
+                                      class="fill-height ma-0"
+                                      align="center"
+                                      justify="center"
+                                      v-show="isLoading"
+                                  >
+                                    <v-progress-circular indeterminate
+                                                         color="grey lighten-5"></v-progress-circular>
+                                  </v-row>
+                                </template>
+                              </v-img>
+                              <input style="display: none !important;" type="file" @change="onFileSelected"
+                                     ref="fileInput"></input>
+                            </v-col>-->
 
-                      <template v-slot:placeholder>
-                        <v-row
-                            class="fill-height ma-0"
-                            align="center"
-                            justify="center"
-                        >
-                          <v-progress-circular
-                              indeterminate
-                              color="grey lighten-5"
-                          ></v-progress-circular>
-                        </v-row>
-                      </template>
-
-                    </v-img>
-
-                  </v-col>
-                </v-row>
-              </v-col>
 
             </v-row>
           </v-card-text>
@@ -363,7 +388,7 @@ export default {
     this.$jQuery('body').off();
   },
   name: "NewsAndEvents",
-  components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor,RemoveButton},
+  components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor, RemoveButton},
   data() {
     return {
       dense: this.$store.state.isDense,
@@ -394,6 +419,7 @@ export default {
       fileName: "",
       fileNameList: "",
       newUrlList: [],
+      pagePostList: Constants.pagePostList,
       dataObj: {
         _id: "",
         branchId: "",
@@ -411,6 +437,7 @@ export default {
         },
         url: "",
         urlList: [],
+        page: [],
         videoUrl: "",
         iframeLive: "",
       },
@@ -431,11 +458,14 @@ export default {
       ],
       headers: [
         {
-          text: 'order',
+          text: 'postDate',
           align: 'left',
           sortable: true,
-          value: 'order',
-        }, {
+          value: 'createdAt',
+          width: "150px"
+        },
+
+        {
           text: 'title',
           align: 'left',
           sortable: true,
@@ -447,6 +477,14 @@ export default {
           sortable: true,
           value: 'body',
         },
+        {
+          text: 'postToPage',
+          align: 'left',
+          sortable: true,
+          value: 'page',
+          width: "300px"
+        },
+
 
         {text: 'actions', value: 'action', sortable: false, width: "120px"},
       ],
@@ -754,7 +792,7 @@ export default {
       let vm = this;
 
       vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updateNewsAndEvents";
+      vm.titleClick = "updatePost";
       vm.dialog = true;
       Meteor.setTimeout(function () {
         vm.dataObj.address = doc.address || "";

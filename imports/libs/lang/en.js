@@ -179,5 +179,10 @@ export const en = {
     addMedia: "Add Media",
     updateMedia: "Update Media",
     addToHome: "Add To Home Page",
-    iframeLive: "iframe Live"
+    iframeLive: "iframe Live",
+    post:"Post",
+    addPost:"Add Post",
+    updatePost:"Update Post",
+    postToPage:"Post To Page",
+    postDate:"Post Date"
 }

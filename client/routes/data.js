@@ -77,8 +77,8 @@ export const data = [
             roles: "No Role",
         }
     }, {
-        path: "/newsAndEvents",
-        name: "newsAndEventsPage",
+        path: "/post",
+        name: "post",
         component: NewsAndEvents,
         meta: {
             permissions: [

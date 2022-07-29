@@ -178,5 +178,10 @@ export const km = {
     addMedia: "បញ្ចូលព័តមាន",
     updateMedia: "កែប្រែព័តមាន",
     addToHome: "បញ្ចូលទៅកាន់ទំព័រដើម",
-    iframeLive: "ផ្សាយផ្ទាល់"
+    iframeLive: "ផ្សាយផ្ទាល់",
+    post:"បញ្ចូលមាតិកា",
+    addPost:"បញ្ចូលមាតិកា",
+    updatePost:"កែប្រែមាតិកា",
+    postToPage:"បញ្ចូលមាតិកាទៅកាន់ទំព័រ",
+    postDate:"កាលបរិច្ឆេទបញ្ចូលមាតិកា"
 }

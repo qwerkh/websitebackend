@@ -291,6 +291,11 @@ export default {
           km: "",
           cn: "",
         },
+        timeStudy: {
+          en: "",
+          km: "",
+          cn: "",
+        },
         preface1ImgList: [],
         preface2: {
           en: "",

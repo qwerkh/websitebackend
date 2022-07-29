@@ -12,9 +12,8 @@ Web_NewsAndEvents.schema = new SimpleSchema({
         optional: true,
         blackbox: true
     },
-    order: {
-        type: Number,
-        defaultValue: 1
+    page: {
+        type: [String]
     },
     url: {
         type: String,

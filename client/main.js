@@ -13,13 +13,21 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import "./subscriptions/subscription"
 import "./stylesheet/main.css";
+
 Vue.prototype.$jQuery = $;
 
 Vue.use(ElementUI);
 
 Vue.use(VueMeteorTracker);
+Vue.filter("momentFormat", function (d) {
+    if (d) {
+        return moment(d).format("YYYY-MM-DD hh:mm");
+    }
+    return "";
+})
 
 import App from '../imports/vue/App.vue';
+
 Meteor.startup(() => {
     new Vue({
         vuetify,

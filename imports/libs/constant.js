@@ -25,6 +25,9 @@ let CurrencyListOpt = [
     {label: "B", value: "3:THB"},
 ]
 
+let PagePostList = [
+    'News And Event', 'Media', 'National Cooperation','International Cooperation'
+];
 let Setting = [
     'Admin', 'Setting', 'Super'
 ];
@@ -83,6 +86,7 @@ export const Constants = {
     methodType: methodType,
     gender: Gender,
     operationCode: OperationCode,
+    pagePostList: PagePostList,
 
     currencyList: CurrencyList,
     currencyListOpt: CurrencyListOpt,
