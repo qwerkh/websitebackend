@@ -8,7 +8,7 @@
         <v-card-title icon="mdi-index">
           <v-toolbar-title v-show="!$vuetify.breakpoint.mobile">
             <v-icon style="font-size: 70px !important;" large color="green darken-2">people</v-icon>
-            {{ $t("about") }}
+            {{ $t("rectorWelcom") }}
           </v-toolbar-title>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
           <v-text-field
@@ -19,11 +19,11 @@
               hide-details
           ></v-text-field>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
-          <add-button @add="dialog=true,titleClick='addAbout'" v-if="checkRole('Create')"
+          <add-button @add="dialog=true,titleClick='addRectorWelcom'" v-if="checkRole('Create')"
                       v-shortkey="['+']"
-                      @shortkey.native="dialog=true,titleClick='addAbout'"
+                      @shortkey.native="dialog=true,titleClick='addRectorWelcom'"
                       v-show="!$vuetify.breakpoint.mobile"></add-button>
-          <raise-button @add="dialog=true,titleClick='addAbout'" v-if="checkRole('Create')"
+          <raise-button @add="dialog=true,titleClick='addRectorWelcom'" v-if="checkRole('Create')"
                         v-show="$vuetify.breakpoint.mobile"></raise-button>
 
         </v-card-title>
@@ -143,10 +143,10 @@
           </v-overlay>
           <v-card-title>
 
-            <v-icon v-if="titleClick==='addAbout'" large color="green darken-2"
+            <v-icon v-if="titleClick==='addRectorWelcom'" large color="green darken-2"
                     style="font-size: 50px !important;">library_add
             </v-icon>
-            <v-icon v-if="titleClick==='updateAbout'" large color="green darken-2"
+            <v-icon v-if="titleClick==='updateRectorWelcom'" large color="green darken-2"
                     style="font-size: 50px !important;">autorenew
             </v-icon>
             <span class="headline">{{ $t(titleClick) }}</span>
@@ -277,7 +277,7 @@ import RemoveButton from "../components/removeButton"
 import {Constants} from "../../libs/constant"
 import GlobalFn from "../../libs/globalFn"
 import _ from 'lodash'
-import {Web_AboutReact} from "../../collections/about"
+import {Web_RectorWelcomReact} from "../../collections/rectorWelcom"
 import numeral from "numeral";
 import {Meteor} from 'meteor/meteor';
 import "/imports/firebase/config";
@@ -291,7 +291,7 @@ export default {
     reactData() {
       let vm = this;
       if (Meteor.userId()) {
-        Web_AboutReact.find({}).fetch();
+        Web_RectorWelcomReact.find({}).fetch();
         vm.fetchDataTable(vm.search, vm.skip, vm.itemsPerPage + vm.skip);
       }
     }
@@ -300,7 +300,7 @@ export default {
     this.$jQuery('body').off();
   },
   props: {majorDoc: Object},
-  name: "About",
+  name: "RectorWelcom",
   components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor, RemoveButton},
   data() {
     return {
@@ -351,7 +351,7 @@ export default {
       },
 
       nameRules: [
-        v => !!v || 'About Name is required',
+        v => !!v || 'RectorWelcom Name is required',
       ],
 
       requireInput: [
@@ -476,7 +476,7 @@ export default {
     },
     onUpload(num) {
       let vm = this;
-      const storageRef = firebase.storage().ref("about/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
+      const storageRef = firebase.storage().ref("rectorWelcom/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -553,7 +553,7 @@ export default {
     },
     onUploadList(selectedFile, fileName) {
       let vm = this;
-      const storageRef = firebase.storage().ref("About/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      const storageRef = firebase.storage().ref("RectorWelcom/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -607,7 +607,7 @@ export default {
       let vm = this;
       vm.loading = true;
       return new Promise((resolve, reject) => {
-        Meteor.call("web_fetchAbout", {
+        Meteor.call("web_fetchRectorWelcom", {
           q: val,
           filter: this.filter,
           sort: {sortBy: vm.sortBy || "", sortDesc: vm.sortDesc || ""},
@@ -650,7 +650,7 @@ export default {
         vm.dataObj.branchId = vm.$store.state.branchId;
         if (vm.dataObj._id === "") {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_insertAbout", vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_insertRectorWelcom", vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -675,7 +675,7 @@ export default {
 
         } else {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_updateAbout", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_updateRectorWelcom", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -703,7 +703,7 @@ export default {
       let vm = this;
 
       vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updateAbout";
+      vm.titleClick = "updateRectorWelcom";
       vm.dialog = true;
       Meteor.setTimeout(function () {
         vm.dataObj.address = doc.address || "";
@@ -718,7 +718,7 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        Meteor.call("web_removeAbout", row, Constants.secret, (err, result) => {
+        Meteor.call("web_removeRectorWelcom", row, Constants.secret, (err, result) => {
           if (!err) {
             vm.$message({
               message: this.$t('removeSuccess'),
@@ -803,7 +803,7 @@ export default {
     vm.fetchDataTable();
     vm.majorOption();
 
-    Meteor.subscribe('web_aboutReact');
+    Meteor.subscribe('web_rectorWelcomReact');
 
   }
 }

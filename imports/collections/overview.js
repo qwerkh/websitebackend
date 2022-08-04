@@ -1,7 +1,14 @@
 import {Mongo} from "meteor/mongo";
 
-export const Web_About = new Mongo.Collection("web_about");
-Web_About.schema = new SimpleSchema({
+export const Web_Overview = new Mongo.Collection("web_overview");
+Web_Overview.schema = new SimpleSchema({
+    majorId: {
+        type: String
+
+    },
+    order: {
+        type: Number
+    },
     title: {
         type: Object,
         optional: true,
@@ -16,11 +23,9 @@ Web_About.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+
     branchId: {
         type: String
-    },
-    order: {
-        type: Number
     },
     createdAt: {
         type: Date,
@@ -62,11 +67,11 @@ Web_About.schema = new SimpleSchema({
         }
     }
 });
-Web_About.attachSchema(Web_About.schema);
+Web_Overview.attachSchema(Web_Overview.schema);
 
 
-export const Web_AboutReact = new Mongo.Collection('web_aboutReact');
-Web_AboutReact.schema = new SimpleSchema({
+export const Web_OverviewReact = new Mongo.Collection('web_overviewReact');
+Web_OverviewReact.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -111,10 +116,10 @@ Web_AboutReact.schema = new SimpleSchema({
     }
 });
 
-Web_AboutReact.attachSchema(Web_AboutReact.schema);
+Web_OverviewReact.attachSchema(Web_OverviewReact.schema);
 
-export const Web_AboutAudit = new Mongo.Collection('web_aboutAudit');
-Web_AboutAudit.schema = new SimpleSchema({
+export const Web_OverviewAudit = new Mongo.Collection('web_overviewAudit');
+Web_OverviewAudit.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -166,4 +171,4 @@ Web_AboutAudit.schema = new SimpleSchema({
     }
 });
 
-Web_AboutAudit.attachSchema(Web_AboutAudit.schema);
+Web_OverviewAudit.attachSchema(Web_OverviewAudit.schema);

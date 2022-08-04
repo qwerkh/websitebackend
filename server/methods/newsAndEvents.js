@@ -110,16 +110,19 @@ Meteor.methods({
             }
         }
     },
-    web_findNewsAndEvents(branchId, addToHome, accessToken) {
+    web_findNewsAndEvents(branchId, addToHome, accessToken, page,limit) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let selector = {};
 
                 selector.branchId = branchId;
-                if (addToHome || addToHome==="true") {
+                if (addToHome || addToHome === "true") {
                     selector.addToHome = true;
                 }
-                return Web_NewsAndEvents.find(selector, {sort: {createdAt: -1}, limit: 100}).fetch();
+                if (page) {
+                    selector.page = {$elemMatch: {$eq: page}};
+                }
+                return  Web_NewsAndEvents.find(selector, {sort: {createdAt: -1}, limit: limit || 100}).fetch();
 
             } catch (e) {
                 throw new Meteor.Error(e.message);

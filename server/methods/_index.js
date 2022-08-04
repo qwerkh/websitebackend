@@ -13,4 +13,12 @@ import "./organization";
 import "./productionLine";
 import "./headerFooter";
 import "./media";
+import "./program";
+import "./major";
+import "./overview";
+import "./trainingProgram";
+import "./cost";
+import "./structure";
+import "./info";
+import "./rectorWelcom";
 

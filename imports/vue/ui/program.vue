@@ -8,7 +8,7 @@
         <v-card-title icon="mdi-index">
           <v-toolbar-title v-show="!$vuetify.breakpoint.mobile">
             <v-icon style="font-size: 70px !important;" large color="green darken-2">people</v-icon>
-            {{ $t("about") }}
+            {{ $t("program") }}
           </v-toolbar-title>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
           <v-text-field
@@ -19,11 +19,11 @@
               hide-details
           ></v-text-field>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
-          <add-button @add="dialog=true,titleClick='addAbout'" v-if="checkRole('Create')"
+          <add-button @add="dialog=true,titleClick='addProgram'" v-if="checkRole('Create')"
                       v-shortkey="['+']"
-                      @shortkey.native="dialog=true,titleClick='addAbout'"
+                      @shortkey.native="dialog=true,titleClick='addProgram'"
                       v-show="!$vuetify.breakpoint.mobile"></add-button>
-          <raise-button @add="dialog=true,titleClick='addAbout'" v-if="checkRole('Create')"
+          <raise-button @add="dialog=true,titleClick='addProgram'" v-if="checkRole('Create')"
                         v-show="$vuetify.breakpoint.mobile"></raise-button>
 
         </v-card-title>
@@ -143,10 +143,10 @@
           </v-overlay>
           <v-card-title>
 
-            <v-icon v-if="titleClick==='addAbout'" large color="green darken-2"
+            <v-icon v-if="titleClick==='addProgram'" large color="green darken-2"
                     style="font-size: 50px !important;">library_add
             </v-icon>
-            <v-icon v-if="titleClick==='updateAbout'" large color="green darken-2"
+            <v-icon v-if="titleClick==='updateProgram'" large color="green darken-2"
                     style="font-size: 50px !important;">autorenew
             </v-icon>
             <span class="headline">{{ $t(titleClick) }}</span>
@@ -224,7 +224,7 @@
                 </vue-editor>
               </v-col>
               <v-col cols="4" sm="4" md="4">
-                <h2>Photo</h2>
+                <h2>Icon</h2>
                 <v-img
                     :src="newUrl"
                     style="height: 275px; width: auto;"
@@ -277,7 +277,7 @@ import RemoveButton from "../components/removeButton"
 import {Constants} from "../../libs/constant"
 import GlobalFn from "../../libs/globalFn"
 import _ from 'lodash'
-import {Web_AboutReact} from "../../collections/about"
+import {Web_ProgramReact} from "../../collections/program"
 import numeral from "numeral";
 import {Meteor} from 'meteor/meteor';
 import "/imports/firebase/config";
@@ -291,7 +291,7 @@ export default {
     reactData() {
       let vm = this;
       if (Meteor.userId()) {
-        Web_AboutReact.find({}).fetch();
+        Web_ProgramReact.find({}).fetch();
         vm.fetchDataTable(vm.search, vm.skip, vm.itemsPerPage + vm.skip);
       }
     }
@@ -299,8 +299,7 @@ export default {
   mounted() {
     this.$jQuery('body').off();
   },
-  props: {majorDoc: Object},
-  name: "About",
+  name: "Program",
   components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor, RemoveButton},
   data() {
     return {
@@ -332,7 +331,6 @@ export default {
       fileName: "",
       fileNameList: "",
       newUrlList: [],
-      majorList: [],
       dataObj: {
         _id: "",
         branchId: "",
@@ -351,7 +349,7 @@ export default {
       },
 
       nameRules: [
-        v => !!v || 'About Name is required',
+        v => !!v || 'Program Name is required',
       ],
 
       requireInput: [
@@ -366,8 +364,7 @@ export default {
           align: 'left',
           sortable: true,
           value: 'order',
-        },
-        {
+        }, {
           text: 'title',
           align: 'left',
           sortable: true,
@@ -380,6 +377,7 @@ export default {
           value: 'body',
         },
 
+
         {text: 'actions', value: 'action', sortable: false, width: "120px"},
       ],
       dataLists: [],
@@ -388,8 +386,7 @@ export default {
       selectedFile: null,
       uploadValue: 0,
       newUrl: "",
-      loanConfig: {},
-      majorId: ""
+      loanConfig: {}
 
     }
   },
@@ -432,9 +429,9 @@ export default {
           let img1 = obj;
           let base64str = img1.data;
           let imgExt = img1.ext;
-          if (imgExt === "image/png") {
-            vm.selectedFile = tmpFile[0];
-          } else {
+          if(imgExt==="image/png"){
+            vm.selectedFile=tmpFile[0];
+          }else {
             vm.selectedFile = Compress.convertBase64ToFile(base64str, imgExt), obj.alt.split(".")[0];
           }
         })
@@ -476,7 +473,7 @@ export default {
     },
     onUpload(num) {
       let vm = this;
-      const storageRef = firebase.storage().ref("about/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
+      const storageRef = firebase.storage().ref("program/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -553,7 +550,7 @@ export default {
     },
     onUploadList(selectedFile, fileName) {
       let vm = this;
-      const storageRef = firebase.storage().ref("About/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      const storageRef = firebase.storage().ref("Program/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -607,13 +604,13 @@ export default {
       let vm = this;
       vm.loading = true;
       return new Promise((resolve, reject) => {
-        Meteor.call("web_fetchAbout", {
+        Meteor.call("web_fetchProgram", {
           q: val,
           filter: this.filter,
           sort: {sortBy: vm.sortBy || "", sortDesc: vm.sortDesc || ""},
           options: {skip: skip || 0, limit: limit || 10},
           branchId: vm.$store.state.branchId,
-          accessToken: Constants.secret,
+          accessToken: Constants.secret
         }, (err, result) => {
           if (result) {
             vm.loading = false;
@@ -629,19 +626,6 @@ export default {
       });
 
     }, 50),
-    majorOption(q) {
-      let vm = this;
-      return new Promise((resolve, reject) => {
-        Meteor.call("sb_fetchMajorOption", q, Constants.secret, vm.$store.state.branchId, (err, result) => {
-          if (result) {
-            vm.majorList = result;
-            resolve(result);
-          } else {
-            reject(err.message);
-          }
-        })
-      })
-    },
     handleSubmit() {
       let vm = this;
 
@@ -650,7 +634,7 @@ export default {
         vm.dataObj.branchId = vm.$store.state.branchId;
         if (vm.dataObj._id === "") {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_insertAbout", vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_insertProgram", vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -675,7 +659,7 @@ export default {
 
         } else {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_updateAbout", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_updateProgram", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -703,7 +687,7 @@ export default {
       let vm = this;
 
       vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updateAbout";
+      vm.titleClick = "updateProgram";
       vm.dialog = true;
       Meteor.setTimeout(function () {
         vm.dataObj.address = doc.address || "";
@@ -718,7 +702,7 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        Meteor.call("web_removeAbout", row, Constants.secret, (err, result) => {
+        Meteor.call("web_removeProgram", row, Constants.secret, (err, result) => {
           if (!err) {
             vm.$message({
               message: this.$t('removeSuccess'),
@@ -801,9 +785,7 @@ export default {
   created() {
     let vm = this;
     vm.fetchDataTable();
-    vm.majorOption();
-
-    Meteor.subscribe('web_aboutReact');
+    Meteor.subscribe('web_programReact');
 
   }
 }

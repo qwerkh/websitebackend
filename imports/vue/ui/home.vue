@@ -60,7 +60,63 @@
         </v-row>
       </v-col>
 
+      <br><br>
+      <hr>
+      <v-col cols="12" md="12" sm="12">
 
+        <v-row>
+          <v-col
+              cols="6"
+              md="3"
+          >
+            <v-text-field
+                v-model="dataObj.establishIn"
+                :label="$t('establishIn')"
+                outlined
+                clearable
+            ></v-text-field>
+          </v-col>
+          <v-col
+              cols="6"
+              md="3"
+          >
+            <v-text-field
+                v-model="dataObj.studentStudying"
+                :label="$t('studentStudying')"
+                outlined
+                clearable
+            ></v-text-field>
+          </v-col>
+          <v-col
+              cols="6"
+              md="3"
+          >
+            <v-text-field
+                v-model="dataObj.cooperation"
+                :label="$t('cooperation')"
+                outlined
+                clearable
+            ></v-text-field>
+          </v-col>
+          <v-col
+              cols="6"
+              md="3"
+          >
+            <v-text-field
+                v-model="dataObj.studentGraduateRate"
+                :label="$t('studentGraduateRate')"
+                outlined
+                clearable
+                append-icon="%"
+            >
+
+            </v-text-field>
+          </v-col>
+        </v-row>
+
+      </v-col>
+      <br><br>
+      <hr>
       <v-col cols="12" md="12" sm="12">
 
         {{ $t('info') }} (English , Khmer ,Chinese)
@@ -88,6 +144,7 @@
       </v-col>
     </v-row>
     <br><br>
+    <hr>
     <v-row>
       <v-overlay :value="isLoading">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -142,9 +199,38 @@
         <input style="display: none !important;" type="file" @change="onFileSelected"
                ref="fileInput"></input>
       </v-col>
+      <br><br>
+      <hr>
+      <v-col cols="12" md="12" sm="12">
+        {{ $t('timeStudy') }} (English , Khmer ,Chinese)
+      </v-col>
+      <v-col cols="12" md="4" sm="4">
+        <!--        <div id="messageFromChairmanEn"></div>-->
+        <vue-editor
+            v-model="dataObj.timeStudy.en"
+        >
+        </vue-editor>
+      </v-col>
+      <v-col cols="12" md="4" sm="4">
+        <!--        <div id="messageFromChairmanKm"></div>-->
+        <vue-editor
+            v-model="dataObj.timeStudy.km"
+        >
+        </vue-editor>
+      </v-col>
+      <v-col cols="12" md="4" sm="4">
+        <!--        <div id="messageFromChairmanCn"></div>-->
+        <vue-editor
+            v-model="dataObj.timeStudy.cn"
+        >
+        </vue-editor>
+      </v-col>
+
+      <br><br>
+      <hr>
 
       <v-col cols="12" md="12" sm="12">
-        Slide
+        {{$t('gallery')}}
       </v-col>
       <v-col cols="12" sm="12" md="12">
         <v-text-field
@@ -194,9 +280,7 @@
                   ></v-progress-circular>
                 </v-row>
               </template>
-
             </v-img>
-
           </v-col>
         </v-row>
       </v-col>
@@ -273,6 +357,10 @@ export default {
       dataObj: {
         _id: "",
         branchId: "",
+        establishIn: "",
+        studentStudying: "",
+        cooperation: "",
+        studentGraduateRate: "",
         intro: {
           en: "ddd",
           km: "",
@@ -363,10 +451,15 @@ export default {
           vm.dataObj.preface4 = r.preface4 || vm.dataObj.preface4;
           vm.newUrl4List = r.preface4ImgList || vm.dataObj.preface4ImgList;
           vm.dataObj.preface4ImgList = r.preface4ImgList || vm.dataObj.preface4ImgList;
+          vm.dataObj.timeStudy = r.timeStudy || vm.dataObj.timeStudy;
 
 
           vm.newSlideList = r.slideImgList || vm.dataObj.slideImgList;
           vm.dataObj.slideImgList = r.slideImgList || vm.dataObj.slideImgList;
+          vm.dataObj.establishIn = r.establishIn || vm.dataObj.establishIn;
+          vm.dataObj.studentStudying = r.studentStudying || vm.dataObj.studentStudying;
+          vm.dataObj.studentGraduateRate = r.studentGraduateRate || vm.dataObj.studentGraduateRate;
+          vm.dataObj.cooperation = r.cooperation || vm.dataObj.cooperation;
 
 
           // vm.quillMessageFromChairman.en.root.innerHTML = r.messageFromChairman.en;
@@ -408,7 +501,7 @@ export default {
     },
     onUpload() {
       let vm = this;
-      const storageRef = firebase.storage().ref("newsAndEvents/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
+      const storageRef = firebase.storage().ref("post/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -454,7 +547,7 @@ export default {
     },
     onUploadList(selectedFile, fileName, num) {
       let vm = this;
-      const storageRef = firebase.storage().ref((num === 5? "slideList/" : "preface/") +moment().format("YYYYMMDD")+"/"+ moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      const storageRef = firebase.storage().ref((num === 5 ? "home/" : "preface/") + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {

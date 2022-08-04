@@ -1,7 +1,7 @@
 import {Mongo} from "meteor/mongo";
 
-export const Web_About = new Mongo.Collection("web_about");
-Web_About.schema = new SimpleSchema({
+export const Web_Major = new Mongo.Collection("web_major");
+Web_Major.schema = new SimpleSchema({
     title: {
         type: Object,
         optional: true,
@@ -12,15 +12,32 @@ Web_About.schema = new SimpleSchema({
         optional: true,
         blackbox: true
     },
+    programId: {
+        type: [String]
+    },
+    addToHome: {
+        type: Boolean,
+        defaultValue:false
+    },
     url: {
         type: String,
         optional: true
     },
+    iframeLive: {
+        type: String,
+        optional: true
+    },
+    videoUrl: {
+        type: String,
+        optional: true
+    },
+    urlList: {
+        type: [String],
+        optional: true
+    },
+
     branchId: {
         type: String
-    },
-    order: {
-        type: Number
     },
     createdAt: {
         type: Date,
@@ -62,11 +79,11 @@ Web_About.schema = new SimpleSchema({
         }
     }
 });
-Web_About.attachSchema(Web_About.schema);
+Web_Major.attachSchema(Web_Major.schema);
 
 
-export const Web_AboutReact = new Mongo.Collection('web_aboutReact');
-Web_AboutReact.schema = new SimpleSchema({
+export const Web_MajorReact = new Mongo.Collection('web_majorReact');
+Web_MajorReact.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -111,10 +128,10 @@ Web_AboutReact.schema = new SimpleSchema({
     }
 });
 
-Web_AboutReact.attachSchema(Web_AboutReact.schema);
+Web_MajorReact.attachSchema(Web_MajorReact.schema);
 
-export const Web_AboutAudit = new Mongo.Collection('web_aboutAudit');
-Web_AboutAudit.schema = new SimpleSchema({
+export const Web_MajorAudit = new Mongo.Collection('web_majorAudit');
+Web_MajorAudit.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -166,4 +183,4 @@ Web_AboutAudit.schema = new SimpleSchema({
     }
 });
 
-Web_AboutAudit.attachSchema(Web_AboutAudit.schema);
+Web_MajorAudit.attachSchema(Web_MajorAudit.schema);

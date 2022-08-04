@@ -12,6 +12,11 @@ import Media from "../../imports/vue/ui/media";
 import Client from "../../imports/vue/ui/client";
 import Organization from "../../imports/vue/ui/organization";
 import ProductionLine from "../../imports/vue/ui/productionLine";
+import Program from "../../imports/vue/ui/program";
+import Overview from "../../imports/vue/ui/overview";
+import MajorDetail from "../../imports/vue/ui/majorDetail";
+import RectorWelcom from "../../imports/vue/ui/rectorWelcom";
+import Major from "../../imports/vue/ui/major";
 import HeaderFooter from "../../imports/vue/ui/headerFooter";
 
 
@@ -88,10 +93,70 @@ export const data = [
             ],
             roles: "No Role",
         }
+    },{
+        path: "/major",
+        name: "major",
+        component: Major,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },{
+        path: "/majorDetail",
+        name: "majorDetail",
+        component: MajorDetail,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
     }, {
         path: "/client",
         name: "clientPage",
         component: Client,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },{
+        path: "/program",
+        name: "programPage",
+        component: Program,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },{
+        path: "/rectorWelcom",
+        name: "rectorWelcomPage",
+        component: RectorWelcom,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },{
+        path: "/overview",
+        name: "overview",
+        component: Overview,
         meta: {
             permissions: [
                 {

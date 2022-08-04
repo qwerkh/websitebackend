@@ -26,6 +26,23 @@ Web_Home.schema = new SimpleSchema({
         optional: true,
         defaultValue: []
     },
+    establishIn:{
+        type:Number,
+        optional:true
+    },
+    studentStudying:{
+        type:Number,
+        optional:true
+    },
+    cooperation:{
+        type:Number,
+        optional:true
+    },
+    studentGraduateRate:{
+        type:Number,
+        decimal:true,
+        optional:true
+    },
     preface1: {
         type: Object,
         optional: true,

@@ -245,9 +245,27 @@ export default {
         //   hasRole: () => this.checkRole(Constants.data)
         // },
         {
+          title: 'programPage',
+          action: "PG",
+          to: "/program",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
+          title: 'majorPage',
+          action: "MJ",
+          to: "/major",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
           title: 'aboutPage',
           action: "AB",
           to: "/about",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
+          title: 'rectorWelcom',
+          action: "RW",
+          to: "/rectorWelcom",
           hasRole: () => this.checkRole(Constants.data)
         },
         {

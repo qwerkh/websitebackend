@@ -8,7 +8,7 @@
         <v-card-title icon="mdi-index">
           <v-toolbar-title v-show="!$vuetify.breakpoint.mobile">
             <v-icon style="font-size: 70px !important;" large color="green darken-2">people</v-icon>
-            {{ $t("about") }}
+            {{ $t("structure") }}
           </v-toolbar-title>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
           <v-text-field
@@ -19,11 +19,11 @@
               hide-details
           ></v-text-field>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
-          <add-button @add="dialog=true,titleClick='addAbout'" v-if="checkRole('Create')"
+          <add-button @add="dialog=true,titleClick='addStructure'" v-if="checkRole('Create')"
                       v-shortkey="['+']"
-                      @shortkey.native="dialog=true,titleClick='addAbout'"
+                      @shortkey.native="dialog=true,titleClick='addStructure'"
                       v-show="!$vuetify.breakpoint.mobile"></add-button>
-          <raise-button @add="dialog=true,titleClick='addAbout'" v-if="checkRole('Create')"
+          <raise-button @add="dialog=true,titleClick='addStructure'" v-if="checkRole('Create')"
                         v-show="$vuetify.breakpoint.mobile"></raise-button>
 
         </v-card-title>
@@ -55,6 +55,22 @@
 
           </template>
           <template v-slot:header.title="{ header }">
+            {{ $t(header.text).toUpperCase() }}
+
+          </template>
+          <template v-slot:header.name="{ header }">
+            {{ $t(header.text).toUpperCase() }}
+
+          </template>
+          <template v-slot:header.khName="{ header }">
+            {{ $t(header.text).toUpperCase() }}
+
+          </template>
+          <template v-slot:header.email="{ header }">
+            {{ $t(header.text).toUpperCase() }}
+
+          </template>
+          <template v-slot:header.phoneNumber="{ header }">
             {{ $t(header.text).toUpperCase() }}
 
           </template>
@@ -143,10 +159,10 @@
           </v-overlay>
           <v-card-title>
 
-            <v-icon v-if="titleClick==='addAbout'" large color="green darken-2"
+            <v-icon v-if="titleClick==='addStructure'" large color="green darken-2"
                     style="font-size: 50px !important;">library_add
             </v-icon>
-            <v-icon v-if="titleClick==='updateAbout'" large color="green darken-2"
+            <v-icon v-if="titleClick==='updateStructure'" large color="green darken-2"
                     style="font-size: 50px !important;">autorenew
             </v-icon>
             <span class="headline">{{ $t(titleClick) }}</span>
@@ -157,6 +173,26 @@
           </v-card-title>
           <v-card-text>
             <v-row>
+
+              <v-col cols="12" md="6" sm="6">
+                <v-select
+                    v-model="dataObj.majorId"
+                    :items="majorList"
+                    chips
+                    :label="$t('major')"
+                    outlined
+                    :rules="selectRules"
+                    rounded
+                    clearable
+                >
+                  <template v-slot:item='{item}'>
+                    <div style="font-size: 9px !important;" v-html='item.label'/>
+                  </template>
+                  <template v-slot:selection='{item}'>
+                    <div style="font-size: 9px !important;" v-html='item.label'/>
+                  </template>
+                </v-select>
+              </v-col>
               <v-col cols="12" md="6" sm="6">
                 <v-text-field
                     v-model="dataObj.order"
@@ -169,9 +205,53 @@
 
                 </v-text-field>
               </v-col>
+              <v-col cols="12" md="6" sm="6">
+                <v-text-field
+                    v-model="dataObj.name"
+                    :label="$t('name')"
+                    outlined
+                    rounded
+                    hide-details
+                >
+
+                </v-text-field>
+              </v-col>
+              <v-col cols="12" md="6" sm="6">
+                <v-text-field
+                    v-model="dataObj.khName"
+                    :label="$t('khName')"
+                    outlined
+                    rounded
+                    hide-details
+                >
+
+                </v-text-field>
+              </v-col>
+              <v-col cols="12" md="6" sm="6">
+                <v-text-field
+                    v-model="dataObj.email"
+                    :label="$t('email')"
+                    outlined
+                    rounded
+                    hide-details
+                >
+
+                </v-text-field>
+              </v-col>
+              <v-col cols="12" md="6" sm="6">
+                <v-text-field
+                    v-model="dataObj.phoneNumber"
+                    :label="$t('phoneNumber')"
+                    outlined
+                    rounded
+                    hide-details
+                >
+
+                </v-text-field>
+              </v-col>
               <v-col cols="12" md="12" sm="12">
 
-                {{ $t('title') }} (English , Khmer ,Chinese)
+                {{ $t('position') }} (English , Khmer ,Chinese)
               </v-col>
               <v-col cols="12" sm="4" md="4">
                 <vue-editor
@@ -199,7 +279,7 @@
 
               <v-col cols="12" md="12" sm="12">
 
-                {{ $t('body') }} (English , Khmer ,Chinese)
+                {{ $t('educationLevel') }} (English , Khmer ,Chinese)
               </v-col>
               <v-col cols="12" sm="4" md="4">
                 <vue-editor
@@ -277,7 +357,7 @@ import RemoveButton from "../components/removeButton"
 import {Constants} from "../../libs/constant"
 import GlobalFn from "../../libs/globalFn"
 import _ from 'lodash'
-import {Web_AboutReact} from "../../collections/about"
+import {Web_StructureReact} from "../../collections/structure"
 import numeral from "numeral";
 import {Meteor} from 'meteor/meteor';
 import "/imports/firebase/config";
@@ -291,7 +371,7 @@ export default {
     reactData() {
       let vm = this;
       if (Meteor.userId()) {
-        Web_AboutReact.find({}).fetch();
+        Web_StructureReact.find({}).fetch();
         vm.fetchDataTable(vm.search, vm.skip, vm.itemsPerPage + vm.skip);
       }
     }
@@ -300,7 +380,7 @@ export default {
     this.$jQuery('body').off();
   },
   props: {majorDoc: Object},
-  name: "About",
+  name: "Structure",
   components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor, RemoveButton},
   data() {
     return {
@@ -335,7 +415,12 @@ export default {
       majorList: [],
       dataObj: {
         _id: "",
+        name: "",
+        khName: "",
+        phoneNumber: "",
+        email: "",
         branchId: "",
+        majorId: "",
         order: "",
         title: {
           en: "",
@@ -351,7 +436,7 @@ export default {
       },
 
       nameRules: [
-        v => !!v || 'About Name is required',
+        v => !!v || 'Structure Name is required',
       ],
 
       requireInput: [
@@ -368,13 +453,37 @@ export default {
           value: 'order',
         },
         {
-          text: 'title',
+          text: 'name',
+          align: 'left',
+          sortable: true,
+          value: 'name',
+        },
+        {
+          text: 'khName',
+          align: 'left',
+          sortable: true,
+          value: 'khName',
+        },
+        {
+          text: 'phoneNumber',
+          align: 'left',
+          sortable: true,
+          value: 'phoneNumber',
+        },
+        {
+          text: 'email',
+          align: 'left',
+          sortable: true,
+          value: 'email',
+        },
+        {
+          text: 'position',
           align: 'left',
           sortable: true,
           value: 'title',
         },
         {
-          text: 'body',
+          text: 'educationLevel',
           align: 'left',
           sortable: true,
           value: 'body',
@@ -476,7 +585,7 @@ export default {
     },
     onUpload(num) {
       let vm = this;
-      const storageRef = firebase.storage().ref("about/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
+      const storageRef = firebase.storage().ref("structure/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -553,7 +662,7 @@ export default {
     },
     onUploadList(selectedFile, fileName) {
       let vm = this;
-      const storageRef = firebase.storage().ref("About/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      const storageRef = firebase.storage().ref("Structure/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -607,13 +716,14 @@ export default {
       let vm = this;
       vm.loading = true;
       return new Promise((resolve, reject) => {
-        Meteor.call("web_fetchAbout", {
+        Meteor.call("web_fetchStructure", {
           q: val,
           filter: this.filter,
           sort: {sortBy: vm.sortBy || "", sortDesc: vm.sortDesc || ""},
           options: {skip: skip || 0, limit: limit || 10},
           branchId: vm.$store.state.branchId,
           accessToken: Constants.secret,
+          majorId: vm.majorDoc._id
         }, (err, result) => {
           if (result) {
             vm.loading = false;
@@ -650,7 +760,7 @@ export default {
         vm.dataObj.branchId = vm.$store.state.branchId;
         if (vm.dataObj._id === "") {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_insertAbout", vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_insertStructure", vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -675,7 +785,7 @@ export default {
 
         } else {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_updateAbout", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_updateStructure", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -703,7 +813,7 @@ export default {
       let vm = this;
 
       vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updateAbout";
+      vm.titleClick = "updateStructure";
       vm.dialog = true;
       Meteor.setTimeout(function () {
         vm.dataObj.address = doc.address || "";
@@ -718,7 +828,7 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        Meteor.call("web_removeAbout", row, Constants.secret, (err, result) => {
+        Meteor.call("web_removeStructure", row, Constants.secret, (err, result) => {
           if (!err) {
             vm.$message({
               message: this.$t('removeSuccess'),
@@ -803,7 +913,7 @@ export default {
     vm.fetchDataTable();
     vm.majorOption();
 
-    Meteor.subscribe('web_aboutReact');
+    Meteor.subscribe('web_structureReact');
 
   }
 }
