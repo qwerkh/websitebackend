@@ -119,7 +119,7 @@ Meteor.methods({
                     selector.addToHome = true;
                 }
 
-                return Web_Major.find(selector, {sort: {createdAt: -1}, limit: 100}).fetch();
+                return Web_Major.find(selector, {sort: {createdAt: 1}, limit: 100}).fetch();
             } catch (e) {
                 throw new Meteor.Error(e.message);
             }

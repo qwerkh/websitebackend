@@ -92,7 +92,8 @@
           //Body
 
           <template v-slot:item.title="{ item }">
-            {{ JSON.stringify(item.title) }}
+            <div v-html="getTranslate(item.title)"></div>
+
           </template>
           <template v-slot:item.page="{ item }">
             <div v-if="!!item.page">
@@ -103,7 +104,8 @@
           </template>
 
           <template v-slot:item.body="{ item }">
-            {{ JSON.stringify(item.body) }}
+            <div v-html="getTranslate(item.body)"></div>
+
           </template>
           //Action
           <template v-slot:item.action="{ item }">
@@ -365,6 +367,7 @@ import firebase from "firebase/compat";
 
 const Compress = require('compress.js').default
 import {VueEditor} from "vue2-editor";
+import MyMixin from "../mixins/mixin"
 
 export default {
   meteor: {
@@ -376,6 +379,8 @@ export default {
       }
     }
   },
+  mixins: [MyMixin],
+
   mounted() {
     this.$jQuery('body').off();
   },

@@ -76,7 +76,7 @@
           //Body
 
           <template v-slot:item.title="{ item }">
-            {{ JSON.stringify(item.title) }}
+            {{ getTranslate(item.title) }}
           </template>
           <template v-slot:item.page="{ item }">
             <div v-if="!!item.page">
@@ -87,7 +87,7 @@
           </template>
 
           <template v-slot:item.body="{ item }">
-            {{ JSON.stringify(item.body) }}
+            {{ getTranslate(item.body) }}
           </template>
           //Action
           <template v-slot:item.action="{ item }">
@@ -249,7 +249,24 @@
                 <input style="display: none !important;" type="file" @change="onFileSelected"
                        ref="fileInput"></input>
               </v-col>
-
+              <v-col cols="12" sm="4" md="4">
+                <v-textarea
+                    v-model="dataObj.iframeLive"
+                    :label="$t('iframeLive')"
+                    persistent-hint
+                    :dense="dense"
+                    outlined
+                ></v-textarea>
+              </v-col>
+              <v-col cols="12" sm="4" md="4">
+                <v-text-field
+                    v-model="dataObj.videoUrl"
+                    :label="$t('videoUrl')"
+                    persistent-hint
+                    :dense="dense"
+                    outlined
+                ></v-text-field>
+              </v-col>
 
             </v-row>
           </v-card-text>
@@ -282,6 +299,7 @@ import numeral from "numeral";
 import {Meteor} from 'meteor/meteor';
 import "/imports/firebase/config";
 import firebase from "firebase/compat";
+import MyMixin from "../mixins/mixin"
 
 const Compress = require('compress.js').default
 import {VueEditor} from "vue2-editor";
@@ -299,6 +317,7 @@ export default {
   mounted() {
     this.$jQuery('body').off();
   },
+  mixins: [MyMixin],
   props: {majorDoc: Object},
   name: "About",
   components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor, RemoveButton},
@@ -336,6 +355,8 @@ export default {
       dataObj: {
         _id: "",
         branchId: "",
+        iframeLive: "",
+        videoUrl: "",
         order: "",
         title: {
           en: "",
