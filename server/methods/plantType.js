@@ -1,14 +1,14 @@
 import {Meteor} from 'meteor/meteor';
 import GlobalFn from "../../imports/libs/globalFn"
 import {
-    Web_Overview,
-    Web_OverviewReact,
-    Web_OverviewAudit
-} from "../../imports/collections/overview"
+    Web_PlantType,
+    Web_PlantTypeReact,
+    Web_PlantTypeAudit
+} from "../../imports/collections/plantType"
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
-    web_fetchOverview({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId,majorId}) {
+    web_fetchPlantType({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             let data = {
                 content: [],
@@ -28,12 +28,32 @@ Meteor.methods({
                     selector[filter] = {$regex: reg, $options: 'mi'}
                 } else {
                     selector.$or = [{title: {$regex: reg, $options: 'mi'}}, {
-                        phoneNumber: {
+                        "title.en": {
                             $regex: reg,
                             $options: 'mi'
                         }
                     }, {
-                        address: {
+                        "title.km": {
+                            $regex: reg,
+                            $options: 'mi'
+                        }
+                    },{
+                        "title.cn": {
+                            $regex: reg,
+                            $options: 'mi'
+                        }
+                    },{
+                        "body.en": {
+                            $regex: reg,
+                            $options: 'mi'
+                        }
+                    },{
+                        "body.km": {
+                            $regex: reg,
+                            $options: 'mi'
+                        }
+                    },{
+                        "body.cn": {
                             $regex: reg,
                             $options: 'mi'
                         }
@@ -42,9 +62,8 @@ Meteor.methods({
             }
 
             selector.branchId = branchId;
-            selector.majorId = majorId;
 
-            data.content = Web_Overview.aggregate([
+            data.content = Web_PlantType.aggregate([
                     {
                         $match: selector
                     }
@@ -65,16 +84,16 @@ Meteor.methods({
                 {
                     allowDiskUse: true
                 });
-            data.countContent = Web_Overview.find(selector).count();
+            data.countContent = Web_PlantType.find(selector).count();
             return data;
         }
     },
-    web_insertOverview(doc, accessToken) {
+    web_insertPlantType(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                let id = Web_Overview.insert(doc);
+                let id = Web_PlantType.insert(doc);
                 if (id) {
-                    GlobalFn.collectionReact(Web_OverviewReact, id);
+                    GlobalFn.collectionReact(Web_PlantTypeReact, id);
                 }
                 return id;
             } catch (e) {
@@ -83,13 +102,13 @@ Meteor.methods({
         }
 
     },
-    web_updateOverview(id, doc, accessToken) {
+    web_updatePlantType(id, doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                let oldDoc = Web_Overview.findOne({_id: id});
-                let isUpdated = Web_Overview.update({_id: id}, {$set: doc});
+                let oldDoc = Web_PlantType.findOne({_id: id});
+                let isUpdated = Web_PlantType.update({_id: id}, {$set: doc});
                 if (isUpdated) {
-                    GlobalFn.collectionReact(Web_OverviewReact, id, Web_OverviewAudit, oldDoc, "Update");
+                    GlobalFn.collectionReact(Web_PlantTypeReact, id, Web_PlantTypeAudit, oldDoc, "Update");
                 }
                 return isUpdated;
             } catch (e) {
@@ -97,13 +116,13 @@ Meteor.methods({
             }
         }
     },
-    web_removeOverview(doc, accessToken) {
+    web_removePlantType(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                let isRemoved = Web_Overview.remove({_id: doc._id});
+                let isRemoved = Web_PlantType.remove({_id: doc._id});
 
                 if (isRemoved) {
-                    GlobalFn.collectionReact(Web_OverviewReact, doc._id, Web_OverviewAudit, doc, "Remove");
+                    GlobalFn.collectionReact(Web_PlantTypeReact, doc._id, Web_PlantTypeAudit, doc, "Remove");
                 }
                 return isRemoved;
             } catch (e) {
@@ -111,62 +130,33 @@ Meteor.methods({
             }
         }
     },
-    web_findOverview(branchId,majorId, accessToken) {
+    web_findPlantType(branchId, addToHome, accessToken, page,limit) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let selector = {};
 
                 selector.branchId = branchId;
-                selector.majorId = majorId;
-                return Web_Overview.find(selector, {sort: {order:1,createdAt: 1}, limit: 100}).fetch();
+                if (addToHome || addToHome === "true") {
+                    selector.addToHome = true;
+                }
+                if (page) {
+                    selector.page = {$elemMatch: {$eq: page}};
+                }
+                return  Web_PlantType.find(selector, {sort: {createdAt: -1}, limit: limit || 100}).fetch();
 
             } catch (e) {
                 throw new Meteor.Error(e.message);
             }
         }
     },
-    sb_fetchOverviewOption(q, accessToken, branchId) {
-        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
-            try {
-                let selector = {};
-                if (Array.isArray(branchId)) {
-                    selector.branchId = {$in: branchId};
-                } else {
-                    selector.branchId = branchId;
-                }
-
-
-                if (q && q !== "" && q !== undefined && q !== null) {
-                    q = q.replace(/[/\\]/g, '');
-                    let reg = new RegExp(q, 'mi');
-
-                    selector.$or = [
-                        {'title.en': {$regex: reg}},
-                        {'title.km': {$regex: reg}},
-                        {'title.cn': {$regex: reg}},
-                        {_id: q}
-                    ];
-                }
-
-                return Web_Overview.find(selector, {limit: 300}).fetch().map(obj => ({
-                    label: obj.title.en,
-                    value: obj._id
-                }));
-            } catch (e) {
-                throw new Meteor.Error(e.message);
-            }
-        }
-    }
 
 })
 
 
 //Unique
 
-Web_Overview._ensureIndex({
-    majorId: 1,
+Web_PlantType._ensureIndex({
     title: 1,
     body: 1,
-    order:1,
     branchId: 1
-}, {unique: 1, name: "Web_OverviewUnique"});
+}, {unique: 1, name: "Web_PlantTypeUnique"});

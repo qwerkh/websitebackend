@@ -8,7 +8,7 @@
         <v-card-title icon="mdi-index">
           <v-toolbar-title v-show="!$vuetify.breakpoint.mobile">
             <v-icon style="font-size: 70px !important;" large color="green darken-2">people</v-icon>
-            {{ $t("cost") }}
+            {{ $t("plantType") }}
           </v-toolbar-title>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
           <v-text-field
@@ -19,11 +19,11 @@
               hide-details
           ></v-text-field>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
-          <add-button @add="dialog=true,titleClick='addCost'" v-if="checkRole('Create')"
+          <add-button @add="dialog=true,titleClick='addPlantType'" v-if="checkRole('Create')"
                       v-shortkey="['+']"
-                      @shortkey.native="dialog=true,titleClick='addCost'"
+                      @shortkey.native="dialog=true,titleClick='addPlantType'"
                       v-show="!$vuetify.breakpoint.mobile"></add-button>
-          <raise-button @add="dialog=true,titleClick='addCost'" v-if="checkRole('Create')"
+          <raise-button @add="dialog=true,titleClick='addPlantType'" v-if="checkRole('Create')"
                         v-show="$vuetify.breakpoint.mobile"></raise-button>
 
         </v-card-title>
@@ -50,10 +50,6 @@
 
           //Header
 
-          <template v-slot:header.order="{ header }">
-            {{ $t(header.text).toUpperCase() }}
-
-          </template>
           <template v-slot:header.title="{ header }">
             {{ $t(header.text).toUpperCase() }}
 
@@ -62,15 +58,6 @@
             {{ $t(header.text).toUpperCase() }}
 
           </template>
-
-          <template v-slot:header.cost="{ header }">
-            {{ $t(header.text).toUpperCase() }}
-          </template>
-
-          <template v-slot:header.createdAt="{ header }">
-            {{ $t(header.text).toUpperCase() }}
-          </template>
-
 
           <template v-slot:header.action="{ header }">
             {{ $t(header.text).toUpperCase() }}
@@ -81,14 +68,6 @@
           <template v-slot:item.title="{ item }">
             <div v-html="getTranslate(item.title)"></div>
           </template>
-          <template v-slot:item.page="{ item }">
-            <div v-if="!!item.page">
-              <v-chip v-for="d in item.page" style="color: blue">
-                {{ d }}
-              </v-chip>
-            </div>
-          </template>
-
           <template v-slot:item.body="{ item }">
             <div v-html="getTranslate(item.body)"></div>
           </template>
@@ -146,10 +125,10 @@
           </v-overlay>
           <v-card-title>
 
-            <v-icon v-if="titleClick==='addCost'" large color="green darken-2"
+            <v-icon v-if="titleClick==='addPlantType'" large color="green darken-2"
                     style="font-size: 50px !important;">library_add
             </v-icon>
-            <v-icon v-if="titleClick==='updateCost'" large color="green darken-2"
+            <v-icon v-if="titleClick==='updatePlantType'" large color="green darken-2"
                     style="font-size: 50px !important;">autorenew
             </v-icon>
             <span class="headline">{{ $t(titleClick) }}</span>
@@ -160,48 +139,59 @@
           </v-card-title>
           <v-card-text>
             <v-row>
-
-              <v-col cols="12" md="4" sm="4">
-                <v-select
-                    v-model="dataObj.majorId"
-                    :items="majorList"
-                    chips
-                    :label="$t('major')"
-                    outlined
-                    :rules="selectRules"
-                    rounded
-                    clearable
-                >
-                  <template v-slot:item='{item}'>
-                    <div style="font-size: 9px !important;" v-html='item.label'/>
-                  </template>
-                  <template v-slot:selection='{item}'>
-                    <div style="font-size: 9px !important;" v-html='item.label'/>
-                  </template>
-                </v-select>
-              </v-col>
-              <v-col cols="12" md="4" sm="4">
+              <v-col cols="12" sm="12" md="12">
                 <v-text-field
-                    v-model="dataObj.order"
-                    :label="$t('order')"
+                    v-model="newUrlList"
+                    @click="$refs.fileInputList.click()"
+                    :label="$t('uploadPhoto')"
                     outlined
-                    type="number"
                     rounded
+                    :suffix="dataObj.urlList && dataObj.urlList.length+' ' + $t('photo')"
                     hide-details
                 >
 
                 </v-text-field>
-              </v-col>
-              <v-col cols="12" md="4" sm="4">
-                <v-text-field
-                    v-model="dataObj.cost"
-                    :label="$t('cost')"
-                    outlined
-                    rounded
-                    hide-details
-                >
 
-                </v-text-field>
+                <input style="display: none !important;" type="file"
+                       @change="onFileSelectedList($event)"
+                       multiple
+                       ref="fileInputList"/>
+
+              </v-col>
+              <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
+                <v-row>
+                  <v-col
+                      v-for="(imgUrl,i) in dataObj.urlList"
+                      :key="imgUrl"
+                      class="d-flex child-flex"
+                      cols="3"
+                  >
+                    <v-img
+                        :src="imgUrl"
+                        lazy-src="/images/no-image-icon.png"
+                        aspect-ratio="1"
+                        class="grey lighten-2"
+                    >
+                      <remove-button @removeImg="removeImg(dataObj,imgUrl)" valid="false"
+                                     style="float: right;z-index: 9999"></remove-button>
+
+                      <template v-slot:placeholder>
+                        <v-row
+                            class="fill-height ma-0"
+                            align="center"
+                            justify="center"
+                        >
+                          <v-progress-circular
+                              indeterminate
+                              color="grey lighten-5"
+                          ></v-progress-circular>
+                        </v-row>
+                      </template>
+
+                    </v-img>
+
+                  </v-col>
+                </v-row>
               </v-col>
               <v-col cols="12" md="12" sm="12">
 
@@ -257,33 +247,32 @@
                 >
                 </vue-editor>
               </v-col>
-              <v-col cols="4" sm="4" md="4">
-                <h2>Photo</h2>
-                <v-img
-                    :src="newUrl"
-                    style="height: 275px; width: auto;"
-                    aspect-ratio="1"
-                    required
-                    lazy-src="/images/avatar.png"
-                    class="grey lighten-2"
-                    @click="$refs.fileInput.click()"
-                >
-                  <template v-slot:placeholder>
-                    <v-row
-                        class="fill-height ma-0"
-                        align="center"
-                        justify="center"
-                        v-show="isLoading"
-                    >
-                      <v-progress-circular indeterminate
-                                           color="grey lighten-5"></v-progress-circular>
-                    </v-row>
-                  </template>
-                </v-img>
-                <input style="display: none !important;" type="file" @change="onFileSelected"
-                       ref="fileInput"></input>
-              </v-col>
 
+
+              <v-col cols="12" sm="4" md="4">
+                <v-switch
+                    v-model="dataObj.addToHome"
+                    :label="$t('addToHome')"
+                ></v-switch>
+              </v-col>
+              <v-col cols="12" sm="4" md="4">
+                <v-textarea
+                    v-model="dataObj.iframeLive"
+                    :label="$t('iframeLive')"
+                    persistent-hint
+                    :dense="dense"
+                    outlined
+                ></v-textarea>
+              </v-col>
+              <v-col cols="12" sm="4" md="4">
+                <v-text-field
+                    v-model="dataObj.videoUrl"
+                    :label="$t('videoUrl')"
+                    persistent-hint
+                    :dense="dense"
+                    outlined
+                ></v-text-field>
+              </v-col>
 
             </v-row>
           </v-card-text>
@@ -299,7 +288,6 @@
     </v-dialog>
   </v-row>
 </template>
-
 <script>
 import AddButton from "../components/addButton"
 import RaiseButton from "../components/raiseAddButton"
@@ -311,7 +299,7 @@ import RemoveButton from "../components/removeButton"
 import {Constants} from "../../libs/constant"
 import GlobalFn from "../../libs/globalFn"
 import _ from 'lodash'
-import {Web_CostReact} from "../../collections/cost"
+import {Web_PlantTypeReact} from "../../collections/plantType"
 import numeral from "numeral";
 import {Meteor} from 'meteor/meteor';
 import "/imports/firebase/config";
@@ -326,7 +314,7 @@ export default {
     reactData() {
       let vm = this;
       if (Meteor.userId()) {
-        Web_CostReact.find({}).fetch();
+        Web_PlantTypeReact.find({}).fetch();
         vm.fetchDataTable(vm.search, vm.skip, vm.itemsPerPage + vm.skip);
       }
     }
@@ -336,8 +324,7 @@ export default {
   mounted() {
     this.$jQuery('body').off();
   },
-  props: {majorDoc: Object},
-  name: "Cost",
+  name: "PlantType",
   components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor, RemoveButton},
   data() {
     return {
@@ -369,13 +356,12 @@ export default {
       fileName: "",
       fileNameList: "",
       newUrlList: [],
-      majorList: [],
+      pagePlantTypeList: Constants.pagePlantTypeList,
       dataObj: {
         _id: "",
         branchId: "",
-        majorId: "",
-        order: "",
-        cost: "",
+        order: 1,
+        addToHome: false,
         title: {
           en: "",
           km: "",
@@ -386,26 +372,26 @@ export default {
           km: "",
           cn: "",
         },
-        url: "",
+        urlList: [],
+        videoUrl: "",
+        iframeLive: "",
       },
 
       nameRules: [
-        v => !!v || 'Cost Name is required',
+        v => !!v || 'PlantType Name is required',
       ],
-
+      phoneNumber: [
+        v => !!v || 'Phone Number is required',
+      ],
+      dob: [
+        v => !!v || 'Date Of Birth is required',
+      ],
       requireInput: [
         v => !!v || 'Please Input Data',
       ], selectRules: [
         v => !!v || 'Please Choose one',
       ],
       headers: [
-
-        {
-          text: 'order',
-          align: 'left',
-          sortable: true,
-          value: 'order',
-        },
         {
           text: 'title',
           align: 'left',
@@ -418,23 +404,13 @@ export default {
           sortable: true,
           value: 'body',
         },
-        {
-          text: 'cost',
-          align: 'left',
-          sortable: true,
-          value: 'cost',
-        },
-
         {text: 'actions', value: 'action', sortable: false, width: "120px"},
       ],
       dataLists: [],
-
-
       selectedFile: null,
       uploadValue: 0,
       newUrl: "",
-      loanConfig: {},
-      majorId: ""
+      loanConfig: {}
 
     }
   },
@@ -477,11 +453,7 @@ export default {
           let img1 = obj;
           let base64str = img1.data;
           let imgExt = img1.ext;
-          if (imgExt === "image/png") {
-            vm.selectedFile = tmpFile[0];
-          } else {
-            vm.selectedFile = Compress.convertBase64ToFile(base64str, imgExt), obj.alt.split(".")[0];
-          }
+          this.selectedFile = Compress.convertBase64ToFile(base64str, imgExt), obj.alt.split(".")[0];
         })
       })
 
@@ -521,7 +493,7 @@ export default {
     },
     onUpload(num) {
       let vm = this;
-      const storageRef = firebase.storage().ref("cost/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
+      const storageRef = firebase.storage().ref("plantType/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -598,7 +570,7 @@ export default {
     },
     onUploadList(selectedFile, fileName) {
       let vm = this;
-      const storageRef = firebase.storage().ref("Cost/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      const storageRef = firebase.storage().ref("plantType/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -652,14 +624,13 @@ export default {
       let vm = this;
       vm.loading = true;
       return new Promise((resolve, reject) => {
-        Meteor.call("web_fetchCost", {
+        Meteor.call("web_fetchPlantType", {
           q: val,
           filter: this.filter,
           sort: {sortBy: vm.sortBy || "", sortDesc: vm.sortDesc || ""},
           options: {skip: skip || 0, limit: limit || 10},
           branchId: vm.$store.state.branchId,
-          accessToken: Constants.secret,
-          majorId: vm.majorDoc._id
+          accessToken: Constants.secret
         }, (err, result) => {
           if (result) {
             vm.loading = false;
@@ -675,19 +646,6 @@ export default {
       });
 
     }, 50),
-    majorOption(q) {
-      let vm = this;
-      return new Promise((resolve, reject) => {
-        Meteor.call("sb_fetchMajorOption", q, Constants.secret, vm.$store.state.branchId, (err, result) => {
-          if (result) {
-            vm.majorList = result;
-            resolve(result);
-          } else {
-            reject(err.message);
-          }
-        })
-      })
-    },
     handleSubmit() {
       let vm = this;
 
@@ -696,7 +654,8 @@ export default {
         vm.dataObj.branchId = vm.$store.state.branchId;
         if (vm.dataObj._id === "") {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_insertCost", vm.dataObj, Constants.secret, (err, result) => {
+            console.log(vm.dataObj);
+            Meteor.call("web_insertPlantType", vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -721,7 +680,7 @@ export default {
 
         } else {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_updateCost", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_updatePlantType", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -749,7 +708,7 @@ export default {
       let vm = this;
 
       vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updateCost";
+      vm.titleClick = "updatePlantType";
       vm.dialog = true;
       Meteor.setTimeout(function () {
         vm.dataObj.address = doc.address || "";
@@ -764,7 +723,7 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        Meteor.call("web_removeCost", row, Constants.secret, (err, result) => {
+        Meteor.call("web_removePlantType", row, Constants.secret, (err, result) => {
           if (!err) {
             vm.$message({
               message: this.$t('removeSuccess'),
@@ -847,9 +806,7 @@ export default {
   created() {
     let vm = this;
     vm.fetchDataTable();
-    vm.majorOption();
-
-    Meteor.subscribe('web_costReact');
+    Meteor.subscribe('web_plantTypeReact');
 
   }
 }

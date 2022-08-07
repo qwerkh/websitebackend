@@ -353,7 +353,6 @@
     </v-dialog>
   </v-row>
 </template>
-
 <script>
 import AddButton from "../components/addButton"
 import RaiseButton from "../components/raiseAddButton"

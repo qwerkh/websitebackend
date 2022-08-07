@@ -8,17 +8,6 @@ import "./about";
 import "./contact";
 import "./product";
 import "./newsAndEvents";
-import "./client";
-import "./organization";
-import "./productionLine";
 import "./headerFooter";
-import "./media";
-import "./program";
-import "./major";
-import "./overview";
-import "./trainingProgram";
-import "./cost";
-import "./structure";
-import "./info";
-import "./rectorWelcom";
+import "./plantType";
 

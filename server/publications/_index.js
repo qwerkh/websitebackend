@@ -5,16 +5,6 @@ import "./exchange";
 import "./contact";
 import "./product";
 import "./newsAndEvents";
-import "./client";
-import "./productionLine";
-import "./media";
-import "./major";
-import "./program";
-import "./overview";
-import "./trainingProgram";
-import "./cost";
-import "./structure";
-import "./info";
 import "./about";
-import "./rectorWelcom";
+import "./plantType";
 

@@ -1,13 +1,7 @@
 import {Mongo} from "meteor/mongo";
 
-export const Web_TrainingProgram = new Mongo.Collection("web_trainingProgram");
-Web_TrainingProgram.schema = new SimpleSchema({
-    majorId:{
-        type: String
-    },
-    order: {
-        type: Number
-    },
+export const Web_PlantType = new Mongo.Collection("web_plantType");
+Web_PlantType.schema = new SimpleSchema({
     title: {
         type: Object,
         optional: true,
@@ -18,11 +12,23 @@ Web_TrainingProgram.schema = new SimpleSchema({
         optional: true,
         blackbox: true
     },
-    url: {
+    iframeLive: {
         type: String,
         optional: true
     },
-
+    videoUrl: {
+        type: String,
+        optional: true
+    },
+    urlList: {
+        type: [String],
+        optional: true
+    },
+    addToHome: {
+        type: Boolean,
+        optional: true,
+        defaultValue: false
+    },
     branchId: {
         type: String
     },
@@ -66,11 +72,11 @@ Web_TrainingProgram.schema = new SimpleSchema({
         }
     }
 });
-Web_TrainingProgram.attachSchema(Web_TrainingProgram.schema);
+Web_PlantType.attachSchema(Web_PlantType.schema);
 
 
-export const Web_TrainingProgramReact = new Mongo.Collection('web_trainingProgramReact');
-Web_TrainingProgramReact.schema = new SimpleSchema({
+export const Web_PlantTypeReact = new Mongo.Collection('web_plantTypeReact');
+Web_PlantTypeReact.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -115,10 +121,10 @@ Web_TrainingProgramReact.schema = new SimpleSchema({
     }
 });
 
-Web_TrainingProgramReact.attachSchema(Web_TrainingProgramReact.schema);
+Web_PlantTypeReact.attachSchema(Web_PlantTypeReact.schema);
 
-export const Web_TrainingProgramAudit = new Mongo.Collection('web_trainingProgramAudit');
-Web_TrainingProgramAudit.schema = new SimpleSchema({
+export const Web_PlantTypeAudit = new Mongo.Collection('web_plantTypeAudit');
+Web_PlantTypeAudit.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -170,4 +176,4 @@ Web_TrainingProgramAudit.schema = new SimpleSchema({
     }
 });
 
-Web_TrainingProgramAudit.attachSchema(Web_TrainingProgramAudit.schema);
+Web_PlantTypeAudit.attachSchema(Web_PlantTypeAudit.schema);

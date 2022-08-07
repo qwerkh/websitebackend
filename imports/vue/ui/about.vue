@@ -650,19 +650,6 @@ export default {
       });
 
     }, 50),
-    majorOption(q) {
-      let vm = this;
-      return new Promise((resolve, reject) => {
-        Meteor.call("sb_fetchMajorOption", q, Constants.secret, vm.$store.state.branchId, (err, result) => {
-          if (result) {
-            vm.majorList = result;
-            resolve(result);
-          } else {
-            reject(err.message);
-          }
-        })
-      })
-    },
     handleSubmit() {
       let vm = this;
 
@@ -822,7 +809,6 @@ export default {
   created() {
     let vm = this;
     vm.fetchDataTable();
-    vm.majorOption();
 
     Meteor.subscribe('web_aboutReact');
 

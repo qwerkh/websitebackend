@@ -208,52 +208,16 @@ export default {
           to: "/",
           hasRole: () => this.checkRole(Constants.data)
         },
-        // {
-        //   title: 'productPage',
-        //   action: "PR",
-        //   to: "/product",
-        //   hasRole: () => this.checkRole(Constants.data)
-        // },
-        // {
-        //   title: 'clientPage',
-        //   action: "CL",
-        //   to: "/client",
-        //   hasRole: () => this.checkRole(Constants.data)
-        // },
         {
-          title: 'post',
-          action: "PO",
-          to: "/post",
-          hasRole: () => this.checkRole(Constants.data)
-        },
-        /*{
-          title: 'mediaPage',
-          action: "MD",
-          to: "/media",
-          hasRole: () => this.checkRole(Constants.data)
-        },*/
-        // {
-        //   title: 'organizationPage',
-        //   action: "OR",
-        //   to: "/organization",
-        //   hasRole: () => this.checkRole(Constants.data)
-        // },
-        // {
-        //   title: 'productionLinePage',
-        //   action: "PL",
-        //   to: "/productionLine",
-        //   hasRole: () => this.checkRole(Constants.data)
-        // },
-        {
-          title: 'programPage',
-          action: "PG",
-          to: "/program",
+          title: 'plantType',
+          action: "PT",
+          to: "/plantType",
           hasRole: () => this.checkRole(Constants.data)
         },
         {
-          title: 'majorPage',
-          action: "MJ",
-          to: "/major",
+          title: 'productPage',
+          action: "PR",
+          to: "/product",
           hasRole: () => this.checkRole(Constants.data)
         },
         {
@@ -262,12 +226,7 @@ export default {
           to: "/about",
           hasRole: () => this.checkRole(Constants.data)
         },
-        {
-          title: 'rectorWelcom',
-          action: "RW",
-          to: "/rectorWelcom",
-          hasRole: () => this.checkRole(Constants.data)
-        },
+
         {
           title: 'contactPage',
           action: "CO",
