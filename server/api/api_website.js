@@ -105,7 +105,7 @@ API.add('post', GlobalFn.Namespace1('/post/fetch'), (req, res, next) => {
         })
 });
 API.add('post', GlobalFn.Namespace1('/product/fetch'), (req, res, next) => {
-    const {branchId} = req.body;
+    const {branchId, params} = req.body;
     res.charset = 'utf-8';
     const {token} = req.headers;
     try {
@@ -123,6 +123,298 @@ API.add('post', GlobalFn.Namespace1('/product/fetch'), (req, res, next) => {
     return new Promise((resolve, reject) => {
         Meteor.call('web_findProduct',
             branchId,
+            token,
+            params
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
+API.add('post', GlobalFn.Namespace1('/productWithFilter/fetch'), (req, res, next) => {
+    const {branchId, params} = req.body;
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    console.log(params);
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_fetchProductWithFilter',
+            {
+                branchId,
+                accessToken: token,
+                params
+            }
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
+API.add('post', GlobalFn.Namespace1('/planGift/fetch'), (req, res, next) => {
+    const {branchId, addToHome} = req.body;
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_findPlantGift',
+            branchId,
+            addToHome,
+            token
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
+API.add('post', GlobalFn.Namespace1('/tab/fetch'), (req, res, next) => {
+    const {branchId, addToHome} = req.body;
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_findTab',
+            branchId,
+            addToHome,
+            token
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
+API.add('post', GlobalFn.Namespace1('/planLifeStyle/fetch'), (req, res, next) => {
+    const {branchId, addToHome} = req.body;
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_findPlantLifeStyle',
+            branchId,
+            addToHome,
+            token
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
+API.add('post', GlobalFn.Namespace1('/planRoom/fetch'), (req, res, next) => {
+    const {branchId, addToHome} = req.body;
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_findPlantRoom',
+            branchId,
+            addToHome,
+            token
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
+API.add('post', GlobalFn.Namespace1('/planType/fetch'), (req, res, next) => {
+    const {branchId, addToHome} = req.body;
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_findPlantType',
+            branchId,
+            addToHome,
             token
             , (err, result) => {
                 if (!err) {

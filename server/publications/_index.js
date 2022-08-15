@@ -7,4 +7,7 @@ import "./product";
 import "./newsAndEvents";
 import "./about";
 import "./plantType";
+import "./plantLifeStyle";
+import "./plantGift";
+import "./plantRoom";
 

@@ -9,6 +9,9 @@ import Contact from "../../imports/vue/ui/contact";
 import Product from "../../imports/vue/ui/product";
 import HeaderFooter from "../../imports/vue/ui/headerFooter";
 import PlantType from "../../imports/vue/ui/plantType";
+import PlantLifeStyle from "../../imports/vue/ui/plantLifeStyle";
+import PlantGift from "../../imports/vue/ui/plantGift";
+import PlantRoom from "../../imports/vue/ui/plantRoom";
 
 
 export const data = [
@@ -64,6 +67,42 @@ export const data = [
         path: "/plantType",
         name: "plantType",
         component: PlantType,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },{
+        path: "/plantLifeStyle",
+        name: "plantLifeStyle",
+        component: PlantLifeStyle,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },{
+        path: "/plantGift",
+        name: "plantGift",
+        component: PlantGift,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },{
+        path: "/plantRoom",
+        name: "plantRoom",
+        component: PlantRoom,
         meta: {
             permissions: [
                 {

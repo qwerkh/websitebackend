@@ -1,7 +1,7 @@
 import {Mongo} from "meteor/mongo";
 
-export const Web_PlantType = new Mongo.Collection("web_plantType");
-Web_PlantType.schema = new SimpleSchema({
+export const Web_PlantLifeStyle = new Mongo.Collection("web_plantLifeStyle");
+Web_PlantLifeStyle.schema = new SimpleSchema({
     title: {
         type: Object,
         optional: true,
@@ -32,7 +32,7 @@ Web_PlantType.schema = new SimpleSchema({
     type: {
         type: String,
         optional: true,
-        defaultValue: "Plant Type"
+        defaultValue: "Plant Life Style"
     },
     branchId: {
         type: String
@@ -77,11 +77,11 @@ Web_PlantType.schema = new SimpleSchema({
         }
     }
 });
-Web_PlantType.attachSchema(Web_PlantType.schema);
+Web_PlantLifeStyle.attachSchema(Web_PlantLifeStyle.schema);
 
 
-export const Web_PlantTypeReact = new Mongo.Collection('web_plantTypeReact');
-Web_PlantTypeReact.schema = new SimpleSchema({
+export const Web_PlantLifeStyleReact = new Mongo.Collection('web_plantLifeStyleReact');
+Web_PlantLifeStyleReact.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -126,10 +126,10 @@ Web_PlantTypeReact.schema = new SimpleSchema({
     }
 });
 
-Web_PlantTypeReact.attachSchema(Web_PlantTypeReact.schema);
+Web_PlantLifeStyleReact.attachSchema(Web_PlantLifeStyleReact.schema);
 
-export const Web_PlantTypeAudit = new Mongo.Collection('web_plantTypeAudit');
-Web_PlantTypeAudit.schema = new SimpleSchema({
+export const Web_PlantLifeStyleAudit = new Mongo.Collection('web_plantLifeStyleAudit');
+Web_PlantLifeStyleAudit.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -181,4 +181,4 @@ Web_PlantTypeAudit.schema = new SimpleSchema({
     }
 });
 
-Web_PlantTypeAudit.attachSchema(Web_PlantTypeAudit.schema);
+Web_PlantLifeStyleAudit.attachSchema(Web_PlantLifeStyleAudit.schema);

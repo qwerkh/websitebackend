@@ -1,7 +1,7 @@
 import {Mongo} from "meteor/mongo";
 
-export const Web_PlantType = new Mongo.Collection("web_plantType");
-Web_PlantType.schema = new SimpleSchema({
+export const Web_PlantGift = new Mongo.Collection("web_plantGift");
+Web_PlantGift.schema = new SimpleSchema({
     title: {
         type: Object,
         optional: true,
@@ -24,15 +24,15 @@ Web_PlantType.schema = new SimpleSchema({
         type: [String],
         optional: true
     },
+    type: {
+        type: String,
+        optional: true,
+        defaultValue: "Plant Gift"
+    },
     addToHome: {
         type: Boolean,
         optional: true,
         defaultValue: false
-    },
-    type: {
-        type: String,
-        optional: true,
-        defaultValue: "Plant Type"
     },
     branchId: {
         type: String
@@ -77,11 +77,11 @@ Web_PlantType.schema = new SimpleSchema({
         }
     }
 });
-Web_PlantType.attachSchema(Web_PlantType.schema);
+Web_PlantGift.attachSchema(Web_PlantGift.schema);
 
 
-export const Web_PlantTypeReact = new Mongo.Collection('web_plantTypeReact');
-Web_PlantTypeReact.schema = new SimpleSchema({
+export const Web_PlantGiftReact = new Mongo.Collection('web_plantGiftReact');
+Web_PlantGiftReact.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -126,10 +126,10 @@ Web_PlantTypeReact.schema = new SimpleSchema({
     }
 });
 
-Web_PlantTypeReact.attachSchema(Web_PlantTypeReact.schema);
+Web_PlantGiftReact.attachSchema(Web_PlantGiftReact.schema);
 
-export const Web_PlantTypeAudit = new Mongo.Collection('web_plantTypeAudit');
-Web_PlantTypeAudit.schema = new SimpleSchema({
+export const Web_PlantGiftAudit = new Mongo.Collection('web_plantGiftAudit');
+Web_PlantGiftAudit.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -181,4 +181,4 @@ Web_PlantTypeAudit.schema = new SimpleSchema({
     }
 });
 
-Web_PlantTypeAudit.attachSchema(Web_PlantTypeAudit.schema);
+Web_PlantGiftAudit.attachSchema(Web_PlantGiftAudit.schema);

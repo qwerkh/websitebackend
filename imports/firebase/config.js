@@ -24,13 +24,22 @@ let fireBaseConfig = {
 
     //BIT
 
-    apiKey: "AIzaSyAv60RzQIeMTPTXcXTC0JyV3giVTrDaWdc",
-    authDomain: "bitedukh.firebaseapp.com",
-    projectId: "bitedukh",
-    storageBucket: "bitedukh.appspot.com",
-    messagingSenderId: "515164119200",
-    appId: "1:515164119200:web:be586f4aa06bc2f3a0a9c5",
-    measurementId: "G-NHPJGJYDQD"
+    // apiKey: "AIzaSyAv60RzQIeMTPTXcXTC0JyV3giVTrDaWdc",
+    // authDomain: "bitedukh.firebaseapp.com",
+    // projectId: "bitedukh",
+    // storageBucket: "bitedukh.appspot.com",
+    // messagingSenderId: "515164119200",
+    // appId: "1:515164119200:web:be586f4aa06bc2f3a0a9c5",
+    // measurementId: "G-NHPJGJYDQD"
+
+    //Greenhouse
+    apiKey: "AIzaSyD5akz2gF5y8tEvQkuDy3X87V0lYQIdUSI",
+    authDomain: "greenhouse-6f31c.firebaseapp.com",
+    projectId: "greenhouse-6f31c",
+    storageBucket: "greenhouse-6f31c.appspot.com",
+    messagingSenderId: "166332365805",
+    appId: "1:166332365805:web:eb7e26d949c0e77a8e05e4",
+    measurementId: "G-FW77EHW1S7"
 
 
 };

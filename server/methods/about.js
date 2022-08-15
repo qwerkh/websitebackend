@@ -116,7 +116,7 @@ Meteor.methods({
                 let selector = {};
 
                 selector.branchId = branchId;
-                return Web_About.find(selector, {sort: {createdAt: -1}, limit: 100}).fetch();
+                return Web_About.find(selector, {sort: {order:1,createdAt: -1}, limit: 100}).fetch();
 
             } catch (e) {
                 throw new Meteor.Error(e.message);

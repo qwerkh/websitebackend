@@ -12,7 +12,7 @@ module.exports = {
 
     meteor: {
         // TODO: change app name and path
-        name: 'bitwebsite',
+        name: 'greenhousewebsite',
         path: '../.',
 
         servers: {
@@ -26,9 +26,9 @@ module.exports = {
         env: {
             // TODO: Change to your app's url
             // If you are using ssl, it needs to start with https://
-            PORT: 6989,
+            PORT: 7683,
             ROOT_URL: 'http://172.104.54.34',
-            MONGO_URL: 'mongodb://localhost/bitwebsite',
+            MONGO_URL: 'mongodb://localhost/greenhousewebsite',
             //MONGO_OPLOG_URL: 'mongodb://mongodb/local',
             TZ: 'Asia/Bangkok'
         },

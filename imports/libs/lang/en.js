@@ -191,6 +191,25 @@ export const en = {
     plantTypePage:"Plant Type Page",
     addPlantType:"Add Plant Type",
     updatePlantType:"Update Plant Type",
+    plantLifeStyle:"Plant Life Style",
+    plantLifeStylePage:"Plant Life Style Page",
+    addPlantLifeStyle:"Add Plant Life Style",
+    updatePlantLifeStyle:"Update Plant Life Style",
+    care:"Care",
+    light:"Light",
+    size:"Size",
+    plantGift:"Plant Gift",
+    plantGiftPage:"Plant Gift Page",
+    addPlantGift:"Add Plant Gift",
+    updatePlantGift:"Update Plant Gift",
+
+    plantRoom:"Plant Room",
+    plantRoomPage:"Plant Room Page",
+    addPlantRoom:"Add Plant Room",
+    updatePlantRoom:"Update Plant Room",
+    minPrice:'Min Price',
+    maxPrice:"Max Price",
+    code:"Code"
 
 
 }

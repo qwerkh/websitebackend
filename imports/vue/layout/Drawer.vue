@@ -215,6 +215,24 @@ export default {
           hasRole: () => this.checkRole(Constants.data)
         },
         {
+          title: 'plantLifeStyle',
+          action: "LS",
+          to: "/plantLifeStyle",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
+          title: 'plantGift',
+          action: "PG",
+          to: "/plantGift",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
+          title: 'plantRoom',
+          action: "PR",
+          to: "/plantRoom",
+          hasRole: () => this.checkRole(Constants.data)
+        },
+        {
           title: 'productPage',
           action: "PR",
           to: "/product",

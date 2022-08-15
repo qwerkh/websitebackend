@@ -1,17 +1,15 @@
 import {Meteor} from 'meteor/meteor';
 import GlobalFn from "../../imports/libs/globalFn"
 import {
-    Web_PlantType,
-    Web_PlantTypeReact,
-    Web_PlantTypeAudit
-} from "../../imports/collections/plantType"
-import {Web_PlantGift} from "../../imports/collections/plantGift";
-import {Web_PlantRoom} from "../../imports/collections/plantRoom";
-import {Web_PlantLifeStyle} from "../../imports/collections/plantLifeStyle";
+    Web_PlantGift,
+    Web_PlantGiftReact,
+    Web_PlantGiftAudit
+} from "../../imports/collections/plantGift"
+import {Web_PlantType} from "../../imports/collections/plantType";
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
-    web_fetchPlantType({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
+    web_fetchPlantGift({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             let data = {
                 content: [],
@@ -66,7 +64,7 @@ Meteor.methods({
 
             selector.branchId = branchId;
 
-            data.content = Web_PlantType.aggregate([
+            data.content = Web_PlantGift.aggregate([
                     {
                         $match: selector
                     }
@@ -87,16 +85,16 @@ Meteor.methods({
                 {
                     allowDiskUse: true
                 });
-            data.countContent = Web_PlantType.find(selector).count();
+            data.countContent = Web_PlantGift.find(selector).count();
             return data;
         }
     },
-    web_insertPlantType(doc, accessToken) {
+    web_insertPlantGift(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                let id = Web_PlantType.insert(doc);
+                let id = Web_PlantGift.insert(doc);
                 if (id) {
-                    GlobalFn.collectionReact(Web_PlantTypeReact, id);
+                    GlobalFn.collectionReact(Web_PlantGiftReact, id);
                 }
                 return id;
             } catch (e) {
@@ -105,13 +103,13 @@ Meteor.methods({
         }
 
     },
-    web_updatePlantType(id, doc, accessToken) {
+    web_updatePlantGift(id, doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                let oldDoc = Web_PlantType.findOne({_id: id});
-                let isUpdated = Web_PlantType.update({_id: id}, {$set: doc});
+                let oldDoc = Web_PlantGift.findOne({_id: id});
+                let isUpdated = Web_PlantGift.update({_id: id}, {$set: doc});
                 if (isUpdated) {
-                    GlobalFn.collectionReact(Web_PlantTypeReact, id, Web_PlantTypeAudit, oldDoc, "Update");
+                    GlobalFn.collectionReact(Web_PlantGiftReact, id, Web_PlantGiftAudit, oldDoc, "Update");
                 }
                 return isUpdated;
             } catch (e) {
@@ -119,13 +117,13 @@ Meteor.methods({
             }
         }
     },
-    web_removePlantType(doc, accessToken) {
+    web_removePlantGift(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                let isRemoved = Web_PlantType.remove({_id: doc._id});
+                let isRemoved = Web_PlantGift.remove({_id: doc._id});
 
                 if (isRemoved) {
-                    GlobalFn.collectionReact(Web_PlantTypeReact, doc._id, Web_PlantTypeAudit, doc, "Remove");
+                    GlobalFn.collectionReact(Web_PlantGiftReact, doc._id, Web_PlantGiftAudit, doc, "Remove");
                 }
                 return isRemoved;
             } catch (e) {
@@ -133,7 +131,7 @@ Meteor.methods({
             }
         }
     },
-    web_findPlantType(branchId, addToHome, accessToken) {
+    web_findPlantGift(branchId, addToHome, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let selector = {};
@@ -143,46 +141,21 @@ Meteor.methods({
                     selector.addToHome = true;
                 }
 
-                return Web_PlantType.find(selector, {sort: {createdAt: -1}}).fetch();
+                return Web_PlantGift.find(selector, {sort: {createdAt: -1}}).fetch();
 
             } catch (e) {
                 throw new Meteor.Error(e.message);
             }
         }
     },
-    web_findTab(branchId, addToHome, accessToken) {
-        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
-            try {
-                let selector = {};
-
-                selector.branchId = branchId;
-                if (addToHome || addToHome === "true") {
-                    selector.addToHome = true;
-                }
-                let tab = {};
-                let plantType = Web_PlantType.find(selector, {sort: {createdAt: -1}}).fetch();
-                let plantGift = Web_PlantGift.find(selector, {sort: {createdAt: -1}}).fetch();
-                let plantRoom = Web_PlantRoom.find(selector, {sort: {createdAt: -1}}).fetch();
-                let plantLifeStyle = Web_PlantLifeStyle.find(selector, {sort: {createdAt: -1}}).fetch();
-                tab.plantType = plantType;
-                tab.plantGift = plantGift;
-                tab.plantRoom = plantRoom;
-                tab.plantLifeStyle = plantLifeStyle;
-                return tab;
-
-            } catch (e) {
-                throw new Meteor.Error(e.message);
-            }
-        }
-    },
-    web_findPlantTypeOpt(branchId, accessToken) {
+    web_findPlantGiftOpt(branchId, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let selector = {};
 
                 selector.branchId = branchId;
 
-                return Web_PlantType.find(selector, {sort: {createdAt: 1}}).fetch().map(o => ({
+                return Web_PlantGift.find(selector, {sort: {createdAt: 1}}).fetch().map(o => ({
                     label: o.title.en,
                     value: o._id
                 }));
@@ -198,8 +171,8 @@ Meteor.methods({
 
 //Unique
 
-Web_PlantType._ensureIndex({
+Web_PlantGift._ensureIndex({
     title: 1,
     body: 1,
     branchId: 1
-}, {unique: 1, name: "Web_PlantTypeUnique"});
+}, {unique: 1, name: "Web_PlantGiftUnique"});

@@ -8,7 +8,7 @@
         <v-card-title icon="mdi-index">
           <v-toolbar-title v-show="!$vuetify.breakpoint.mobile">
             <v-icon style="font-size: 70px !important;" large color="green darken-2">people</v-icon>
-            {{ $t("product") }}
+            {{ $t("plantRoom") }}
           </v-toolbar-title>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
           <v-text-field
@@ -19,11 +19,11 @@
               hide-details
           ></v-text-field>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
-          <add-button @add="dialog=true,titleClick='addProduct'" v-if="checkRole('Create')"
+          <add-button @add="dialog=true,titleClick='addPlantRoom'" v-if="checkRole('Create')"
                       v-shortkey="['+']"
-                      @shortkey.native="dialog=true,titleClick='addProduct'"
+                      @shortkey.native="dialog=true,titleClick='addPlantRoom'"
                       v-show="!$vuetify.breakpoint.mobile"></add-button>
-          <raise-button @add="dialog=true,titleClick='addProduct'" v-if="checkRole('Create')"
+          <raise-button @add="dialog=true,titleClick='addPlantRoom'" v-if="checkRole('Create')"
                         v-show="$vuetify.breakpoint.mobile"></raise-button>
 
         </v-card-title>
@@ -54,33 +54,7 @@
             {{ $t(header.text).toUpperCase() }}
 
           </template>
-          <template v-slot:header.minPrice="{ header }">
-            {{ $t(header.text).toUpperCase() }}
-
-          </template>
-          <template v-slot:header.maxPrice="{ header }">
-            {{ $t(header.text).toUpperCase() }}
-
-          </template>
-          <template v-slot:header.currency="{ header }">
-            {{ $t(header.text).toUpperCase() }}
-
-          </template>
           <template v-slot:header.body="{ header }">
-            {{ $t(header.text).toUpperCase() }}
-
-          </template>
-
-
-          <template v-slot:header.order="{ header }">
-            {{ $t(header.text).toUpperCase() }}
-
-          </template>
-          <template v-slot:header.date="{ header }">
-            {{ $t(header.text).toUpperCase() }}
-
-          </template>
-          <template v-slot:header.price="{ header }">
             {{ $t(header.text).toUpperCase() }}
 
           </template>
@@ -90,24 +64,15 @@
 
           </template>
           //Body
+
           <template v-slot:item.title="{ item }">
             <div v-html="getTranslate(item.title)"></div>
-          </template>
-
-          <template v-slot:item.createdAt="{ item }">
-            {{ item.createdAt | momentFormat }}
           </template>
           <template v-slot:item.body="{ item }">
             <div v-html="getTranslate(item.body)"></div>
           </template>
-
           //Action
           <template v-slot:item.action="{ item }">
-            <v-btn color="success" outlined class="table-action-button mr-2" text icon
-                   v-if="checkRole('Update')"
-                   @click.native="handleUpdatePrice(item)">
-              P
-            </v-btn>
             <v-btn color="primary" outlined class="table-action-button mr-2" text icon
                    v-if="checkRole('Update')"
                    @click.native="handleUpdate(item)">
@@ -160,10 +125,10 @@
           </v-overlay>
           <v-card-title>
 
-            <v-icon v-if="titleClick==='addProduct'" large color="green darken-2"
+            <v-icon v-if="titleClick==='addPlantRoom'" large color="green darken-2"
                     style="font-size: 50px !important;">library_add
             </v-icon>
-            <v-icon v-if="titleClick==='updateProduct'" large color="green darken-2"
+            <v-icon v-if="titleClick==='updatePlantRoom'" large color="green darken-2"
                     style="font-size: 50px !important;">autorenew
             </v-icon>
             <span class="headline">{{ $t(titleClick) }}</span>
@@ -174,6 +139,60 @@
           </v-card-title>
           <v-card-text>
             <v-row>
+              <v-col cols="12" sm="12" md="12">
+                <v-text-field
+                    v-model="newUrlList"
+                    @click="$refs.fileInputList.click()"
+                    :label="$t('uploadPhoto')"
+                    outlined
+                    rounded
+                    :suffix="dataObj.urlList && dataObj.urlList.length+' ' + $t('photo')"
+                    hide-details
+                >
+
+                </v-text-field>
+
+                <input style="display: none !important;" type="file"
+                       @change="onFileSelectedList($event)"
+                       multiple
+                       ref="fileInputList"/>
+
+              </v-col>
+              <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
+                <v-row>
+                  <v-col
+                      v-for="(imgUrl,i) in dataObj.urlList"
+                      :key="imgUrl"
+                      class="d-flex child-flex"
+                      cols="3"
+                  >
+                    <v-img
+                        :src="imgUrl"
+                        lazy-src="/images/no-image-icon.png"
+                        aspect-ratio="1"
+                        class="grey lighten-2"
+                    >
+                      <remove-button @removeImg="removeImg(dataObj,imgUrl)" valid="false"
+                                     style="float: right;z-index: 9999"></remove-button>
+
+                      <template v-slot:placeholder>
+                        <v-row
+                            class="fill-height ma-0"
+                            align="center"
+                            justify="center"
+                        >
+                          <v-progress-circular
+                              indeterminate
+                              color="grey lighten-5"
+                          ></v-progress-circular>
+                        </v-row>
+                      </template>
+
+                    </v-img>
+
+                  </v-col>
+                </v-row>
+              </v-col>
               <v-col cols="12" md="12" sm="12">
 
                 {{ $t('title') }} (English , Khmer ,Chinese)
@@ -229,209 +248,12 @@
                 </vue-editor>
               </v-col>
 
+
               <v-col cols="12" sm="4" md="4">
-                <v-text-field
-                    v-model="dataObj.code"
-                    :label="$t('code')"
-                    persistent-hint
-                    :dense="dense"
-                    outlined
-                ></v-text-field>
-              </v-col>
-              <v-col
-                  cols="12"
-                  sm="4"
-                  md="4"
-              >
-                <v-select
-                    v-model="dataObj.plantTypeId"
-                    :items="plantTypeOpt"
-                    chips
-                    :label="$t('plantType')"
-                    multiple
-                    item-text="label"
-                    item-value="value"
-                    outlined
-                    rounded
-                    clearable
-                >
-                  <template v-slot:item='{item}'>
-                    <div v-html='item.label'/>
-                  </template>
-                  <template v-slot:selection='{item}'>
-                    <div v-html='item.label'/>
-                  </template>
-                </v-select>
-              </v-col>
-
-              <v-col
-                  cols="12"
-                  sm="4"
-                  md="4"
-              >
-                <v-select
-                    v-model="dataObj.plantLifeStyleId"
-                    :items="plantLifeStyleOpt"
-                    chips
-                    :label="$t('plantLifeStyle')"
-                    multiple
-                    outlined
-                    item-text="label"
-                    item-value="value"
-                    rounded
-                    clearable
-                >
-                  <template v-slot:item='{item}'>
-                    <div v-html='item.label'/>
-                  </template>
-                  <template v-slot:selection='{item}'>
-                    <div v-html='item.label'/>
-                  </template>
-                </v-select>
-              </v-col>
-
-              <v-col
-                  cols="12"
-                  sm="4"
-                  md="4"
-              >
-                <v-select
-                    v-model="dataObj.plantGiftId"
-                    :items="plantGiftOpt"
-                    chips
-                    :label="$t('plantGift')"
-                    multiple
-                    outlined
-                    item-text="label"
-                    item-value="value"
-                    rounded
-                    clearable
-                >
-                  <template v-slot:item='{item}'>
-                    <div v-html='item.label'/>
-                  </template>
-                  <template v-slot:selection='{item}'>
-                    <div v-html='item.label'/>
-                  </template>
-                </v-select>
-              </v-col>
-
-              <v-col
-                  cols="12"
-                  sm="4"
-                  md="4"
-              >
-                <v-select
-                    v-model="dataObj.plantRoomId"
-                    :items="plantRoomOpt"
-                    chips
-                    :label="$t('plantRoom')"
-                    multiple
-                    item-text="label"
-                    item-value="value"
-                    outlined
-                    rounded
-                    clearable
-                >
-                  <template v-slot:item='{item}'>
-                    <div v-html='item.label'/>
-                  </template>
-                  <template v-slot:selection='{item}'>
-                    <div v-html='item.label'/>
-                  </template>
-                </v-select>
-              </v-col>
-
-              <v-col
-                  cols="12"
-                  sm="4"
-                  md="4"
-              >
-                <v-select
-                    v-model="dataObj.care"
-                    :items="careOpt"
-                    chips
-                    :label="$t('care')"
-                    multiple
-                    outlined
-                    item-text="label"
-                    item-value="value"
-                    rounded
-                    clearable
-                ></v-select>
-              </v-col>
-              <v-col
-                  cols="12"
-                  sm="4"
-                  md="4"
-              >
-                <v-select
-                    v-model="dataObj.size"
-                    :items="sizeOpt"
-                    chips
-                    :label="$t('size')"
-                    multiple
-                    outlined
-                    item-text="label"
-                    item-value="value"
-                    rounded
-                    clearable
-                ></v-select>
-              </v-col>
-              <v-col
-                  cols="12"
-                  sm="4"
-                  md="4"
-              >
-                <v-select
-                    v-model="dataObj.light"
-                    :items="lightOpt"
-                    chips
-                    :label="$t('light')"
-                    multiple
-                    item-text="label"
-                    item-value="value"
-                    outlined
-                    rounded
-                    clearable
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <v-text-field
-                    v-model="dataObj.minPrice"
-                    :label="$t('minPrice')"
-                    persistent-hint
-                    type="number"
-                    :dense="dense"
-                    outlined
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <v-text-field
-                    v-model="dataObj.maxPrice"
-                    :label="$t('maxPrice')"
-                    persistent-hint
-                    type="number"
-                    :dense="dense"
-                    outlined
-                ></v-text-field>
-              </v-col>
-              <v-col
-                  cols="12"
-                  sm="4"
-                  md="4"
-              >
-                <v-select
-                    v-model="dataObj.currency"
-                    :items="currencyOpt"
-                    chips
-                    :label="$t('currency')"
-                    item-text="label"
-                    item-value="value"
-                    outlined
-                    rounded
-                    clearable
-                ></v-select>
+                <v-switch
+                    v-model="dataObj.addToHome"
+                    :label="$t('addToHome')"
+                ></v-switch>
               </v-col>
               <v-col cols="12" sm="4" md="4">
                 <v-textarea
@@ -452,87 +274,6 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="12" sm="12" md="12">
-                <v-text-field
-                    v-model="newUrlList"
-                    @click="$refs.fileInputList.click()"
-                    :label="$t('uploadPhoto')"
-                    outlined
-                    rounded
-                    :suffix="dataObj.urlList && dataObj.urlList.length+' ' + $t('photo')"
-                    hide-details
-                >
-
-                </v-text-field>
-
-                <input style="display: none !important;" type="file"
-                       @change="onFileSelectedList($event)"
-                       multiple
-                       ref="fileInputList"/>
-
-              </v-col>
-              <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
-                <v-row>
-                  <v-col
-                      v-for="(imgUrl,i) in dataObj.urlList"
-                      :key="imgUrl"
-                      class="d-flex child-flex"
-                      cols="3"
-                  >
-                    <v-img
-                        :src="imgUrl"
-                        lazy-src="/images/no-image-icon.png"
-                        aspect-ratio="1"
-                        class="grey lighten-2"
-                    >
-                      <remove-button @removeImg="removeImg(dataObj,imgUrl)" valid="false"
-                                     style="float: right;z-index: 9999"></remove-button>
-
-                      <template v-slot:placeholder>
-                        <v-row
-                            class="fill-height ma-0"
-                            align="center"
-                            justify="center"
-                        >
-                          <v-progress-circular
-                              indeterminate
-                              color="grey lighten-5"
-                          ></v-progress-circular>
-                        </v-row>
-                      </template>
-
-                    </v-img>
-
-                  </v-col>
-                </v-row>
-              </v-col>
-
-              <h2>Image To Show</h2>
-              <v-col cols="4" sm="4" md="4">
-                <v-img
-                    :src="newUrl"
-                    style="height: 275px; width: auto;"
-                    aspect-ratio="1"
-                    required
-                    lazy-src="/images/avatar.png"
-                    class="grey lighten-2"
-                    @click="$refs.fileInput.click()"
-                >
-                  <template v-slot:placeholder>
-                    <v-row
-                        class="fill-height ma-0"
-                        align="center"
-                        justify="center"
-                        v-show="isLoading"
-                    >
-                      <v-progress-circular indeterminate
-                                           color="grey lighten-5"></v-progress-circular>
-                    </v-row>
-                  </template>
-                </v-img>
-                <input style="display: none !important;" type="file" @change="onFileSelected"
-                       ref="fileInput"></input>
-              </v-col>
             </v-row>
           </v-card-text>
           <v-card-actions>
@@ -547,17 +288,18 @@
     </v-dialog>
   </v-row>
 </template>
-
 <script>
 import AddButton from "../components/addButton"
 import RaiseButton from "../components/raiseAddButton"
 import SaveButton from "../components/saveButton"
 import CloseButton from "../components/closeButton"
 import ResetButton from "../components/resetButton"
+import RemoveButton from "../components/removeButton"
+
 import {Constants} from "../../libs/constant"
 import GlobalFn from "../../libs/globalFn"
 import _ from 'lodash'
-import {Web_ProductReact} from "../../collections/product"
+import {Web_PlantRoomReact} from "../../collections/plantRoom"
 import numeral from "numeral";
 import {Meteor} from 'meteor/meteor';
 import "/imports/firebase/config";
@@ -566,34 +308,34 @@ import firebase from "firebase/compat";
 const Compress = require('compress.js').default
 import {VueEditor} from "vue2-editor";
 import MyMixin from "../mixins/mixin"
-import RemoveButton from "../components/removeButton"
 
 export default {
   meteor: {
     reactData() {
       let vm = this;
       if (Meteor.userId()) {
-        Web_ProductReact.find({}).fetch();
+        Web_PlantRoomReact.find({}).fetch();
         vm.fetchDataTable(vm.search, vm.skip, vm.itemsPerPage + vm.skip);
       }
     }
   },
   mixins: [MyMixin],
+
   mounted() {
     this.$jQuery('body').off();
   },
-  name: "Product",
-  components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor,RemoveButton},
+  name: "PlantRoom",
+  components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor, RemoveButton},
   data() {
     return {
       dense: this.$store.state.isDense,
-      modalDate: false,
       isLoading: false,
       isLoading1: false,
       isLoading2: false,
       isLoading3: false,
       isLoading4: false,
       isLoading5: false,
+      isLoadingImg: false,
       fullPage: false,
       dialog: false,
       search: '',
@@ -608,16 +350,18 @@ export default {
       limit: 10,
       filter: "",
       loading: true,
-      isLoadingImg: false,
       valid: true,
       titleClick: "",
       pageList: [10, 20, 50, 100, 200],
       fileName: "",
+      fileNameList: "",
       newUrlList: [],
-      dateFormatted: moment().format("DD/MM/YYYY"),
+      pagePlantRoomList: Constants.pagePlantRoomList,
       dataObj: {
         _id: "",
         branchId: "",
+        order: 1,
+        addToHome: false,
         title: {
           en: "",
           km: "",
@@ -628,50 +372,13 @@ export default {
           km: "",
           cn: "",
         },
-        url: "",
-        code: "",
         urlList: [],
-        plantTypeId: [],
-        plantGiftId: [],
-        plantLifeStyleId: [],
-        plantRoomId: [],
-        minPrice: "",
-        maxPrice: "",
-        currency: "USD",
-        size: [],
-        light: [],
-        care: [],
+        videoUrl: "",
         iframeLive: "",
-        videoUrl: ""
       },
-      plantTypeOpt: [],
-      plantGiftOpt: [],
-      plantLifeStyleOpt: [],
-      plantRoomOpt: [],
-      sizeOpt: [
-        {label: "Small", value: "Small"},
-        {label: "Medium", value: "Medium"},
-        {label: "Large", value: "Large"},
-      ],
-      lightOpt: [
-        {label: "Low Light", value: "Low Light"},
-        {label: "Indirect Light", value: "Indirect Light"},
-        {label: "Direct Light", value: "Direct Light"},
-      ],
-      careOpt: [
-        {label: "Easy", value: "Easy"},
-        {label: "Moderate", value: "Moderate"},
-        {label: "Advanced", value: "Advanced"},
-
-      ],
-      currencyOpt: [
-        {label: "$", value: "USD"},
-        {label: "៛", value: "KHR"},
-        {label: "B", value: "THB"},
-      ],
 
       nameRules: [
-        v => !!v || 'Product Name is required',
+        v => !!v || 'PlantRoom Name is required',
       ],
       phoneNumber: [
         v => !!v || 'Phone Number is required',
@@ -685,7 +392,7 @@ export default {
         v => !!v || 'Please Choose one',
       ],
       headers: [
-       {
+        {
           text: 'title',
           align: 'left',
           sortable: true,
@@ -697,38 +404,13 @@ export default {
           sortable: true,
           value: 'body',
         },
-        {
-          text: 'minPrice',
-          align: 'left',
-          sortable: true,
-          value: 'minPrice',
-          width: "100px"
-        },
-        {
-          text: 'maxPrice',
-          align: 'left',
-          sortable: true,
-          value: 'maxPrice',
-          width: "100px"
-        },
-        {
-          text: 'currency',
-          align: 'left',
-          sortable: true,
-          value: 'currency',
-          width: "100px"
-        },
-
-        {text: 'actions', value: 'action', sortable: false, width: "170px"},
+        {text: 'actions', value: 'action', sortable: false, width: "120px"},
       ],
       dataLists: [],
-
-
       selectedFile: null,
       uploadValue: 0,
       newUrl: "",
-      loanConfig: {},
-      dialogPrice: false
+      loanConfig: {}
 
     }
   },
@@ -811,7 +493,7 @@ export default {
     },
     onUpload(num) {
       let vm = this;
-      const storageRef = firebase.storage().ref("product/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
+      const storageRef = firebase.storage().ref("plantRoom/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -888,7 +570,7 @@ export default {
     },
     onUploadList(selectedFile, fileName) {
       let vm = this;
-      const storageRef = firebase.storage().ref("product/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      const storageRef = firebase.storage().ref("plantRoom/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -942,7 +624,7 @@ export default {
       let vm = this;
       vm.loading = true;
       return new Promise((resolve, reject) => {
-        Meteor.call("web_fetchProduct", {
+        Meteor.call("web_fetchPlantRoom", {
           q: val,
           filter: this.filter,
           sort: {sortBy: vm.sortBy || "", sortDesc: vm.sortDesc || ""},
@@ -964,62 +646,6 @@ export default {
       });
 
     }, 50),
-    queryPlantTypeOption() {
-      let vm = this;
-      return new Promise((resolve, reject) => {
-        Meteor.call("web_findPlantTypeOpt", vm.$store.state.branchId, Constants.secret, (err, result) => {
-          if (result) {
-            vm.plantTypeOpt = result;
-            resolve(result);
-          } else {
-            reject(err.message);
-          }
-        })
-      })
-
-    },
-    queryPlantLifeStyleOption() {
-      let vm = this;
-      return new Promise((resolve, reject) => {
-        Meteor.call("web_findPlantLifeStyleOpt", vm.$store.state.branchId, Constants.secret, (err, result) => {
-          if (result) {
-            vm.plantLifeStyleOpt = result;
-            resolve(result);
-          } else {
-            reject(err.message);
-          }
-        })
-      })
-
-    },
-    queryPlantGiftOption() {
-      let vm = this;
-      return new Promise((resolve, reject) => {
-        Meteor.call("web_findPlantGiftOpt", vm.$store.state.branchId, Constants.secret, (err, result) => {
-          if (result) {
-            vm.plantGiftOpt = result;
-            resolve(result);
-          } else {
-            reject(err.message);
-          }
-        })
-      })
-
-    },
-    queryPlantRoomOption() {
-      let vm = this;
-      return new Promise((resolve, reject) => {
-        Meteor.call("web_findPlantRoomOpt", vm.$store.state.branchId, Constants.secret, (err, result) => {
-          if (result) {
-            vm.plantRoomOpt = result;
-            resolve(result);
-          } else {
-            reject(err.message);
-          }
-        })
-      })
-
-    },
     handleSubmit() {
       let vm = this;
 
@@ -1028,9 +654,10 @@ export default {
         vm.dataObj.branchId = vm.$store.state.branchId;
         if (vm.dataObj._id === "") {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_insertProduct", vm.dataObj, Constants.secret, (err, result) => {
+            console.log(vm.dataObj);
+            Meteor.call("web_insertPlantRoom", vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
-                vm.$message({
+                this.$message({
                   message: this.$t('successNotification'),
                   showClose: true,
                   type: 'success'
@@ -1053,9 +680,9 @@ export default {
 
         } else {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_updateProduct", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_updatePlantRoom", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
-                vm.$message({
+                this.$message({
                   message: this.$t('successNotification'),
                   showClose: true,
                   type: 'success'
@@ -1081,7 +708,7 @@ export default {
       let vm = this;
 
       vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updateProduct";
+      vm.titleClick = "updatePlantRoom";
       vm.dialog = true;
       Meteor.setTimeout(function () {
         vm.dataObj.address = doc.address || "";
@@ -1096,7 +723,7 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        Meteor.call("web_removeProduct", row, Constants.secret, (err, result) => {
+        Meteor.call("web_removePlantRoom", row, Constants.secret, (err, result) => {
           if (!err) {
             vm.$message({
               message: this.$t('removeSuccess'),
@@ -1121,12 +748,11 @@ export default {
 
   },
   watch: {
-
     dialog(val) {
       let vm = this;
       if (val === false) {
         this.$refs.formData.reset();
-        vm.newUrl = "";
+
         vm.dataObj = {
           _id: "",
           branchId: "",
@@ -1142,9 +768,11 @@ export default {
             cn: "",
           },
           url: "",
-        }
-        vm.dataObj.url = "";
+        };
+
         vm.dataObj._id = "";
+        vm.newUrl = "";
+        vm.dataObj.url = "";
 
 
       }
@@ -1178,11 +806,7 @@ export default {
   created() {
     let vm = this;
     vm.fetchDataTable();
-    vm.queryPlantTypeOption();
-    vm.queryPlantLifeStyleOption();
-    vm.queryPlantGiftOption();
-    vm.queryPlantRoomOption();
-    Meteor.subscribe('web_productReact');
+    Meteor.subscribe('web_plantRoomReact');
 
   }
 }

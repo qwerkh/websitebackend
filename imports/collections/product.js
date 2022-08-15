@@ -12,20 +12,71 @@ Web_Product.schema = new SimpleSchema({
         optional: true,
         blackbox: true
     },
-    date: {
-        type: String,
-        optional: true
-    },
-    price: {
+    minPrice: {
         type: Number,
         decimal: true,
         optional: true
     },
-    order: {
+    maxPrice: {
         type: Number,
-        defaultValue: 1
+        decimal: true,
+        optional: true
+    },
+    currency: {
+        type: String,
+    },
+    code: {
+        type: String,
+        optional:true
+    },
+    like: {
+        type: Number,
+        optional: true,
+        defaultValue: 0
+    },
+    view: {
+        type: Number,
+        optional: true,
+        defaultValue: 0
+    },
+    plantTypeId: {
+        type: [String],
+        optional: true
+    },
+    plantLifeStyleId: {
+        type: [String],
+        optional: true
+    },
+    plantGiftId: {
+        type: [String],
+        optional: true
+    },
+    plantRoomId: {
+        type: [String],
+        optional: true
+    },
+    size: {
+        type: [String],
+        optional: true
+    },
+    light: {
+        type: [String],
+        optional: true
+    },
+    care: {
+        type: [String],
+        optional: true
     },
     url: {
+        type: String,
+        optional: true
+    },
+    urlList: {
+        type: [String],
+        optional: true
+    },
+
+    viewDate: {
         type: String,
         optional: true
     },

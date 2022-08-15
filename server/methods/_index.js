@@ -10,4 +10,7 @@ import "./product";
 import "./newsAndEvents";
 import "./headerFooter";
 import "./plantType";
+import "./plantLifeStyle";
+import "./plantGift";
+import "./plantRoom";
 

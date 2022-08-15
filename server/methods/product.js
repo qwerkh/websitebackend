@@ -37,7 +37,7 @@ Meteor.methods({
                 }
             }
 
-            selector.branchId=branchId;
+            selector.branchId = branchId;
 
             data.content = Web_Product.aggregate([
                     {
@@ -128,10 +128,32 @@ Meteor.methods({
             }
         }
     },
-    web_findProduct(branchId, accessToken) {
+    web_findProduct(branchId, accessToken, params) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let selector = {};
+                if (params.size) {
+                    selector.size = {$elemMatch: {$eq: params.size}};
+                }
+                if (params.light) {
+                    selector.light = {$elemMatch: {$eq: params.light}};
+                }
+                if (params.care) {
+                    selector.care = {$elemMatch: {$eq: params.care}};
+                }
+                if (params.plantTypeId) {
+                    selector.plantTypeId = {$elemMatch: {$eq: params.plantTypeId}};
+                }
+                if (params.plantLifeStyleId) {
+                    selector.plantLifeStyleId = {$elemMatch: {$eq: params.plantLifeStyleId}};
+                }
+
+                if (params.plantGiftId) {
+                    selector.plantGiftId = {$elemMatch: {$eq: params.plantGiftId}};
+                }
+                if (params.plantRoomId) {
+                    selector.plantRoomId = {$elemMatch: {$eq: params.plantRoomId}};
+                }
 
                 selector.branchId = branchId;
                 return Web_Product.find(selector, {sort: {order: 1}}).fetch();
@@ -139,6 +161,80 @@ Meteor.methods({
             } catch (e) {
                 throw new Meteor.Error(e.message);
             }
+        }
+    },
+    web_fetchProductWithFilter({q, params, options = {limit: 500, skip: 0}, branchId, accessToken}) {
+        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
+
+            let selector = {};
+            let sortObj = {};
+            if (params.sortBy) {
+                sortObj = params.sortBy;
+            } else {
+                sortObj = {createdAt: -1};
+            }
+            if (!!q) {
+                let reg = new RegExp(q);
+
+                selector.$or = [
+                    {"title.en": {$regex: reg, $options: 'mi'}},
+                    {"title.km": {$regex: reg, $options: 'mi'}},
+                    {"title.cn": {$regex: reg, $options: 'mi'}},
+                ];
+
+            }
+            if (params.price) {
+                selector.$or = params.price;
+            }
+
+            if (params.care) {
+                selector.care = params.care;
+            }
+
+            if (params.light) {
+                selector.light = params.light;
+            }
+
+            if (params.size) {
+                selector.size = params.size;
+            }
+
+            if (params.plantTypeId) {
+                selector.plantTypeId = params.plantTypeId;
+            }
+            if (params.plantLifeStyleId) {
+                selector.plantLifeStyleId = params.plantLifeStyleId;
+            }
+            if (params.plantGiftId) {
+                selector.plantGiftId = params.plantGiftId;
+            }
+            if (params.plantRoomId) {
+                selector.plantRoomId = params.plantRoomId;
+            }
+
+            selector.branchId = branchId;
+
+
+            let data = Web_Product.aggregate([
+                    {
+                        $match: selector
+                    }
+                    ,
+                    {
+                        $sort: sortObj
+                    },
+
+                    {
+                        $limit: options.limit
+                    },
+                    {
+                        $skip: options.skip
+                    },
+                ],
+                {
+                    allowDiskUse: true
+                });
+            return data;
         }
     },
 
