@@ -78,6 +78,18 @@ Meteor.methods({
         }
 
     },
+    web_viewProduct(id, accessToken) {
+        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
+            try {
+                let isUpdate = Web_Product.update({_id: id}, {$inc: {view: 1}});
+
+                return isUpdate;
+            } catch (e) {
+                throw new Meteor.Error(e.message);
+            }
+        }
+
+    },
     web_updateProduct(id, doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
@@ -133,31 +145,43 @@ Meteor.methods({
             try {
                 let selector = {};
                 if (params.size) {
-                    selector.size = {$elemMatch: {$eq: params.size}};
+                    selector.size = params.size;
                 }
                 if (params.light) {
-                    selector.light = {$elemMatch: {$eq: params.light}};
+                    selector.light = params.light;
                 }
                 if (params.care) {
-                    selector.care = {$elemMatch: {$eq: params.care}};
+                    selector.care = params.care;
                 }
                 if (params.plantTypeId) {
-                    selector.plantTypeId = {$elemMatch: {$eq: params.plantTypeId}};
+                    selector.plantTypeId = params.plantTypeId;
                 }
                 if (params.plantLifeStyleId) {
-                    selector.plantLifeStyleId = {$elemMatch: {$eq: params.plantLifeStyleId}};
+                    selector.plantLifeStyleId = params.plantLifeStyleId;
                 }
 
                 if (params.plantGiftId) {
-                    selector.plantGiftId = {$elemMatch: {$eq: params.plantGiftId}};
+                    selector.plantGiftId = params.plantGiftId;
                 }
                 if (params.plantRoomId) {
-                    selector.plantRoomId = {$elemMatch: {$eq: params.plantRoomId}};
+                    selector.plantRoomId = params.plantRoomId;
                 }
 
                 selector.branchId = branchId;
-                return Web_Product.find(selector, {sort: {order: 1}}).fetch();
+                return Web_Product.find(selector, {sort: {createdAt: 1}}).fetch();
 
+            } catch (e) {
+                throw new Meteor.Error(e.message);
+            }
+        }
+    },
+    web_findTopTrendProduct(branchId, accessToken) {
+        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
+            try {
+                let selector = {};
+                selector.branchId = branchId;
+                let list= Web_Product.find(selector, {sort: {view: -1, createdAt: 1},limit:50}).fetch();
+                return list;
             } catch (e) {
                 throw new Meteor.Error(e.message);
             }

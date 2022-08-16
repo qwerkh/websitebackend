@@ -168,7 +168,6 @@ API.add('post', GlobalFn.Namespace1('/productWithFilter/fetch'), (req, res, next
             }
         })
     }
-    console.log(params);
     return new Promise((resolve, reject) => {
         Meteor.call('web_fetchProductWithFilter',
             {
@@ -395,6 +394,53 @@ API.add('post', GlobalFn.Namespace1('/planRoom/fetch'), (req, res, next) => {
             })
         })
 });
+API.add('post', GlobalFn.Namespace1('/product/view'), (req, res, next) => {
+    const {id} = req.body;
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_viewProduct',
+            id,
+            token
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
 API.add('post', GlobalFn.Namespace1('/planType/fetch'), (req, res, next) => {
     const {branchId, addToHome} = req.body;
     res.charset = 'utf-8';
@@ -415,6 +461,53 @@ API.add('post', GlobalFn.Namespace1('/planType/fetch'), (req, res, next) => {
         Meteor.call('web_findPlantType',
             branchId,
             addToHome,
+            token
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
+API.add('post', GlobalFn.Namespace1('/topTrendProduct/fetch'), (req, res, next) => {
+    const {branchId} = req.body;
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_findTopTrendProduct',
+            branchId,
             token
             , (err, result) => {
                 if (!err) {
