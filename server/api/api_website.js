@@ -153,7 +153,7 @@ API.add('post', GlobalFn.Namespace1('/product/fetch'), (req, res, next) => {
         })
 });
 API.add('post', GlobalFn.Namespace1('/productWithFilter/fetch'), (req, res, next) => {
-    const {branchId, params} = req.body;
+    const {branchId, params,q} = req.body;
     res.charset = 'utf-8';
     const {token} = req.headers;
     try {
@@ -173,7 +173,8 @@ API.add('post', GlobalFn.Namespace1('/productWithFilter/fetch'), (req, res, next
             {
                 branchId,
                 accessToken: token,
-                params
+                params,
+                q
             }
             , (err, result) => {
                 if (!err) {

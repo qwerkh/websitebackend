@@ -12,6 +12,7 @@ import PlantType from "../../imports/vue/ui/plantType";
 import PlantLifeStyle from "../../imports/vue/ui/plantLifeStyle";
 import PlantGift from "../../imports/vue/ui/plantGift";
 import PlantRoom from "../../imports/vue/ui/plantRoom";
+import UploadProduct from "../../imports/vue/ui/uploadProduct";
 
 
 export const data = [
@@ -55,6 +56,18 @@ export const data = [
         path: "/product",
         name: "productPage",
         component: Product,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },{
+        path: "/uploadProduct",
+        name: "uploadProductPage",
+        component: UploadProduct,
         meta: {
             permissions: [
                 {

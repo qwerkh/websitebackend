@@ -8,8 +8,11 @@
         <v-card-title icon="mdi-index">
           <v-toolbar-title v-show="!$vuetify.breakpoint.mobile">
             <v-icon style="font-size: 70px !important;" large color="green darken-2">people</v-icon>
+            <v-btn color="success" outlined @click="exportProductTemplate">Export</v-btn>
+            <v-btn color="red" outlined :to="{name:'uploadProductPage'}">Import</v-btn>
             {{ $t("product") }}
           </v-toolbar-title>
+
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
           <v-text-field
               v-model="search"
@@ -19,6 +22,7 @@
               hide-details
           ></v-text-field>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
+
           <add-button @add="dialog=true,titleClick='addProduct'" v-if="checkRole('Create')"
                       v-shortkey="['+']"
                       @shortkey.native="dialog=true,titleClick='addProduct'"
@@ -562,6 +566,8 @@ import numeral from "numeral";
 import {Meteor} from 'meteor/meteor';
 import "/imports/firebase/config";
 import firebase from "firebase/compat";
+import XLSX from "xlsx";
+import saveAs from "file-saver";
 
 const Compress = require('compress.js').default
 import {VueEditor} from "vue2-editor";
@@ -735,6 +741,14 @@ export default {
   methods: {
     resetForm() {
       this.$refs.formData.reset();
+    },
+    exportProductTemplate() {
+      Meteor.call("downloadPlantTemplate", Constants.secret, (err, plant) => {
+        if (!err) {
+          saveAs(new Blob([plant], {type: "application/octet-stream"}), "PlantTemplate" + moment().format("YYYYMMDD") + ".xlsx");
+        }
+      })
+
     },
     removeImg(row, url) {
       let vm = this;

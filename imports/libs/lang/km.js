@@ -208,6 +208,8 @@ export const km = {
     updatePlantRoom:"កែប្រែរុក្ខជាតិតាមប្រភេទបន្ទប់",
     minPrice:'តម្លៃទាបបំផុត',
     maxPrice:"តម្លៃខ្ពស់បំផុត",
-    code:"លេខកូដ"
+    code:"លេខកូដ",
+    fileTypeMustBeXlsx:"ប្រភេទទិន្នន័យត្រូវតែជា Excel",
+    uploadProductPage:"ទំព័របញ្ចូលផលិតផល"
 
 }

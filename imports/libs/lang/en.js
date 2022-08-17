@@ -209,7 +209,9 @@ export const en = {
     updatePlantRoom:"Update Plant Room",
     minPrice:'Min Price',
     maxPrice:"Max Price",
-    code:"Code"
+    code:"Code",
+    fileTypeMustBeXlsx:"File Type Must Be Xlsx",
+    uploadProductPage:"Upload Product Page"
 
 
 }
