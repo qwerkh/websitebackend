@@ -198,26 +198,55 @@
                 {{ $t('title') }} (English , Khmer ,Chinese)
               </v-col>
               <v-col cols="12" sm="4" md="4">
-                <vue-editor
+                <!--                <vue-editor
+                                    v-model="dataObj.title.en"
+
+                                >
+                                </vue-editor>-->
+                <v-text-field
                     v-model="dataObj.title.en"
-
+                    :label="$t('title') +' English'"
+                    outlined
+                    rounded
+                    hide-details
                 >
-                </vue-editor>
+
+                </v-text-field>
+
               </v-col>
 
               <v-col cols="12" sm="4" md="4">
-                <vue-editor
+                <!--                <vue-editor
+                                    v-model="dataObj.title.km"
+
+                                >
+                                </vue-editor>-->
+                <v-text-field
                     v-model="dataObj.title.km"
-
+                    :label="$t('title') +' Khmer'"
+                    outlined
+                    rounded
+                    hide-details
                 >
-                </vue-editor>
+
+                </v-text-field>
               </v-col>
 
               <v-col cols="12" sm="4" md="4">
-                <vue-editor
+                <!--                <vue-editor
+                                    v-model="dataObj.title.cn"
+                                >
+                                </vue-editor>-->
+
+                <v-text-field
                     v-model="dataObj.title.cn"
+                    :label="$t('title') +' Chinese'"
+                    outlined
+                    rounded
+                    hide-details
                 >
-                </vue-editor>
+
+                </v-text-field>
               </v-col>
 
 
@@ -226,28 +255,58 @@
                 {{ $t('body') }} (English , Khmer ,Chinese)
               </v-col>
               <v-col cols="12" sm="4" md="4">
-                <vue-editor
+                <!--                <vue-editor
+                                    v-model="dataObj.body.en"
+
+                                >
+                                </vue-editor>-->
+
+                <v-text-field
                     v-model="dataObj.body.en"
-
+                    :label="$t('body') +' English'"
+                    outlined
+                    rounded
+                    hide-details
                 >
-                </vue-editor>
+
+                </v-text-field>
+
               </v-col>
 
               <v-col cols="12" sm="4" md="4">
-                <vue-editor
+                <!--                <vue-editor
+                                    v-model="dataObj.body.km"
+
+                                >
+                                </vue-editor>-->
+
+                <v-text-field
                     v-model="dataObj.body.km"
-
+                    :label="$t('body') +' Khmer'"
+                    outlined
+                    rounded
+                    hide-details
                 >
-                </vue-editor>
+
+                </v-text-field>
               </v-col>
 
               <v-col cols="12" sm="4" md="4">
-                <vue-editor
-                    v-model="dataObj.body.cn"
-                >
-                </vue-editor>
-              </v-col>
+                <!--                <vue-editor
+                                    v-model="dataObj.body.cn"
+                                >
+                                </vue-editor>-->
 
+                <v-text-field
+                    v-model="dataObj.body.cn"
+                    :label="$t('body') +' Chinese'"
+                    outlined
+                    rounded
+                    hide-details
+                >
+
+                </v-text-field>
+              </v-col>
 
               <v-col cols="12" sm="4" md="4">
                 <v-switch

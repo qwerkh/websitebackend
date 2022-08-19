@@ -289,15 +289,15 @@ Meteor.methods({
                     let doc = {};
                     doc.branchId = branchId;
                     doc.title = {
-                        en: d.EnglishName,
-                        km: d.KhmerName,
-                        cn: d.EnglishName,
+                        en: d.EnglishName || " ",
+                        km: d.KhmerName || " ",
+                        cn: d.EnglishName || " ",
 
                     };
                     doc.body = {
-                        en: d.Description,
-                        km: d.Description,
-                        cn: d.Description,
+                        en: d.Description || " ",
+                        km: d.Description || " ",
+                        cn: d.Description || " ",
 
                     };
                     doc.code = d.Code || '';
@@ -326,6 +326,11 @@ Meteor.methods({
                                     km: "",
                                     cn: ""
                                 }
+                                tD.body = {
+                                    en: "",
+                                    km: "",
+                                    cn: ""
+                                }
                                 tD.branchId = branchId;
 
                                 let idI = Web_PlantType.insert(tD);
@@ -342,6 +347,11 @@ Meteor.methods({
                                 let tD = {};
                                 tD.title = {
                                     en: ob,
+                                    km: "",
+                                    cn: ""
+                                }
+                                tD.body = {
+                                    en: "",
                                     km: "",
                                     cn: ""
                                 }
@@ -364,6 +374,11 @@ Meteor.methods({
                                     km: "",
                                     cn: ""
                                 }
+                                tD.body = {
+                                    en: "",
+                                    km: "",
+                                    cn: ""
+                                }
                                 tD.branchId = branchId;
 
                                 let idI = Web_PlantRoom.insert(tD);
@@ -381,6 +396,11 @@ Meteor.methods({
                                 let tD = {};
                                 tD.title = {
                                     en: ob,
+                                    km: "",
+                                    cn: ""
+                                }
+                                tD.body = {
+                                    en: "",
                                     km: "",
                                     cn: ""
                                 }
