@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <v-col style="text-align: center;color: blue">
       <v-file-input
           v-model="filesImport.files"
@@ -26,7 +27,9 @@
         </template>
       </v-file-input>
       <v-btn color="success" outlined @click="addToProduct">Upload</v-btn>
-
+      <v-progress-circular indeterminate v-if="isLoading"
+                           color="green"
+                           :value="50"></v-progress-circular>
     </v-col>
     <v-simple-table dense>
       <template v-slot:default>
@@ -95,11 +98,13 @@ export default {
         file: "",
         files: []
       },
+      isLoading:false,
       dataList: []
     }
   }, methods: {
     addToProduct() {
       let vm=this;
+      vm.isLoading=true;
       return new Promise((resolve, reject) => {
         Meteor.call("web_uploadProduct", vm.dataList,vm.$store.state.branchId, Constants.secret, (err, result) => {
           if (!err) {
@@ -109,6 +114,7 @@ export default {
               type: 'success'
             });
             vm.dataList=[];
+            vm.isLoading=false;
 
             resolve(result);
           } else {

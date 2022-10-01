@@ -287,131 +287,145 @@ Meteor.methods({
                 let id = "";
                 dataList.forEach((d) => {
                     let doc = {};
-                    doc.branchId = branchId;
-                    doc.title = {
-                        en: d.EnglishName || " ",
-                        km: d.KhmerName || " ",
-                        cn: d.EnglishName || " ",
+                    let oldPro = Web_Product.findOne({code: d.Code});
+                    if (!oldPro || d.Code === "" || d.Code === undefined) {
+                        doc.branchId = branchId;
+                        doc.title = {
+                            en: d.EnglishName || " ",
+                            km: d.KhmerName || " ",
+                            cn: d.EnglishName || " ",
 
-                    };
-                    doc.body = {
-                        en: d.Description || " ",
-                        km: d.Description || " ",
-                        cn: d.Description || " ",
+                        };
+                        doc.body = {
+                            en: d.Description || " ",
+                            km: d.Description || " ",
+                            cn: d.Description || " ",
 
-                    };
-                    doc.code = d.Code || '';
-                    doc.minPrice = d.MinPrice || '';
-                    doc.maxPrice = d.MaxPrice || '';
-                    doc.currency = d.Currency || '';
-                    doc.size = d.Size ? d.Size.split(",") : [];
-                    doc.light = d.Light ? d.Light.split(",") : [];
-                    doc.care = d.Care ? d.Care.split(",") : [];
-                    doc.url = d.Url || "";
-                    doc.urlList = d.UrlList ? d.UrlList.split(",") : [];
+                        };
+                        doc.code = d.Code || '';
+                        doc.minPrice = d.MinPrice || '';
+                        doc.maxPrice = d.MaxPrice || '';
+                        doc.currency = d.Currency || '';
+                        doc.size = d.Size ? d.Size.split(",") : [];
+                        doc.light = d.Light ? d.Light.split(",") : [];
+                        doc.care = d.Care ? d.Care.split(",") : [];
+                        doc.url = d.Url || "";
+                        doc.urlList = d.UrlList ? d.UrlList.split(",") : [];
 
-                    doc.plantTypeId = [];
-                    doc.plantLifeStyleId = [];
-                    doc.plantGiftId = [];
-                    doc.plantRoomId = [];
-                    if (d.PlantType) {
-                        d.PlantType.split(",").forEach((ob) => {
-                            let tDoc = Web_PlantType.findOne({"title.en": ob});
-                            if (tDoc) {
-                                doc.plantTypeId.push(tDoc._id);
-                            } else {
-                                let tD = {};
-                                tD.title = {
-                                    en: ob,
-                                    km: "",
-                                    cn: ""
+                        doc.plantTypeId = [];
+                        doc.plantLifeStyleId = [];
+                        doc.plantGiftId = [];
+                        doc.plantRoomId = [];
+                        if (d.PlantType) {
+                            d.PlantType.split(",").forEach((ob) => {
+                                if (ob !== "" && ob !== undefined && ob !== null) {
+                                    let tDoc = Web_PlantType.findOne({"title.en": ob});
+                                    if (tDoc) {
+                                        doc.plantTypeId.push(tDoc._id);
+                                    } else {
+                                        let tD = {};
+                                        tD.title = {
+                                            en: ob,
+                                            km: "",
+                                            cn: ""
+                                        }
+                                        tD.body = {
+                                            en: "",
+                                            km: "",
+                                            cn: ""
+                                        }
+                                        tD.branchId = branchId;
+
+                                        let idI = Web_PlantType.insert(tD);
+                                        doc.plantTypeId.push(idI);
+                                    }
                                 }
-                                tD.body = {
-                                    en: "",
-                                    km: "",
-                                    cn: ""
-                                }
-                                tD.branchId = branchId;
+                            })
+                        }
+                        if (d.PlantLifeStyle) {
+                            d.PlantLifeStyle.split(",").forEach((ob) => {
+                                if (ob !== "" && ob !== undefined && ob !== null) {
 
-                                let idI = Web_PlantType.insert(tD);
-                                doc.plantTypeId.push(idI);
-                            }
-                        })
+                                    let tDoc = Web_PlantLifeStyle.findOne({"title.en": ob});
+                                    if (tDoc) {
+                                        doc.plantLifeStyleId.push(tDoc._id);
+                                    } else {
+                                        let tD = {};
+                                        tD.title = {
+                                            en: ob,
+                                            km: "",
+                                            cn: ""
+                                        }
+                                        tD.body = {
+                                            en: "",
+                                            km: "",
+                                            cn: ""
+                                        }
+                                        tD.branchId = branchId;
+
+                                        let idI = Web_PlantLifeStyle.insert(tD);
+                                        doc.plantLifeStyleId.push(idI);
+                                    }
+                                }
+                            })
+                        }
+                        if (d.PlantRoom) {
+                            d.PlantRoom.split(",").forEach((ob) => {
+                                if (ob !== "" && ob !== undefined && ob !== null) {
+
+                                    let tDoc = Web_PlantRoom.findOne({"title.en": ob});
+                                    if (tDoc) {
+                                        doc.plantRoomId.push(tDoc._id);
+                                    } else {
+                                        let tD = {};
+                                        tD.title = {
+                                            en: ob,
+                                            km: "",
+                                            cn: ""
+                                        }
+                                        tD.body = {
+                                            en: "",
+                                            km: "",
+                                            cn: ""
+                                        }
+                                        tD.branchId = branchId;
+
+                                        let idI = Web_PlantRoom.insert(tD);
+                                        doc.plantRoomId.push(idI);
+                                    }
+                                }
+                            })
+                        }
+
+                        if (d.PlantGift) {
+                            d.PlantGift.split(",").forEach((ob) => {
+                                if (ob !== "" && ob !== undefined && ob !== null) {
+
+                                    let tDoc = Web_PlantGift.findOne({"title.en": ob});
+                                    if (tDoc) {
+                                        doc.plantGiftId.push(tDoc._id);
+                                    } else {
+                                        let tD = {};
+                                        tD.title = {
+                                            en: ob,
+                                            km: "",
+                                            cn: ""
+                                        }
+                                        tD.body = {
+                                            en: "",
+                                            km: "",
+                                            cn: ""
+                                        }
+                                        tD.branchId = branchId;
+                                        let idI = Web_PlantGift.insert(tD);
+                                        doc.plantGiftId.push(idI);
+                                    }
+                                }
+                            })
+                        }
+
+                        id = Web_Product.insert(doc);
                     }
-                    if (d.PlantLifeStyle) {
-                        d.PlantLifeStyle.split(",").forEach((ob) => {
-                            let tDoc = Web_PlantLifeStyle.findOne({"title.en": ob});
-                            if (tDoc) {
-                                doc.plantLifeStyleId.push(tDoc._id);
-                            } else {
-                                let tD = {};
-                                tD.title = {
-                                    en: ob,
-                                    km: "",
-                                    cn: ""
-                                }
-                                tD.body = {
-                                    en: "",
-                                    km: "",
-                                    cn: ""
-                                }
-                                tD.branchId = branchId;
-
-                                let idI = Web_PlantLifeStyle.insert(tD);
-                                doc.plantLifeStyleId.push(idI);
-                            }
-                        })
-                    }
-                    if (d.PlantRoom) {
-                        d.PlantRoom.split(",").forEach((ob) => {
-                            let tDoc = Web_PlantRoom.findOne({"title.en": ob});
-                            if (tDoc) {
-                                doc.plantRoomId.push(tDoc._id);
-                            } else {
-                                let tD = {};
-                                tD.title = {
-                                    en: ob,
-                                    km: "",
-                                    cn: ""
-                                }
-                                tD.body = {
-                                    en: "",
-                                    km: "",
-                                    cn: ""
-                                }
-                                tD.branchId = branchId;
-
-                                let idI = Web_PlantRoom.insert(tD);
-                                doc.plantRoomId.push(idI);
-                            }
-                        })
-                    }
-
-                    if (d.PlantGift) {
-                        d.PlantGift.split(",").forEach((ob) => {
-                            let tDoc = Web_PlantGift.findOne({"title.en": ob});
-                            if (tDoc) {
-                                doc.plantGiftId.push(tDoc._id);
-                            } else {
-                                let tD = {};
-                                tD.title = {
-                                    en: ob,
-                                    km: "",
-                                    cn: ""
-                                }
-                                tD.body = {
-                                    en: "",
-                                    km: "",
-                                    cn: ""
-                                }
-                                tD.branchId = branchId;
-                                let idI = Web_PlantGift.insert(tD);
-                                doc.plantGiftId.push(idI);
-                            }
-                        })
-                    }
-
-                    id = Web_Product.insert(doc);
 
                 });
 
@@ -523,7 +537,7 @@ Meteor.methods({
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let selector = {};
-               selector._id=id;
+                selector._id = id;
                 return Web_Product.findOne(selector);
 
             } catch (e) {
