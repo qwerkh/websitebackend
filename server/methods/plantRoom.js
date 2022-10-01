@@ -147,6 +147,20 @@ Meteor.methods({
             }
         }
     },
+    web_findPlantRoomById(id, accessToken) {
+        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
+            try {
+                let selector = {};
+
+                selector._id =id;
+
+                return  Web_PlantRoom.findOne(selector);
+
+            } catch (e) {
+                throw new Meteor.Error(e.message);
+            }
+        }
+    },
     web_findPlantRoomOpt(branchId, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {

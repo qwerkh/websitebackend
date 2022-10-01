@@ -519,6 +519,18 @@ Meteor.methods({
             }
         }
     },
+    web_findProductById(id, accessToken) {
+        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
+            try {
+                let selector = {};
+               selector._id=id;
+                return Web_Product.findOne(selector);
+
+            } catch (e) {
+                throw new Meteor.Error(e.message);
+            }
+        }
+    },
     web_findTopTrendProduct(branchId, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {

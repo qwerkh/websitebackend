@@ -150,6 +150,18 @@ Meteor.methods({
             }
         }
     },
+    web_findPlantTypeById(id, accessToken) {
+        if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
+            try {
+                let selector = {};
+                selector._id = id;
+                return Web_PlantType.findOne(selector);
+
+            } catch (e) {
+                throw new Meteor.Error(e.message);
+            }
+        }
+    },
     web_findTab(branchId, addToHome, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {

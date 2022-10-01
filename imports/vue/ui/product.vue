@@ -107,11 +107,6 @@
 
           //Action
           <template v-slot:item.action="{ item }">
-            <v-btn color="success" outlined class="table-action-button mr-2" text icon
-                   v-if="checkRole('Update')"
-                   @click.native="handleUpdatePrice(item)">
-              P
-            </v-btn>
             <v-btn color="primary" outlined class="table-action-button mr-2" text icon
                    v-if="checkRole('Update')"
                    @click.native="handleUpdate(item)">
@@ -589,7 +584,7 @@ export default {
     this.$jQuery('body').off();
   },
   name: "Product",
-  components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor,RemoveButton},
+  components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor, RemoveButton},
   data() {
     return {
       dense: this.$store.state.isDense,
@@ -691,7 +686,7 @@ export default {
         v => !!v || 'Please Choose one',
       ],
       headers: [
-       {
+        {
           text: 'title',
           align: 'left',
           sortable: true,
@@ -1091,16 +1086,20 @@ export default {
         }
       }
     },
-    handleUpdate(doc) {
+    handleUpdate(d) {
       let vm = this;
+      Meteor.call("web_findProductById", d._id, Constants.secret, (e, doc) => {
+        if (doc) {
+          vm.dataObj = Object.assign({}, doc);
+          vm.titleClick = "updateProduct";
+          vm.dialog = true;
+          Meteor.setTimeout(function () {
+            vm.dataObj.address = doc.address || "";
+            vm.newUrl = doc.url || "";
+          }, 300);
+        }
+      })
 
-      vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updateProduct";
-      vm.dialog = true;
-      Meteor.setTimeout(function () {
-        vm.dataObj.address = doc.address || "";
-        vm.newUrl = doc.url || "";
-      }, 300);
     },
     handleRemove(row) {
       let vm = this;

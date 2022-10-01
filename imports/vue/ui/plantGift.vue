@@ -763,16 +763,19 @@ export default {
         }
       }
     },
-    handleUpdate(doc) {
+    handleUpdate(d) {
       let vm = this;
-
-      vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updatePlantGift";
-      vm.dialog = true;
-      Meteor.setTimeout(function () {
-        vm.dataObj.address = doc.address || "";
-        vm.newUrl = doc.url || "";
-      }, 300);
+      Meteor.call("web_findPlantGiftById", d._id, Constants.secret, (e, doc) => {
+        if (doc) {
+          vm.dataObj = Object.assign({}, doc);
+          vm.titleClick = "updatePlantGift";
+          vm.dialog = true;
+          Meteor.setTimeout(function () {
+            vm.dataObj.address = doc.address || "";
+            vm.newUrl = doc.url || "";
+          }, 300);
+        }
+      })
     },
     handleRemove(row) {
       let vm = this;

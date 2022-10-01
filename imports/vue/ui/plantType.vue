@@ -198,11 +198,11 @@
                 {{ $t('title') }} (English , Khmer ,Chinese)
               </v-col>
               <v-col cols="12" sm="4" md="4">
-<!--                <vue-editor
-                    v-model="dataObj.title.en"
+                <!--                <vue-editor
+                                    v-model="dataObj.title.en"
 
-                >
-                </vue-editor>-->
+                                >
+                                </vue-editor>-->
                 <v-text-field
                     v-model="dataObj.title.en"
                     :label="$t('title') +' English'"
@@ -216,11 +216,11 @@
               </v-col>
 
               <v-col cols="12" sm="4" md="4">
-<!--                <vue-editor
-                    v-model="dataObj.title.km"
+                <!--                <vue-editor
+                                    v-model="dataObj.title.km"
 
-                >
-                </vue-editor>-->
+                                >
+                                </vue-editor>-->
                 <v-text-field
                     v-model="dataObj.title.km"
                     :label="$t('title') +' Khmer'"
@@ -233,10 +233,10 @@
               </v-col>
 
               <v-col cols="12" sm="4" md="4">
-<!--                <vue-editor
-                    v-model="dataObj.title.cn"
-                >
-                </vue-editor>-->
+                <!--                <vue-editor
+                                    v-model="dataObj.title.cn"
+                                >
+                                </vue-editor>-->
 
                 <v-text-field
                     v-model="dataObj.title.cn"
@@ -255,11 +255,11 @@
                 {{ $t('body') }} (English , Khmer ,Chinese)
               </v-col>
               <v-col cols="12" sm="4" md="4">
-<!--                <vue-editor
-                    v-model="dataObj.body.en"
+                <!--                <vue-editor
+                                    v-model="dataObj.body.en"
 
-                >
-                </vue-editor>-->
+                                >
+                                </vue-editor>-->
 
                 <v-text-field
                     v-model="dataObj.body.en"
@@ -274,11 +274,11 @@
               </v-col>
 
               <v-col cols="12" sm="4" md="4">
-<!--                <vue-editor
-                    v-model="dataObj.body.km"
+                <!--                <vue-editor
+                                    v-model="dataObj.body.km"
 
-                >
-                </vue-editor>-->
+                                >
+                                </vue-editor>-->
 
                 <v-text-field
                     v-model="dataObj.body.km"
@@ -292,10 +292,10 @@
               </v-col>
 
               <v-col cols="12" sm="4" md="4">
-<!--                <vue-editor
-                    v-model="dataObj.body.cn"
-                >
-                </vue-editor>-->
+                <!--                <vue-editor
+                                    v-model="dataObj.body.cn"
+                                >
+                                </vue-editor>-->
 
                 <v-text-field
                     v-model="dataObj.body.cn"
@@ -764,16 +764,19 @@ export default {
         }
       }
     },
-    handleUpdate(doc) {
+    handleUpdate(d) {
       let vm = this;
-
-      vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updatePlantType";
-      vm.dialog = true;
-      Meteor.setTimeout(function () {
-        vm.dataObj.address = doc.address || "";
-        vm.newUrl = doc.url || "";
-      }, 300);
+      Meteor.call("web_findPlantTypeById", d._id, Constants.secret, (e, doc) => {
+        if (doc) {
+          vm.dataObj = Object.assign({}, doc);
+          vm.titleClick = "updatePlantType";
+          vm.dialog = true;
+          Meteor.setTimeout(function () {
+            vm.dataObj.address = doc.address || "";
+            vm.newUrl = doc.url || "";
+          }, 300);
+        }
+      })
     },
     handleRemove(row) {
       let vm = this;
