@@ -210,6 +210,7 @@ export const km = {
     maxPrice:"តម្លៃខ្ពស់បំផុត",
     code:"លេខកូដ",
     fileTypeMustBeXlsx:"ប្រភេទទិន្នន័យត្រូវតែជា Excel",
-    uploadProductPage:"ទំព័របញ្ចូលផលិតផល"
+    uploadProductPage:"ទំព័របញ្ចូលផលិតផល",
+    banner:"បដា"
 
 }

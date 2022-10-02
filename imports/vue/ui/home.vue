@@ -89,6 +89,32 @@
         >
         </vue-editor>
       </v-col>
+      <v-col cols="4" sm="4" md="4">
+        {{ $t('banner') }}
+        <v-img
+            :src="newUrl"
+            style="height: 275px; width: auto;"
+            aspect-ratio="1"
+            required
+            lazy-src="/images/avatar.png"
+            class="grey lighten-2"
+            @click="$refs.fileInput.click()"
+        >
+          <template v-slot:placeholder>
+            <v-row
+                class="fill-height ma-0"
+                align="center"
+                justify="center"
+                v-show="isLoading"
+            >
+              <v-progress-circular indeterminate
+                                   color="grey lighten-5"></v-progress-circular>
+            </v-row>
+          </template>
+        </v-img>
+        <input style="display: none !important;" type="file" @change="onFileSelected"
+               ref="fileInput"></input>
+      </v-col>
     </v-row>
     <br><br>
     <hr>

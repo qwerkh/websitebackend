@@ -211,7 +211,8 @@ export const en = {
     maxPrice:"Max Price",
     code:"Code",
     fileTypeMustBeXlsx:"File Type Must Be Xlsx",
-    uploadProductPage:"Upload Product Page"
+    uploadProductPage:"Upload Product Page",
+    banner:"Banner"
 
 
 }
