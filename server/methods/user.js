@@ -4,10 +4,11 @@ import GlobalFn from "../../imports/libs/globalFn"
 import _ from 'lodash'
 
 import {UserReact, UserAudit} from "../../imports/collections/user"
+import {Web_ProductionLine} from "../../imports/collections/productionLine";
 
 const secret = Meteor.settings.private.secret;
 Meteor.methods({
-    base_fetchUser({q, filter, sort, options = {limit: 10, skip: 0}, userId}) {
+   async base_fetchUser({q, filter, sort, options = {limit: 10, skip: 0}, userId}) {
         let data = {
             content: [],
             countContent: 0,
@@ -40,7 +41,8 @@ Meteor.methods({
                 selector.defaultBranch = currentUser.defaultBranch;
             }
         }
-        data.content = Meteor.users.aggregate([
+        const rawCollection = Meteor.users.rawCollection();
+        data.content =await rawCollection.aggregate([
                 {
                     $match: selector
                 }
@@ -58,7 +60,7 @@ Meteor.methods({
             ],
             {
                 allowDiskUse: true
-            });
+            }).toArray();
         data.countContent = Meteor.users.find(selector).count();
         return data;
     },

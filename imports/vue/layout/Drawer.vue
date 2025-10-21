@@ -205,7 +205,7 @@ export default {
         {
           title: 'homePage',
           action: "HO",
-          to: "/",
+          to: "/myhomepage",
           hasRole: () => this.checkRole(Constants.data)
         },
         // {
@@ -225,6 +225,12 @@ export default {
           action: "PO",
           to: "/post",
           hasRole: () => this.checkRole(Constants.data)
+        },
+        {
+          title: 'book',
+          action: "BO",
+          to: "/book",
+          hasRole: () => this.checkRole(Constants.book)
         },
         /*{
           title: 'mediaPage',

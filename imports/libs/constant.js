@@ -7,6 +7,7 @@ let defaultRoles = [
     "Delete",
     "Setting",
     "Data",
+    "Book",
     "Control User"
 ];
 
@@ -26,13 +27,16 @@ let CurrencyListOpt = [
 ]
 
 let PagePostList = [
-    'News And Event', 'Media', 'National Cooperation','International Cooperation'
+    'News And Event', 'Media', 'National Cooperation', 'International Cooperation'
 ];
 let Setting = [
     'Admin', 'Setting', 'Super'
 ];
 let Data = [
     'Admin', 'Data', 'Super'
+];
+let Book = [
+    'Admin', 'Data','Book', 'Super'
 ];
 let Report = [
     'Admin', 'Report', 'Super'
@@ -66,6 +70,21 @@ let methodType = [
     "Floor"
 ]
 
+let categoryOpt = [
+    {label: "electricity", value: "electricity"},
+    {label: "electronic", value: "electronic"},
+    {label: "informationTechnology", value: "informationTechnology"},
+    {label: "agriculture", value: "agriculture"},
+    {label: "bankAndFinance", value: "bankAndFinance"},
+    {label: "mechanic", value: "mechanic"},
+]
+
+
+const SPACES_END_POINT = "https://sgp1.digitaloceanspaces.com";
+const SPACES_KEY = "DO00XNQC2W6MK6HHMRNP";
+const SPACES_SECRET = "LZS3DSSFDWf35dMrkwlr/C5UKVc2TegED4CmxP1OdfM";
+const SPACES_IMAGE_BUCKET = "zib";
+
 import {en} from "../libs/lang/en";
 import {km} from "../libs/lang/km";
 
@@ -76,6 +95,7 @@ export const Constants = {
     modulesOption: defaultModules,
     setting: Setting,
     data: Data,
+    book: Book,
     report: Report,
     controlUser: ControlUser,
     super: Super,
@@ -88,9 +108,16 @@ export const Constants = {
     operationCode: OperationCode,
     pagePostList: PagePostList,
 
+
+    SPACES_END_POINT: SPACES_END_POINT,
+    SPACES_KEY: SPACES_KEY,
+    SPACES_SECRET: SPACES_SECRET,
+    SPACES_IMAGE_BUCKET: SPACES_IMAGE_BUCKET,
+
     currencyList: CurrencyList,
     currencyListOpt: CurrencyListOpt,
-    fontSizeArr : ['8px','9px','10px','12px','14px','16px','20px','24px','32px','42px','54px','68px','84px','98px']
+    categoryOpt: categoryOpt,
+    fontSizeArr: ['8px', '9px', '10px', '12px', '14px', '16px', '20px', '24px', '32px', '42px', '54px', '68px', '84px', '98px']
 
 }
 

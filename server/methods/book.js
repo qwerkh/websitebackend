@@ -1,14 +1,10 @@
 import {Meteor} from 'meteor/meteor';
 import GlobalFn from "../../imports/libs/globalFn"
-import {
-    Web_NewsAndEvents,
-    Web_NewsAndEventsReact,
-    Web_NewsAndEventsAudit
-} from "../../imports/collections/newsAndEvents"
+import {Web_Book, Web_BookReact, Web_BookAudit} from "../../imports/collections/book"
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
-   async web_fetchNewsAndEvents({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
+   async web_fetchBook({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, category}) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             let data = {
                 content: [],
@@ -27,23 +23,26 @@ Meteor.methods({
                 if (!!filter) {
                     selector[filter] = {$regex: reg, $options: 'mi'}
                 } else {
-                    selector.$or = [{title: {$regex: reg, $options: 'mi'}}, {
-                        phoneNumber: {
-                            $regex: reg,
-                            $options: 'mi'
-                        }
-                    }, {
-                        address: {
-                            $regex: reg,
-                            $options: 'mi'
-                        }
-                    }];
+                    selector.$or = [
+                        {title: {$regex: reg, $options: 'mi'}},
+                        {titleEn: {$regex: reg, $options: 'mi'}},
+                        {category: {$regex: reg, $options: 'mi'}},
+                        {body: {$regex: reg, $options: 'mi'}},
+                        {
+                            author: {
+                                $regex: reg,
+                                $options: 'mi'
+                            }
+                        }];
                 }
             }
-
-            selector.branchId = branchId;
-            const rawCollection = Web_NewsAndEvents.rawCollection();
-            data.content =await rawCollection.aggregate([
+            if (category) {
+                selector.category = category;
+            }
+            if(branchId){
+                selector.branchId = branchId;
+            }
+            data.content =await Web_Book.rawCollection().aggregate([
                     {
                         $match: selector
                     }
@@ -64,16 +63,16 @@ Meteor.methods({
                 {
                     allowDiskUse: true
                 }).toArray();
-            data.countContent = Web_NewsAndEvents.find(selector).count();
+            data.countContent = Web_Book.find(selector).count();
             return data;
         }
     },
-    web_insertNewsAndEvents(doc, accessToken) {
+    web_insertBook(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                let id = Web_NewsAndEvents.insert(doc);
+                let id = Web_Book.insert(doc);
                 if (id) {
-                    GlobalFn.collectionReact(Web_NewsAndEventsReact, id);
+                    GlobalFn.collectionReact(Web_BookReact, id);
                 }
                 return id;
             } catch (e) {
@@ -82,13 +81,13 @@ Meteor.methods({
         }
 
     },
-    web_updateNewsAndEvents(id, doc, accessToken) {
+    web_updateBook(id, doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                let oldDoc = Web_NewsAndEvents.findOne({_id: id});
-                let isUpdated = Web_NewsAndEvents.update({_id: id}, {$set: doc});
+                let oldDoc = Web_Book.findOne({_id: id});
+                let isUpdated = Web_Book.update({_id: id}, {$set: doc});
                 if (isUpdated) {
-                    GlobalFn.collectionReact(Web_NewsAndEventsReact, id, Web_NewsAndEventsAudit, oldDoc, "Update");
+                    GlobalFn.collectionReact(Web_BookReact, id, Web_BookAudit, oldDoc, "Update");
                 }
                 return isUpdated;
             } catch (e) {
@@ -96,13 +95,13 @@ Meteor.methods({
             }
         }
     },
-    web_removeNewsAndEvents(doc, accessToken) {
+    web_removeBook(doc, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
-                let isRemoved = Web_NewsAndEvents.remove({_id: doc._id});
+                let isRemoved = Web_Book.remove({_id: doc._id});
 
                 if (isRemoved) {
-                    GlobalFn.collectionReact(Web_NewsAndEventsReact, doc._id, Web_NewsAndEventsAudit, doc, "Remove");
+                    GlobalFn.collectionReact(Web_BookReact, doc._id, Web_BookAudit, doc, "Remove");
                 }
                 return isRemoved;
             } catch (e) {
@@ -110,16 +109,13 @@ Meteor.methods({
             }
         }
     },
-    web_findNewsAndEvents(branchId, addToHome, accessToken) {
+    web_findBook(branchId, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let selector = {};
 
                 selector.branchId = branchId;
-                if (addToHome || addToHome==="true") {
-                    selector.addToHome = true;
-                }
-                return Web_NewsAndEvents.find(selector, {sort: {createdAt: -1}, limit: 100}).fetch();
+                return Web_Book.find(selector, {sort: {createdAt: -1}, limit: 100}).fetch();
 
             } catch (e) {
                 throw new Meteor.Error(e.message);
@@ -132,9 +128,11 @@ Meteor.methods({
 
 //Unique
 
-Web_NewsAndEvents._ensureIndex({
+Web_Book._ensureIndex({
     title: 1,
+    titleEn: 1,
     body: 1,
-    order: 1,
+    author: 1,
+    category: 1,
     branchId: 1
-}, {unique: 1, name: "Web_NewsAndEventsUnique"});
+}, {unique: 1, name: "Web_BookUnique"});

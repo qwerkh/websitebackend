@@ -2,10 +2,11 @@ import {Meteor} from 'meteor/meteor';
 import GlobalFn from "../../imports/libs/globalFn"
 import {Web_Product, Web_ProductReact, Web_ProductAudit} from "../../imports/collections/product"
 import {Web_ProductPrice} from "../../imports/collections/productPrice";
+import {Web_Media} from "../../imports/collections/media";
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
-    web_fetchProduct({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
+  async  web_fetchProduct({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             let data = {
                 content: [],
@@ -39,8 +40,8 @@ Meteor.methods({
             }
 
             selector.branchId=branchId;
-
-            data.content = Web_Product.aggregate([
+            const rawCollection = Web_Product.rawCollection();
+            data.content =await rawCollection.aggregate([
                     {
                         $match: selector
                     }
@@ -60,12 +61,12 @@ Meteor.methods({
                 ],
                 {
                     allowDiskUse: true
-                });
+                }).toArray();
             data.countContent = Web_Product.find(selector).count();
             return data;
         }
     },
-    web_productPriceReport(branchId, accessToken) {
+   async web_productPriceReport(branchId, accessToken) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             try {
                 let data = {};
@@ -81,8 +82,8 @@ Meteor.methods({
                 //     monthList.unshift(moment(moment().add(-newM, "months").toDate()).format("YYYY-MM"));
                 //     m--;
                 // }
-
-                let dList = Web_ProductPrice.aggregate([
+                const rawCollection = Web_ProductPrice.rawCollection();
+                let dList =await rawCollection.aggregate([
                         {
                             $match: selector
                         },
@@ -99,12 +100,12 @@ Meteor.methods({
                     ],
                     {
                         allowDiskUse: true
-                    });
+                    }).toArray();
                 dList.forEach((d) => {
                     monthList.push(d._id);
                 })
 
-                let productList = Web_ProductPrice.aggregate([
+                let productList =await Web_ProductPrice.rawCollection().aggregate([
                         {
                             $match: selector
                         },
@@ -144,7 +145,7 @@ Meteor.methods({
                     ],
                     {
                         allowDiskUse: true
-                    });
+                    }).toArray();
 
                 productList.forEach((obj, ind) => {
                     dataHtml += `

@@ -1,10 +1,11 @@
 import {Meteor} from 'meteor/meteor';
 import GlobalFn from "../../imports/libs/globalFn"
 import {Web_Client, Web_ClientReact, Web_ClientAudit} from "../../imports/collections/client"
+import {Web_NewsAndEvents} from "../../imports/collections/newsAndEvents";
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
-    web_fetchClient({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
+   async web_fetchClient({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             let data = {
                 content: [],
@@ -38,8 +39,8 @@ Meteor.methods({
             }
             selector.branchId=branchId;
 
-
-            data.content = Web_Client.aggregate([
+            const rawCollection = Web_Client.rawCollection();
+            data.content =await rawCollection.aggregate([
                     {
                         $match: selector
                     }
@@ -59,7 +60,7 @@ Meteor.methods({
                 ],
                 {
                     allowDiskUse: true
-                });
+                }).toArray();
             data.countContent = Web_Client.find(selector).count();
             return data;
         }

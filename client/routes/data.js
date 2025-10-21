@@ -13,11 +13,25 @@ import Client from "../../imports/vue/ui/client";
 import Organization from "../../imports/vue/ui/organization";
 import ProductionLine from "../../imports/vue/ui/productionLine";
 import HeaderFooter from "../../imports/vue/ui/headerFooter";
+import Book from "../../imports/vue/ui/book.vue";
+import Welcome from "../../imports/vue/ui/welcome.vue";
 
 
 export const data = [
     {
         path: "/",
+        name: "welcome",
+        component: Welcome,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },  {
+        path: "/myhomepage",
         name: "homePage",
         component: Home,
         meta: {
@@ -32,6 +46,19 @@ export const data = [
         path: "/about",
         name: "aboutPage",
         component: About,
+        meta: {
+            permissions: [
+                {
+                    access: true,
+                }
+            ],
+            roles: "No Role",
+        }
+    },
+    {
+        path: "/book",
+        name: "book",
+        component: Book,
         meta: {
             permissions: [
                 {

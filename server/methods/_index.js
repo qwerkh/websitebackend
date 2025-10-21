@@ -12,5 +12,6 @@ import "./client";
 import "./organization";
 import "./productionLine";
 import "./headerFooter";
-import "./media";
+import "./do_withDigitalOcean";
+import "./book";
 

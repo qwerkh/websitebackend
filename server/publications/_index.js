@@ -7,5 +7,6 @@ import "./product";
 import "./newsAndEvents";
 import "./client";
 import "./productionLine";
-import "./media";
+
+import "./book";
 

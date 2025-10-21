@@ -1,10 +1,11 @@
 import {Meteor} from 'meteor/meteor';
 import GlobalFn from "../../imports/libs/globalFn"
 import {Web_Contact, Web_ContactReact, Web_ContactAudit} from "../../imports/collections/contact"
+import {Web_Client} from "../../imports/collections/client";
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
-    web_fetchContact({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
+   async web_fetchContact({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             let data = {
                 content: [],
@@ -38,8 +39,8 @@ Meteor.methods({
             }
             selector.branchId=branchId;
 
-
-            data.content = Web_Contact.aggregate([
+            const rawCollection = Web_Contact.rawCollection();
+            data.content =await rawCollection.aggregate([
                     {
                         $match: selector
                     }
@@ -59,7 +60,7 @@ Meteor.methods({
                 ],
                 {
                     allowDiskUse: true
-                });
+                }).toArray();
             data.countContent = Web_Contact.find(selector).count();
             return data;
         }

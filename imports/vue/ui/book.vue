@@ -8,7 +8,7 @@
         <v-card-title icon="mdi-index">
           <v-toolbar-title v-show="!$vuetify.breakpoint.mobile">
             <v-icon style="font-size: 70px !important;" large color="green darken-2">people</v-icon>
-            {{ $t("post") }}
+            {{ $t("book") }}
           </v-toolbar-title>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
           <v-text-field
@@ -19,11 +19,11 @@
               hide-details
           ></v-text-field>
           <v-spacer v-show="!$vuetify.breakpoint.mobile"></v-spacer>
-          <add-button @add="dialog=true,titleClick='addPost'" v-if="checkRole('Create')"
+          <add-button @add="dialog=true,titleClick='addBook'" v-if="checkRole('Create')"
                       v-shortkey="['+']"
-                      @shortkey.native="dialog=true,titleClick='addPost'"
+                      @shortkey.native="dialog=true,titleClick='addBook'"
                       v-show="!$vuetify.breakpoint.mobile"></add-button>
-          <raise-button @add="dialog=true,titleClick='addPost'" v-if="checkRole('Create')"
+          <raise-button @add="dialog=true,titleClick='addBook'" v-if="checkRole('Create')"
                         v-show="$vuetify.breakpoint.mobile"></raise-button>
 
         </v-card-title>
@@ -58,17 +58,21 @@
             {{ $t(header.text).toUpperCase() }}
 
           </template>
-          <template v-slot:header.page="{ header }">
+
+
+          <template v-slot:header.titleEn="{ header }">
             {{ $t(header.text).toUpperCase() }}
 
           </template>
-          <template v-slot:header.createdAt="{ header }">
+          <template v-slot:header.imgUrl="{ header }">
             {{ $t(header.text).toUpperCase() }}
 
           </template>
+          <template v-slot:header.author="{ header }">
+            {{ $t(header.text).toUpperCase() }}
 
-
-          <template v-slot:header.order="{ header }">
+          </template>
+          <template v-slot:header.category="{ header }">
             {{ $t(header.text).toUpperCase() }}
 
           </template>
@@ -82,15 +86,35 @@
           <template v-slot:item.title="{ item }">
             {{ JSON.stringify(item.title) }}
           </template>
-          <template v-slot:item.page="{ item }">
-            <div v-if="!!item.page">
-              <v-chip v-for="d in item.page" style="color: blue">
-                {{ d }}
-              </v-chip>
-            </div>
+          <template v-slot:item.category="{ item }">
+            {{ $t(item.category) }}
           </template>
-          <template v-slot:item.createdAt="{ item }">
-            {{ item.createdAt | momentFormat }}
+          <template v-slot:item.fileUrl="{ item }">
+            <a v-if="item.fileUrl" :href="item.fileUrl" target="_blank">📄 {{ item.fileUrl }}</a>
+          </template>
+          <template v-slot:item.imgUrl="{ item }">
+            <a v-if="item.imgUrl" :href="item.imgUrl" target="_blank">
+              <v-img
+                  :src="item.imgUrl"
+                  lazy-src="https://picsum.photos/id/11/100/60"
+                  contain
+                  aspect-ratio="1.4"
+                  max-height="100"
+              >
+                <template v-slot:placeholder>
+                  <v-row
+                      class="fill-height ma-0"
+                      align="center"
+                      justify="center"
+                  >
+                    <v-progress-circular
+                        indeterminate
+                        color="grey lighten-5"
+                    ></v-progress-circular>
+                  </v-row>
+                </template>
+              </v-img>
+            </a>
           </template>
           <template v-slot:item.body="{ item }">
             {{ JSON.stringify(item.body) }}
@@ -138,7 +162,7 @@
       </v-card>
     </v-flex>
 
-    <v-dialog v-model="dialog" persistent :fullscreen="$vuetify.breakpoint.mobile">
+    <v-dialog v-model="dialog" persistent max-width="800px" :fullscreen="$vuetify.breakpoint.mobile">
       <v-form
           :model="valid" ref="formData"
           lazy-validation
@@ -149,10 +173,10 @@
           </v-overlay>
           <v-card-title>
 
-            <v-icon v-if="titleClick==='addPost'" large color="green darken-2"
+            <v-icon v-if="titleClick==='addBook'" large color="green darken-2"
                     style="font-size: 50px !important;">library_add
             </v-icon>
-            <v-icon v-if="titleClick==='updatePost'" large color="green darken-2"
+            <v-icon v-if="titleClick==='updateBook'" large color="green darken-2"
                     style="font-size: 50px !important;">autorenew
             </v-icon>
             <span class="headline">{{ $t(titleClick) }}</span>
@@ -163,181 +187,103 @@
           </v-card-title>
           <v-card-text>
             <v-row>
-              <v-col cols="12" sm="12" md="12">
+
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field
-                    v-model="newUrlList"
-                    @click="$refs.fileInputList.click()"
-                    :label="$t('uploadPhoto')"
-                    outlined
-                    rounded
-                    :suffix="dataObj.urlList && dataObj.urlList.length+' ' + $t('photo')"
+                    type="text"
+                    v-model="dataObj.title"
+                    :label="$t('title')"
+                    persistent-hint
+                    :dense="dense"
+                    filled
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field
+                    type="text"
+                    v-model="dataObj.titleEn"
+                    :label="$t('titleEn')"
+                    persistent-hint
+                    :dense="dense"
+                    filled
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-textarea
+                    type="text"
+                    v-model="dataObj.body"
+                    :label="$t('body')"
+                    persistent-hint
+                    :dense="dense"
+                    filled
+                ></v-textarea>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field
+                    type="text"
+                    v-model="dataObj.author"
+                    :label="$t('author')"
+                    persistent-hint
+                    :dense="dense"
+                    filled
+                ></v-text-field>
+              </v-col>
+              <v-col
+                  cols="12" sm="6" md="6"
+              >
+                <v-select
+                    v-model="dataObj.category"
+                    :items="categoryOpt"
+                    :label="$t('category')"
+                    :item-text="item => $t(item.label)"
+                    item-value="value"
+                    filled
+                    clearable
+                >
+
+                </v-select>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field
+                    v-model="dataObj.videoUrl"
+                    :label="$t('videoUrl')"
+                    persistent-hint
+                    :dense="dense"
+                    filled
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field
+                    v-model="dataObj.imgUrl"
+                    @click="$refs.fileCover.click()"
+                    :label="$t('uploadCoverBook')"
+                    filled
                     hide-details
                 >
 
                 </v-text-field>
 
                 <input style="display: none !important;" type="file"
-                       @change="onFileSelectedList($event)"
-                       multiple
-                       ref="fileInputList"/>
+                       @change="onFileSelected($event)"
+                       ref="fileCover"/>
 
               </v-col>
-              <v-col cols="12" sm="12" md="12" style="padding-top: 0px !important;padding-bottom: 0px !important;">
-                <v-row>
-                  <v-col
-                      v-for="(imgUrl,i) in dataObj.urlList"
-                      :key="imgUrl"
-                      class="d-flex child-flex"
-                      cols="3"
-                  >
-                    <v-img
-                        :src="imgUrl"
-                        lazy-src="/images/no-image-icon.png"
-                        aspect-ratio="1"
-                        class="grey lighten-2"
-                    >
-                      <remove-button @removeImg="removeImg(dataObj,imgUrl)" valid="false"
-                                     style="float: right;z-index: 9999"></remove-button>
-
-                      <template v-slot:placeholder>
-                        <v-row
-                            class="fill-height ma-0"
-                            align="center"
-                            justify="center"
-                        >
-                          <v-progress-circular
-                              indeterminate
-                              color="grey lighten-5"
-                          ></v-progress-circular>
-                        </v-row>
-                      </template>
-
-                    </v-img>
-
-                  </v-col>
-                </v-row>
-              </v-col>
-              <v-col cols="12" md="12" sm="12">
-
-                {{ $t('title') }} (English , Khmer ,Chinese)
-              </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <vue-editor
-                    v-model="dataObj.title.en"
-
-                >
-                </vue-editor>
-              </v-col>
-
-              <v-col cols="12" sm="4" md="4">
-                <vue-editor
-                    v-model="dataObj.title.km"
-
-                >
-                </vue-editor>
-              </v-col>
-
-              <v-col cols="12" sm="4" md="4">
-                <vue-editor
-                    v-model="dataObj.title.cn"
-                >
-                </vue-editor>
-              </v-col>
-
-
-              <v-col cols="12" md="12" sm="12">
-
-                {{ $t('body') }} (English , Khmer ,Chinese)
-              </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <vue-editor
-                    v-model="dataObj.body.en"
-
-                >
-                </vue-editor>
-              </v-col>
-
-              <v-col cols="12" sm="4" md="4">
-                <vue-editor
-                    v-model="dataObj.body.km"
-
-                >
-                </vue-editor>
-              </v-col>
-
-              <v-col cols="12" sm="4" md="4">
-                <vue-editor
-                    v-model="dataObj.body.cn"
-                >
-                </vue-editor>
-              </v-col>
-
-
-              <v-col cols="12" sm="4" md="4">
-                <v-switch
-                    v-model="dataObj.addToHome"
-                    :label="$t('addToHome')"
-                ></v-switch>
-              </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <v-textarea
-                    v-model="dataObj.iframeLive"
-                    :label="$t('iframeLive')"
-                    persistent-hint
-                    :dense="dense"
-                    outlined
-                ></v-textarea>
-              </v-col>
-              <v-col cols="12" sm="4" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field
-                    v-model="dataObj.videoUrl"
-                    :label="$t('videoUrl')"
-                    persistent-hint
-                    :dense="dense"
-                    outlined
-                ></v-text-field>
-              </v-col>
-              <v-col
-                  cols="12"
-                  sm="12"
-              >
-                <v-select
-                    v-model="dataObj.page"
-                    :items="pagePostList"
-                    chips
-                    :label="$t('postToPage')"
-                    multiple
-                    outlined
-                    rounded
-                    clearable
-                ></v-select>
-              </v-col>
-              <!--              <v-col cols="4" sm="4" md="4">
-                              <v-img
-                                  :src="newUrl"
-                                  style="height: 275px; width: auto;"
-                                  aspect-ratio="1"
-                                  required
-                                  lazy-src="/images/avatar.png"
-                                  class="grey lighten-2"
-                                  @click="$refs.fileInput.click()"
-                              >
-                                <template v-slot:placeholder>
-                                  <v-row
-                                      class="fill-height ma-0"
-                                      align="center"
-                                      justify="center"
-                                      v-show="isLoading"
-                                  >
-                                    <v-progress-circular indeterminate
-                                                         color="grey lighten-5"></v-progress-circular>
-                                  </v-row>
-                                </template>
-                              </v-img>
-                              <input style="display: none !important;" type="file" @change="onFileSelected"
-                                     ref="fileInput"></input>
-                            </v-col>-->
+                    v-model="dataObj.fileUrl"
+                    @click="$refs.fileUrl.click()"
+                    :label="$t('uploadBook')"
+                    filled
+                    hide-details
+                >
 
+                </v-text-field>
+
+                <input style="display: none !important;" type="file"
+                       @change="onFileSelectedPDF($event)"
+                       ref="fileUrl"/>
+
+              </v-col>
 
             </v-row>
           </v-card-text>
@@ -365,11 +311,12 @@ import RemoveButton from "../components/removeButton"
 import {Constants} from "../../libs/constant"
 import GlobalFn from "../../libs/globalFn"
 import _ from 'lodash'
-import {Web_NewsAndEventsReact} from "../../collections/newsAndEvents"
+import {Web_BookReact} from "../../collections/book"
 import numeral from "numeral";
 import {Meteor} from 'meteor/meteor';
 import "/imports/firebase/config";
 import firebase from "firebase/compat";
+import axios from "axios"
 
 const Compress = require('compress.js').default
 import {VueEditor} from "vue2-editor";
@@ -379,7 +326,7 @@ export default {
     reactData() {
       let vm = this;
       if (Meteor.userId()) {
-        Web_NewsAndEventsReact.find({}).fetch();
+        Web_BookReact.find({}).fetch();
         vm.fetchDataTable(vm.search, vm.skip, vm.itemsPerPage + vm.skip);
       }
     }
@@ -387,7 +334,7 @@ export default {
   mounted() {
     this.$jQuery('body').off();
   },
-  name: "NewsAndEvents",
+  name: "Book",
   components: {AddButton, RaiseButton, SaveButton, ResetButton, CloseButton, VueEditor, RemoveButton},
   data() {
     return {
@@ -419,31 +366,21 @@ export default {
       fileName: "",
       fileNameList: "",
       newUrlList: [],
-      pagePostList: Constants.pagePostList,
       dataObj: {
         _id: "",
         branchId: "",
-        order: 1,
-        addToHome: false,
-        title: {
-          en: "",
-          km: "",
-          cn: "",
-        },
-        body: {
-          en: "",
-          km: "",
-          cn: "",
-        },
-        url: "",
-        urlList: [],
-        page: [],
+        category: "",
+        author: "",
+        title: "",
+        titleEn: "",
+        body: "",
+        imgUrl: "",
+        fileUrl: "",
         videoUrl: "",
-        iframeLive: "",
       },
-
+      categoryOpt:Constants.categoryOpt,
       nameRules: [
-        v => !!v || 'NewsAndEvents Name is required',
+        v => !!v || 'Book Name is required',
       ],
       phoneNumber: [
         v => !!v || 'Phone Number is required',
@@ -458,18 +395,15 @@ export default {
       ],
       headers: [
         {
-          text: 'postDate',
-          align: 'left',
-          sortable: true,
-          value: 'createdAt',
-          width: "150px"
-        },
-
-        {
           text: 'title',
           align: 'left',
           sortable: true,
           value: 'title',
+        }, {
+          text: 'titleEn',
+          align: 'left',
+          sortable: true,
+          value: 'titleEn',
         },
         {
           text: 'body',
@@ -478,14 +412,35 @@ export default {
           value: 'body',
         },
         {
-          text: 'postToPage',
+          text: 'author',
           align: 'left',
           sortable: true,
-          value: 'page',
-          width: "300px"
+          value: 'author',
         },
-
-
+        {
+          text: 'category',
+          align: 'left',
+          sortable: true,
+          value: 'category',
+        },
+        {
+          text: 'fileUrl',
+          align: 'left',
+          sortable: true,
+          value: 'fileUrl',
+        },
+        {
+          text: 'imgUrl',
+          align: 'left',
+          sortable: true,
+          value: 'imgUrl',
+        },
+        {
+          text: 'videoUrl',
+          align: 'left',
+          sortable: true,
+          value: 'videoUrl',
+        },
         {text: 'actions', value: 'action', sortable: false, width: "120px"},
       ],
       dataLists: [],
@@ -499,6 +454,127 @@ export default {
     }
   },
   methods: {
+
+    onFileSelected(e) {
+      let vm = this;
+      vm.isLoadingImg = true;
+      vm.isLoading = true;
+      vm.fileName = e.target.files[0].name || "";
+
+      if (vm.fileName !== "") {
+        const files = e.target.files[0];
+        vm.rawFileImageList = files;
+        const compress = new Compress();
+        compress.compress([files], {
+          size: 4, // the max size in MB, defaults to 2MB
+          quality: 0.9, // the quality of the image, max is 1,
+          maxWidth: 1920, // the max width of the output image, defaults to 1920px
+          maxHeight: 1920, // the max height of the output image, defaults to 1920px
+          resize: true // defaults to true, set false if you do not want to resize the image width and height
+        }).then((data) => {
+          // vm.newUrlList = [];
+          data.forEach((obj) => {
+            let img1 = obj;
+            let base64str = img1.data;
+            let imgExt = img1.ext;
+            vm.onUploadList(Compress.convertBase64ToFile(base64str, imgExt), obj.alt);
+          })
+        })
+      }
+    },
+    onFileSelectedPDF(e) {
+      let vm = this;
+      vm.isLoading = true;
+      vm.isLoadingImg = true;
+      vm.fileName = e.target.files[0].name || "";
+
+      if (vm.fileName !== "") {
+        const files = e.target.files[0];
+        vm.onUploadList(files, files.name, "Book", files.type);
+      }
+    },
+    getUrlDigitalOcean(fileName) {
+      let doc = {};
+      doc.type = "image";
+      doc.count = 1;
+      doc.fileName = fileName;
+      doc.mimeType = "image/*";
+      doc.path = "rpitsb/cover";
+      return new Promise((resolve, reject) => {
+        Meteor.call('do_getUploadUrlDigitalOcean',
+            doc,
+            Constants.secret
+            , (err, result) => {
+              if (!err) {
+                resolve(result);
+              } else {
+                reject(err.message);
+              }
+            });
+      })
+    },
+    getBookUrlDigitalOcean(fileName, type) {
+      let doc = {};
+      doc.type = "document";
+      doc.count = 1;
+      doc.fileName = fileName;
+      doc.mimeType = type || "application/octet-stream";
+      doc.path = "rpitsb/book";
+      return new Promise((resolve, reject) => {
+        Meteor.call('do_getUploadUrlDigitalOcean',
+            doc,
+            Constants.secret
+            , (err, result) => {
+              if (!err) {
+                resolve(result);
+              } else {
+                reject(err.message);
+              }
+            });
+      })
+    },
+    uploadImageDigitalOcean(uploadUrl, selectedFile, fileName) {
+      const config = {
+        headers: {
+          "Content-Type": selectedFile.type,
+          "x-amz-acl": "public-read",
+        },
+      };
+      //"x-amz-acl": "public-read",
+      //     "Content-Disposition": "inline"
+      return new Promise((resolve, reject) => {
+        axios.put(uploadUrl, selectedFile, config).then(
+            (res) => {
+              resolve(res.status)
+              // resolve(res.json());
+            },
+            (error) => {
+              console.log(error.message);
+              console.log(error);
+            }
+        );
+      })
+    },
+    async onUploadList(selectedFile, fileName, type, fileType) {
+      let vm = this;
+      let uploadUrlList = type === "Book" ? await vm.getBookUrlDigitalOcean(fileName, fileType) : await vm.getUrlDigitalOcean(fileName);
+      if (uploadUrlList) {
+        let uploadUrl = uploadUrlList[0].uploadUrl;
+        let uploadedImage = await vm.uploadImageDigitalOcean(uploadUrl, selectedFile, fileName);
+        if (uploadedImage === 200) {
+          if (type === "Book") {
+            vm.dataObj.fileUrl = uploadUrlList[0].cdnLink || "";
+          } else {
+            vm.dataObj.imgUrl = uploadUrlList[0].cdnLink || "";
+          }
+          vm.isLoading = false;
+        }
+        vm.isLoadingImg = false;
+
+      } else {
+        vm.isLoading = false;
+      }
+    },
     resetForm() {
       this.$refs.formData.reset();
     },
@@ -519,7 +595,7 @@ export default {
         });
       });
     },
-    onFileSelected(e, num) {
+    /*onFileSelected(e, num) {
       let vm = this;
       this.imgUrl = window.URL.createObjectURL(e.target.files[0]);
       vm.fileName = e.target.files[0].name;
@@ -577,7 +653,7 @@ export default {
     },
     onUpload(num) {
       let vm = this;
-      const storageRef = firebase.storage().ref("newsAndEvents/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
+      const storageRef = firebase.storage().ref("book/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + this.fileName).put(this.selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -654,7 +730,7 @@ export default {
     },
     onUploadList(selectedFile, fileName) {
       let vm = this;
-      const storageRef = firebase.storage().ref("newsAndEvents/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
+      const storageRef = firebase.storage().ref("book/" + moment().format("YYYYMMDD") + "/" + moment().format("YYYYMMDDHHmmss") + fileName).put(selectedFile);
       storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           }, error => {
@@ -674,7 +750,7 @@ export default {
             });
           }
       );
-    },
+    },*/
     checkRole(roles) {
       switch (roles) {
         case 'Create':
@@ -708,7 +784,7 @@ export default {
       let vm = this;
       vm.loading = true;
       return new Promise((resolve, reject) => {
-        Meteor.call("web_fetchNewsAndEvents", {
+        Meteor.call("web_fetchBook", {
           q: val,
           filter: this.filter,
           sort: {sortBy: vm.sortBy || "", sortDesc: vm.sortDesc || ""},
@@ -738,7 +814,7 @@ export default {
         vm.dataObj.branchId = vm.$store.state.branchId;
         if (vm.dataObj._id === "") {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_insertNewsAndEvents", vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_insertBook", vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -763,7 +839,7 @@ export default {
 
         } else {
           return new Promise((resolve, reject) => {
-            Meteor.call("web_updateNewsAndEvents", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
+            Meteor.call("web_updateBook", vm.dataObj._id, vm.dataObj, Constants.secret, (err, result) => {
               if (!err) {
                 this.$message({
                   message: this.$t('successNotification'),
@@ -791,7 +867,7 @@ export default {
       let vm = this;
 
       vm.dataObj = Object.assign({}, doc);
-      vm.titleClick = "updatePost";
+      vm.titleClick = "updateBook";
       vm.dialog = true;
       Meteor.setTimeout(function () {
         vm.dataObj.address = doc.address || "";
@@ -806,7 +882,7 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        Meteor.call("web_removeNewsAndEvents", row, Constants.secret, (err, result) => {
+        Meteor.call("web_removeBook", row, Constants.secret, (err, result) => {
           if (!err) {
             vm.$message({
               message: this.$t('removeSuccess'),
@@ -889,7 +965,7 @@ export default {
   created() {
     let vm = this;
     vm.fetchDataTable();
-    Meteor.subscribe('web_newsAndEventsReact');
+    Meteor.subscribe('web_bookReact');
 
   }
 }

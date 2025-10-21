@@ -4,10 +4,11 @@ import GlobalFn from "../../imports/libs/globalFn"
 import _ from 'lodash'
 
 import {Exchange, ExchangeReact, ExchangeAudit} from "../../imports/collections/exchange"
+import {Web_Contact} from "../../imports/collections/contact";
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
-    base_fetchExchange({q, filter, sort, options = {limit: 10, skip: 0}, accessToken}) {
+   async base_fetchExchange({q, filter, sort, options = {limit: 10, skip: 0}, accessToken}) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             let data = {
                 content: [],
@@ -29,7 +30,8 @@ Meteor.methods({
                     selector.$or = [{exDateName: {$regex: reg, $options: 'mi'}}];
                 }
             }
-            data.content = Exchange.aggregate([
+            const rawCollection = Exchange.rawCollection();
+            data.content =await rawCollection.aggregate([
                     {
                         $match: selector
                     }
@@ -47,7 +49,7 @@ Meteor.methods({
                 ],
                 {
                     allowDiskUse: true
-                });
+                }).toArray();
 
             data.countContent = Exchange.find(selector).count();
             return data;

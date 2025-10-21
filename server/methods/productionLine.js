@@ -5,10 +5,11 @@ import {
     Web_ProductionLineReact,
     Web_ProductionLineAudit
 } from "../../imports/collections/productionLine"
+import {Web_Product} from "../../imports/collections/product";
 
 let secret = Meteor.settings.private.secret;
 Meteor.methods({
-    web_fetchProductionLine({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
+   async web_fetchProductionLine({q, filter, sort, options = {limit: 10, skip: 0}, branchId, accessToken, userId}) {
         if ((Meteor.userId() && accessToken === secret) || accessToken === secret) {
             let data = {
                 content: [],
@@ -42,8 +43,8 @@ Meteor.methods({
             }
 
             selector.branchId=branchId;
-
-            data.content = Web_ProductionLine.aggregate([
+            const rawCollection = Web_ProductionLine.rawCollection();
+            data.content =await rawCollection.aggregate([
                     {
                         $match: selector
                     }
@@ -63,7 +64,7 @@ Meteor.methods({
                 ],
                 {
                     allowDiskUse: true
-                });
+                }).toArray();
             data.countContent = Web_ProductionLine.find(selector).count();
             return data;
         }

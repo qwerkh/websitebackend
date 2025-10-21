@@ -243,7 +243,7 @@ API.add('post', GlobalFn.Namespace1('/client/fetch'), (req, res, next) => {
         })
 });
 API.add('post', GlobalFn.Namespace1('/newsAndEvents/fetch'), (req, res, next) => {
-    const {branchId,addToHome} = req.body;
+    const {branchId, addToHome} = req.body;
     res.charset = 'utf-8';
     const {token} = req.headers;
     try {
@@ -310,6 +310,66 @@ API.add('post', GlobalFn.Namespace1('/media/fetch'), (req, res, next) => {
         Meteor.call('web_findMedia',
             branchId,
             token
+            , (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err.message);
+                }
+            });
+    })
+        .then((r) => {
+            sendResult(res, {
+                data: {
+                    code: 201,
+                    data: r,
+
+                }
+            })
+        }).catch((er) => {
+            sendResult(res, {
+                data: {
+                    code: 402,
+                    data: {
+                        message: er.replace("[", "").replace("]", "")
+                    }
+                }
+            })
+        })
+});
+API.add('get', GlobalFn.Namespace1('/book/fetch'), (req, res, next) => {
+    res.charset = 'utf-8';
+    const {token} = req.headers;
+    try {
+        GlobalFn.verifyToken(token, secret); // if token failed we decline all process
+    } catch (e) {
+        sendResult(res, {
+            data: {
+                code: 403,
+                data: {
+                    message: "សុំទោសមិនអាចតភ្ជាប់បានទេ",
+                }
+            }
+        })
+    }
+    let {search, category, skip, limit} = req.query;
+
+    skip = parseInt(skip);
+    limit = parseInt(limit);
+    let itemPerPage = limit;
+    skip = skip * itemPerPage;
+    limit = itemPerPage + skip;
+    return new Promise((resolve, reject) => {
+        Meteor.call('web_fetchBook',
+            {
+                q: search,
+                filter: "",
+                sort: {sortBy: "", sortDesc: ""},
+                options: {skip, limit},
+                branchId: "",
+                accessToken: secret,
+                category,
+            }
             , (err, result) => {
                 if (!err) {
                     resolve(result);
