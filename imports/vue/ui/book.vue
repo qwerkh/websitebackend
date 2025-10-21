@@ -193,6 +193,7 @@
                     type="text"
                     v-model="dataObj.title"
                     :label="$t('title')"
+                    :rules="requireInput"
                     persistent-hint
                     :dense="dense"
                     filled
@@ -202,6 +203,7 @@
                 <v-text-field
                     type="text"
                     v-model="dataObj.titleEn"
+                    :rules="requireInput"
                     :label="$t('titleEn')"
                     persistent-hint
                     :dense="dense"
@@ -235,15 +237,15 @@
                     v-model="dataObj.category"
                     :items="categoryOpt"
                     :label="$t('category')"
+                    :rules="selectRules"
                     :item-text="item => $t(item.label)"
                     item-value="value"
                     filled
-                    clearable
                 >
 
                 </v-select>
               </v-col>
-              <v-col cols="12" sm="6" md="6">
+<!--              <v-col cols="12" sm="6" md="6">
                 <v-text-field
                     v-model="dataObj.videoUrl"
                     :label="$t('videoUrl')"
@@ -251,7 +253,7 @@
                     :dense="dense"
                     filled
                 ></v-text-field>
-              </v-col>
+              </v-col>-->
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
                     v-model="dataObj.imgUrl"
