@@ -260,6 +260,7 @@
                     @click="$refs.fileCover.click()"
                     :label="$t('uploadCoverBook')"
                     filled
+                    :rules="requireUpload"
                     hide-details
                 >
 
@@ -267,12 +268,14 @@
 
                 <input style="display: none !important;" type="file"
                        @change="onFileSelected($event)"
+                       accept="image/*"
                        ref="fileCover"/>
 
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
                     v-model="dataObj.fileUrl"
+                    :rules="requireUpload"
                     @click="$refs.fileUrl.click()"
                     :label="$t('uploadBook')"
                     filled
@@ -283,6 +286,7 @@
 
                 <input style="display: none !important;" type="file"
                        @change="onFileSelectedPDF($event)"
+                       accept=".doc,.docx,.xls,.xlsx,.pdf,.ppt"
                        ref="fileUrl"/>
 
               </v-col>
@@ -392,6 +396,9 @@ export default {
       ],
       requireInput: [
         v => !!v || 'Please Input Data',
+      ],
+      requireUpload: [
+        v => !!v || 'Please Upload File',
       ], selectRules: [
         v => !!v || 'Please Choose one',
       ],
@@ -871,10 +878,6 @@ export default {
       vm.dataObj = Object.assign({}, doc);
       vm.titleClick = "updateBook";
       vm.dialog = true;
-      Meteor.setTimeout(function () {
-        vm.dataObj.address = doc.address || "";
-        vm.newUrl = doc.url || "";
-      }, 300);
     },
     handleRemove(row) {
       let vm = this;
@@ -913,29 +916,7 @@ export default {
       let vm = this;
       if (val === false) {
         this.$refs.formData.reset();
-
-        vm.dataObj = {
-          _id: "",
-          branchId: "",
-          order: 1,
-          title: {
-            en: "",
-            km: "",
-            cn: "",
-          },
-          body: {
-            en: "",
-            km: "",
-            cn: "",
-          },
-          url: "",
-        };
-
         vm.dataObj._id = "";
-        vm.newUrl = "";
-        vm.dataObj.url = "";
-
-
       }
     },
     currentPage(val) {
