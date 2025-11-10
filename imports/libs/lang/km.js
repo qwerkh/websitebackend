@@ -201,5 +201,7 @@ export const km = {
     welcomeTitle:"ស្វាគមន៍មកកាន់ RPITSB",
     welcomeSubtitle:"សាលា TVET",
     imgUrl:"Cover Url",
-    welcome:"ស្វាគមន៍"
+    welcome:"ស្វាគមន៍",
+    foreignLanguage:"ភាសារបរទេស",
+    other:"ផ្សេងៗ",
 }

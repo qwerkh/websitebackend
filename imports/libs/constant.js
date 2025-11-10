@@ -77,6 +77,8 @@ let categoryOpt = [
     {label: "agriculture", value: "agriculture"},
     {label: "bankAndFinance", value: "bankAndFinance"},
     {label: "mechanic", value: "mechanic"},
+    {label: "foreignLanguage", value: "foreignLanguage"},
+    {label: "other", value: "other"},
 ]
 
 

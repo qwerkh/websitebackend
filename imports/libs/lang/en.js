@@ -202,5 +202,7 @@ export const en = {
     welcomeTitle:"Welcome To RPITSB",
     welcomeSubtitle:"TVET School",
     imgUrl:"លីង Cover",
-    welcome:"Welcome"
+    welcome:"Welcome",
+    foreignLanguage:"Foreign Language",
+    other:"Other",
 }
